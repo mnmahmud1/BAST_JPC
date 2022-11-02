@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap");
+
+body {
+	font-family: "Mulish", sans-serif;
+	color: #252733 !important;
+}
+
+.fs-6 {
+	font-size: 10pt !important;
+	color: #9fa2b4 !important;
+}
+
+.fs-5 {
+	font-size: 12pt !important;
+	color: #9fa2b4 !important;
+}
+
+.form-control {
+	height: 48px;
+	background-color: #fcfdfe;
+	border: 1px solid #f0f1f7;
+}
+
+.btn-form {
+	height: 48px;
+}
+
+.accordion-body {
+	background-color: #f6f6f6 !important;
+}
+
+::-webkit-input-placeholder {
+	/* WebKit, Blink, Edge */
+	color: #9fa2b4 !important;
+	font-size: 10pt !important;
+}
+:-moz-placeholder {
+	/* Mozilla Firefox 4 to 18 */
+	color: #9fa2b4 !important;
+	opacity: 1;
+	font-size: 10pt !important;
+}
+::-moz-placeholder {
+	/* Mozilla Firefox 19+ */
+	color: #9fa2b4 !important;
+	opacity: 1;
+	font-size: 10pt !important;
+}
+:-ms-input-placeholder {
+	/* Internet Explorer 10-11 */
+	color: #9fa2b4 !important;
+	font-size: 10pt !important;
+}
+::-ms-input-placeholder {
+	/* Microsoft Edge */
+	color: #9fa2b4 !important;
+	font-size: 10pt !important;
+}
+
+::placeholder {
+	/* Most modern browsers support this now. */
+	color: #909;
+}
