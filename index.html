@@ -2,92 +2,188 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Bootstrap demo</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<title>Dashboard - SB Admin</title>
 		<link
-			href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-			rel="stylesheet"
-			integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-			crossorigin="anonymous" />
+			href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
+			rel="stylesheet" />
+		<link href="dist/temp/css/styles.css" rel="stylesheet" />
+		<script
+			src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"
+			crossorigin="anonymous"></script>
 
-		<link rel="stylesheet" href="dist/css/style.css" />
+		<!-- Jquery CDN -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+		<link rel="stylesheet" href="dist/css/public.css" />
 	</head>
-	<body style="background-color: #363740">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-4 col-md-6 col-lg-4 mx-auto mt-5">
-					<div class="card">
-						<div class="card-body px-4">
-							<div class="text-center mt-3">
-								<span class="fw-bold fs-4"
-									>Sign In BAST IT</span
-								>
-								<p class="text-muted fs-6">
-									Enter your email and password below
-								</p>
-							</div>
-
-							<form action="">
-								<div class="mb-3">
-									<label
-										for="username"
-										class="form-label fw-bold fs-6"
-										>USERNAME</label
-									>
-									<input
-										type="text"
-										name="username"
-										id="username"
-										class="form-control"
-										placeholder="Type your username"
-										required />
-								</div>
-								<div class="mb-3">
-									<label
-										for="password"
-										class="form-label fw-bold fs-6"
-										>PASSWORD</label
-									>
-									<input
-										type="text"
-										name="password"
-										id="password"
-										class="form-control"
-										placeholder="Type your password"
-										required />
-								</div>
-								<div class="mb-3 d-grid gap-2">
-									<button
-										type="submit"
-										class="btn btn-primary p-3 fs">
-										Sign In
-									</button>
-								</div>
-								<div class="mb-3 text-center fs-6">
-									<a
-										href="mailto:mahmudi.nurhasan@jpc.co.id"
-										class="text-decoration-none text-decoration-underline text-secondary fw-bold"
-										>Contact administrator</a
-									>
-									, If you don’t have an account.
-								</div>
-							</form>
-						</div>
-					</div>
+	<body class="sb-nav-fixed">
+		<div class="preloader">
+			<div class="loading">
+				<div class="spinner-border" role="status">
+					<span class="visually-hidden">Loading...</span>
 				</div>
 			</div>
 		</div>
+		<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+			<!-- Navbar Brand-->
+			<a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+			<!-- Sidebar Toggle-->
+			<button
+				class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+				id="sidebarToggle"
+				href="#!">
+				<i class="fas fa-bars"></i>
+			</button>
+		</nav>
+		<div id="layoutSidenav">
+			<div id="layoutSidenav_nav">
+				<nav
+					class="sb-sidenav accordion sb-sidenav-dark"
+					id="sidenavAccordion">
+					<div class="sb-sidenav-menu">
+						<div class="nav">
+							<div class="sb-sidenav-menu-heading">Core</div>
+							<a class="nav-link active" href="index.html">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-tachometer-alt"></i>
+								</div>
+								Overview
+							</a>
+							<a
+								class="nav-link collapsed"
+								href="#"
+								data-bs-toggle="collapse"
+								data-bs-target="#collapseLayouts"
+								aria-expanded="false"
+								aria-controls="collapseLayouts">
+								<div class="sb-nav-link-icon">
+									<i class="fas fa-columns"></i>
+								</div>
+								Inventaris
+								<div class="sb-sidenav-collapse-arrow">
+									<i class="fas fa-angle-down"></i>
+								</div>
+							</a>
+							<div
+								class="collapse"
+								id="collapseLayouts"
+								aria-labelledby="headingOne"
+								data-bs-parent="#sidenavAccordion">
+								<nav class="sb-sidenav-menu-nested nav">
+									<a class="nav-link" href="barang.html"
+										>Barang</a
+									>
+									<a
+										class="nav-link"
+										href="layout-sidenav-light.html"
+										>Cabang</a
+									>
+									<a
+										class="nav-link"
+										href="layout-sidenav-light.html"
+										>Vendor</a
+									>
+								</nav>
+							</div>
+							<a class="nav-link" href="#">
+								<div class="sb-nav-link-icon">
+									<i class="fa-solid fa-users"></i>
+								</div>
+								Pengguna
+							</a>
+							<a class="nav-link" href="#">
+								<div class="sb-nav-link-icon">
+									<i class="fa-solid fa-receipt"></i>/
+								</div>
+								Berita Acara
+							</a>
+							<a class="nav-link" href="#">
+								<div class="sb-nav-link-icon">
+									<i class="fa-solid fa-user"></i>
+								</div>
+								Profiles
+							</a>
+						</div>
+					</div>
+					<div class="sb-sidenav-footer">
+						<div class="small">Logged in as:</div>
+						Start Bootstrap
+					</div>
+				</nav>
+			</div>
+			<div id="layoutSidenav_content">
+				<main>
+					<div class="container-fluid px-4">
+						<h3 class="mt-4">Dashboard</h3>
+						<ol class="breadcrumb mb-4">
+							<li class="breadcrumb-item active">Dashboard</li>
+						</ol>
 
+						<div class="row">
+							<div class="col">
+								<div class="card">
+									<div class="card-body">Barang 12</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="card">
+									<div class="card-body">Cabang 12</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="card">
+									<div class="card-body">Pengguna 12</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="card">
+									<div class="card-body">Berita Acara 12</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="card">
+									<div class="card-body">Rusak/Scrap 12</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</main>
+
+				<footer class="py-4 bg-light mt-auto">
+					<div class="container-fluid px-4">
+						<div
+							class="d-flex align-items-center justify-content-center small">
+							<div class="text-muted">
+								Copyright &copy; Your Website 2022
+							</div>
+						</div>
+					</div>
+				</footer>
+			</div>
+		</div>
 		<script
-			src="https://kit.fontawesome.com/b676a664d2.js"
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 			crossorigin="anonymous"></script>
+		<script src="dist/temp/js/scripts.js"></script>
 		<script
-			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-			integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+			src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
 			crossorigin="anonymous"></script>
+		<script src="dist/temp/assets/demo/chart-area-demo.js"></script>
+		<script src="dist/temp/assets/demo/chart-bar-demo.js"></script>
 		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
-			integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+			src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
 			crossorigin="anonymous"></script>
+		<script src="dist/temp/js/datatables-simple-demo.js"></script>
+		<script>
+			$(document).ready(function () {
+				$(".preloader").fadeOut("slow")
+			})
+		</script>
 	</body>
 </html>
