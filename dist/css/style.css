@@ -15,7 +15,8 @@ body {
 	color: #9fa2b4 !important;
 }
 
-.form-control {
+.form-control,
+.form-select {
 	height: 48px;
 	background-color: #fcfdfe;
 	border: 1px solid #f0f1f7;
@@ -34,23 +35,27 @@ body {
 	color: #9fa2b4 !important;
 	font-size: 10pt !important;
 }
+
 :-moz-placeholder {
 	/* Mozilla Firefox 4 to 18 */
 	color: #9fa2b4 !important;
 	opacity: 1;
 	font-size: 10pt !important;
 }
+
 ::-moz-placeholder {
 	/* Mozilla Firefox 19+ */
 	color: #9fa2b4 !important;
 	opacity: 1;
 	font-size: 10pt !important;
 }
+
 :-ms-input-placeholder {
 	/* Internet Explorer 10-11 */
 	color: #9fa2b4 !important;
 	font-size: 10pt !important;
 }
+
 ::-ms-input-placeholder {
 	/* Microsoft Edge */
 	color: #9fa2b4 !important;
@@ -71,6 +76,7 @@ body {
 	z-index: 9999;
 	background-color: #fff;
 }
+
 .loading {
 	position: absolute;
 	left: 50%;
