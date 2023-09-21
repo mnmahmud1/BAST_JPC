@@ -60,10 +60,8 @@
 							</a>
 							<div class="collapse show" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 								<nav class="sb-sidenav-menu-nested nav">
-									<a class="nav-link active" href="barang.html">Barang</a>
-									<a class="nav-link" href="barang.html">Mutasi Barang</a>
-									<a class="nav-link" href="layout-sidenav-light.html">Cabang</a>
-									<a class="nav-link" href="layout-sidenav-light.html">Vendor</a>
+									<a class="nav-link active" href="barang.html">Daftar Barang</a>
+									<a class="nav-link" href="barang-masuk.html">Barang Masuk</a>
 								</nav>
 							</div>
 							<a class="nav-link" href="#">
@@ -94,13 +92,22 @@
 							<li class="breadcrumb-item active">Barang</li>
 						</ol>
 
-						<div class="row mb-xl-3">
+						<div class="row mb-3">
 							<div class="col-sm">
-								<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalImport">
-									<i class="fa-solid fa-file-import"></i>
-									Import
-								</button>
-								<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah"><i class="fa-solid fa-plus"></i> Tambah Barang</button>
+								<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+									<button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#modalImport">
+										<i class="fa-solid fa-file-import"></i>
+										Import
+									</button>
+
+									<div class="btn-group" role="group">
+										<button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-plus"></i> Tambah Barang</button>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalTambahDariBarangMasuk">Dari Barang Masuk</a></li>
+											<li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalTambah">Manual</a></li>
+										</ul>
+									</div>
+								</div>
 							</div>
 						</div>
 
@@ -265,9 +272,9 @@
 									<select name="" id="" class="form-select">
 										<option value="">Choose</option>
 										<option value="">Laptop</option>
-										<option value="">PC</optio>
-										<option value="">Printer</optio>
-										<option value="">Webcam</optio>
+										<option value="">PC</option>
+										<option value="">Printer</option>
+										<option value="">Webcam</option>
 									</select>
 								</div>
 								<div class="col-sm">
@@ -354,6 +361,203 @@
 			</div>
 		</div>
 
+		<!-- Modal Tambah Barang dari barang masuk -->
+		<div class="modal fade" id="modalTambahDariBarangMasuk" tabindex="-1" aria-labelledby="modalTambahDariBarangMasukLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="modalTambahDariBarangMasukLabel">Pilih Barang Dari Barang Masuk</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+
+					<div class="modal-body px-4">
+						<div class="row">
+							<div class="col-sm">
+								<div class="card">
+									<div class="card-body">
+										<h5 class="mb-4">Daftar Barang Masuk</h5>
+										<table class="display" name="tableTambahDariBarangMasuk" id="tableTambahDariBarangMasuk">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>Deskripsi</th>
+													<th>SN</th>
+													<th>No. PWR</th>
+													<th>No. PO</th>
+													<th>Notes</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>1</td>
+													<td>ASUS Vivobook M310A</td>
+													<td>123NDIAPP10042</td>
+													<td>2023/JKT-0412</td>
+													<td>2023/JKT-L-0412</td>
+													<td>This is notes</td>
+													<td>
+														<button class="btn btn-sm btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modalUpdateMutasiBarang">Choose</button>
+													</td>
+												</tr>
+												<tr>
+													<td>2</td>
+													<td>ASUS Vivobook M310A</td>
+													<td>123NDIAPP10042</td>
+													<td>2023/JKT-0412</td>
+													<td>2023/JKT-L-0412</td>
+													<td>This is notes</td>
+													<td>
+														<button class="btn btn-sm btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modalUpdateMutasiBarang">Choose</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal Update dan Mutasi Barang dari barang masuks -->
+		<div class="modal fade" id="modalUpdateMutasiBarang" tabindex="-1" aria-labelledby="modalUpdateMutasiBarangLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="modalUpdateMutasiBarangLabel">Pilih Barang Dari Barang Masuk</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+
+					<form action="" method="post">
+						<div class="modal-body px-4">
+							<div class="row mb-3">
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">No Inventaris</label>
+									<input type="text" class="form-control" placeholder="You Text Here" name="" id="" autofocus required />
+								</div>
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Serial Number</label>
+									<input type="text" class="form-control" placeholder="Your text here" name="" id="" value="123NDIAPP10042" required readonly />
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Deskripsi</label>
+									<input type="text" class="form-control" placeholder="Your text here" name="" id="" value="ASUS Vivobook M310A" required readonly />
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Spesifikasi</label>
+									<textarea name="" id="" cols="30" rows="2" class="form-control" placeholder="Your text here" required></textarea>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Tipe Inventaris</label>
+									<select name="" id="" class="form-select" required>
+										<option value="">Choose</option>
+										<option value="">Inventaris Tetap</option>
+										<option value="">Inventaris Sementara</option>
+									</select>
+								</div>
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Grup Inventaris</label>
+									<select name="" id="" class="form-select">
+										<option value="">Choose</option>
+										<option value="">Laptop</option>
+										<option value="">PC</option>
+										<option value="">Printer</option>
+										<option value="">Webcam</option>
+									</select>
+								</div>
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Peruntukan Inventaris</label>
+									<select name="" id="" class="form-select" required>
+										<option value="">Choose</option>
+										<option value="">Infrastuktur</option>
+										<option value="">Inventaris User</option>
+									</select>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Lokasi</label>
+									<select name="" id="" class="form-select" required>
+										<option value="">Choose</option>
+										<option value="">Head Office Jakarta</option>
+										<option value="">Workshop Gunung Putri</option>
+										<option value="">Branch Office Pekanbaru</option>
+										<option value="">Branch Office Surabaya</option>
+										<option value="">Branch Office Balikpapan</option>
+									</select>
+								</div>
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Asal Usul</label>
+									<select name="" id="" class="form-select" required disabled>
+										<option value="">Choose</option>
+										<option value="" selected>PWR</option>
+										<option value="">Hibah</option>
+										<option value="">Lain-Lain</option>
+									</select>
+								</div>
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Departemen</label>
+									<select name="" id="" class="form-select">
+										<option value="">Choose</option>
+										<option value="">HR & GA</option>
+										<option value="">QC</option>
+										<option value="">Project Control</option>
+									</select>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Tahun Pengadaan</label>
+									<select name="" id="" class="form-select" disabled>
+										<option value="">Choose</option>
+										<option value="">2018</option>
+										<option value="">2019</option>
+										<option value="">2020</option>
+										<option value="">2021</option>
+										<option value="">2022</option>
+										<option value="" selected>2023</option>
+									</select>
+								</div>
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Masa Manfaat (Tahun)</label>
+									<input type="number" class="form-control" placeholder="Your text here" name="" id="" required />
+								</div>
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Kondisi</label>
+									<select name="" id="" class="form-select" required>
+										<option value="">Choose</option>
+										<option value="">Baik</option>
+										<option value="">Kurang Baik</option>
+										<option value="">Rusak</option>
+										<option value="">Scrapt</option>
+									</select>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm">
+									<label for="" class="form-label labeling-form">Keterangan</label>
+									<textarea name="" id="" cols="30" rows="2" class="form-control" placeholder="Your text here" required>IT-RR-2023-05-15; REFF PWR 2023/JKT-0412; REFF PO 2023/JKT-L-0412; </textarea>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
+							<button type="submit" class="btn btn-primary" tabindex="-1">Tambah</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 		<script src="dist/temp/js/scripts.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
@@ -378,6 +582,7 @@
 					buttons: ["copy", "csv", "excel", "pdf", "print"],
 					select: true,
 				});
+				$("#tableTambahDariBarangMasuk").DataTable({});
 			});
 
 			$(document).ready(function () {
