@@ -1,2 +1,11 @@
-Membuat tanda-tangan digital agar data tidak perlu di print
+#1 Membuat tanda-tangan digital agar data tidak perlu di print
 http://keith-wood.name/signature.html
+
+#2 Merapihkan nama file
+ex: -> barang.html / goods.html
+       - barang-details.html / goods-details.html
+       - barang-masuk.html / goods-incoming.html
+       - barang-masuk-tambah.html / goods-incoming-add.html
+       - barang-masuk-details.html / goods-incoming-details.html
+
+#3 Mengubah nama-nama tombol menjadi bahasa inggris

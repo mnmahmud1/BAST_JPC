@@ -88,79 +88,74 @@
 				<main>
 					<div class="container-fluid px-4">
 						<h3 class="mt-4">Barang Masuk</h3>
-						<ol class="breadcrumb mb-4">
-							<li class="breadcrumb-item active">Barang Masuk</li>
-						</ol>
-
-						<div class="row mb-3">
-							<div class="col-sm">
-								<a href="tambah-laporan-barang-masuk.html" class="btn btn-primary">+ Tambah Laporan Masuk</a>
-							</div>
-						</div>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="barang-masuk.html">Barang Masuk</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Details Laporan Barang Masuk</li>
+							</ol>
+						</nav>
 
 						<div class="row">
 							<div class="col-sm">
 								<div class="card">
 									<div class="card-body">
-										<h5 class="mb-4">Daftar Laporan Barang Masuk</h5>
-										<table class="display" name="tableBarang" id="tableBarang">
-											<thead>
-												<tr>
-													<th>#</th>
-													<th>No.RR</th>
-													<th>Jumlah Barang</th>
-													<th>Keterangan</th>
-													<th>Date</th>
-													<th></th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>1</td>
-													<td>IT-RR-2023-05-01</td>
-													<td>3</td>
-													<td>Lorem, ipsum dolor.</td>
-													<td class="fs-6">10.40 PM 11-11-2022</td>
-													<td>
-														<div class="dropdown">
-															<a class="btn btn-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-																<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-																	<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-																</svg>
-															</a>
-
-															<ul class="dropdown-menu">
-																<li><a class="dropdown-item" href="detail-barang-masuk.html">View Details</a></li>
-																<li><a class="dropdown-item" href="#">Print</a></li>
-																<li><a class="dropdown-item" href="#">Delete</a></li>
-															</ul>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td>IT-RR-2023-05-01</td>
-													<td>3</td>
-													<td>Lorem, ipsum dolor.</td>
-													<td class="fs-6">10.40 PM 11-11-2022</td>
-													<td>
-														<div class="dropdown">
-															<a class="btn btn-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-																<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-																	<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-																</svg>
-															</a>
-
-															<ul class="dropdown-menu">
-																<li><a class="dropdown-item" href="detail-barang-masuk.html">View Details</a></li>
-																<li><a class="dropdown-item" href="#">Print</a></li>
-																<li><a class="dropdown-item" href="#">Delete</a></li>
-															</ul>
-														</div>
-													</td>
-												</tr>
-											</tbody>
-										</table>
+										<h5 class="mb-4">Details Laporan Barang Masuk</h5>
+										<div class="row mb-4">
+											<div class="col-sm">
+												<label for="" class="form-label labeling-form">No. RR</label>
+												<input type="text" class="form-control" placeholder="You Text Here" name="" id="" value="IT-RR-2023-05-01" readonly />
+											</div>
+											<div class="col-sm">
+												<label for="" class="form-label labeling-form">Date</label>
+												<input type="date" class="form-control" placeholder="Your text here" name="" id="datePicker" readonly />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm">
+												<table class="display" name="tableBarang" id="tableBarang">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Deskripsi</th>
+															<th>SN</th>
+															<th>No. PWR</th>
+															<th>No. PO</th>
+															<th>Notes</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>Laptop Asus A442U</td>
+															<td>HDZNO1241244</td>
+															<td>2023/JKT-0412</td>
+															<td>2023/JKT-L-0412</td>
+															<td>Lorem ipsum dolor sit.</td>
+														</tr>
+														<tr>
+															<td>2</td>
+															<td>Laptop Asus A442U</td>
+															<td>HDZNO1241244</td>
+															<td>2023/JKT-0412</td>
+															<td>2023/JKT-L-0412</td>
+															<td>Lorem ipsum dolor sit.</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm">
+												<label for="" class="form-label labeling-form">Additional Information</label>
+												<textarea type="text" class="form-control" placeholder="Your Text Here" name="" id="" readonly></textarea>
+											</div>
+										</div>
+										<div class="row mb-4">
+											<div class="col-sm text-end">
+												<a href="barang-masuk.html" class="btn btn-light" onclick="confirm('Yakin ingin menghapus data ini?')">Delete Report</a>
+												<a href="barang-masuk.html" class="btn btn-primary">Print</a>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -197,11 +192,7 @@
 
 		<script>
 			$(document).ready(function () {
-				$("#tableBarang").DataTable({
-					dom: "Bfrtip",
-					buttons: ["copy", "csv", "excel", "pdf", "print"],
-					select: true,
-				});
+				$("#tableBarang").DataTable();
 			});
 
 			$(document).ready(function () {
@@ -211,6 +202,16 @@
 			// Every time a modal is shown, if it has an autofocus element, focus on it.
 			$(".modal").on("shown.bs.modal", function () {
 				$(this).find("[autofocus]").focus();
+			});
+
+			$(document).ready(function () {
+				var now = new Date();
+				var month = now.getMonth() + 1;
+				var day = now.getDate();
+				if (month < 10) month = "0" + month;
+				if (day < 10) day = "0" + day;
+				var today = now.getFullYear() + "-" + month + "-" + day;
+				$("#datePicker").val(today);
 			});
 		</script>
 	</body>
