@@ -58,7 +58,7 @@
 									<i class="fas fa-angle-down"></i>
 								</div>
 							</a>
-							<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+							<div class="collapse show" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
 								<nav class="sb-sidenav-menu-nested nav">
 									<a class="nav-link" href="barang.html">Daftar Barang</a>
 									<a class="nav-link" href="barang-masuk.html">Barang Masuk</a>
@@ -87,73 +87,129 @@
 			<div id="layoutSidenav_content">
 				<main>
 					<div class="container-fluid px-4">
-						<h3 class="mt-4">Pengguna</h3>
-						<ol class="breadcrumb mb-4">
-							<li class="breadcrumb-item active">Pengguna</li>
-						</ol>
+						<h3 class="mt-4">User Details</h3>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="user.html">Users</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Details</li>
+							</ol>
+						</nav>
 
 						<div class="row mb-3">
 							<div class="col-sm">
-								<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-									<button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#modalImport">
-										<i class="fa-solid fa-file-import"></i>
-										Import
-									</button>
-									<div class="btn-group" role="group">
-										<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah"><i class="fa-solid fa-plus"></i> Tambah Pengguna</button>
+								<div class="card">
+									<div class="card-body">
+										<form action="" method="post">
+											<div class="modal-body px-4">
+												<div class="row mb-3">
+													<div class="col-sm-8">
+														<label for="" class="form-label labeling-form">Full Name</label>
+														<input type="text" class="form-control" placeholder="You Text Here" name="" id="" autofocus required />
+													</div>
+													<div class="col-sm-4">
+														<label for="" class="form-label labeling-form">Alias</label>
+														<input type="text" class="form-control" placeholder="Your text here" name="" id="" required />
+													</div>
+												</div>
+												<div class="row mb-3">
+													<div class="col-sm">
+														<label for="" class="form-label labeling-form">Deskripsi</label>
+														<input type="text" class="form-control" placeholder="Your text here" name="" id="" required />
+													</div>
+													<div class="col-sm">
+														<label for="" class="form-label labeling-form">Departement</label>
+														<select name="" id="" class="form-select" required>
+															<option value="">Choose</option>
+															<option value="">HR & GA</option>
+															<option value="">IT</option>
+															<option value="">Legal</option>
+														</select>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<div class="col-sm">
+														<label for="" class="form-label labeling-form">Jabatan</label>
+														<input type="text" class="form-control" placeholder="Your text here" name="" id="" required />
+													</div>
+													<div class="col-sm">
+														<label for="" class="form-label labeling-form">Penempatan</label>
+														<select name="" id="" class="form-select" required>
+															<option value="">Choose</option>
+															<option value="">Home Office Mampang</option>
+															<option value="">Workshop Gunung Putri</option>
+															<option value="">Branch Pekanbaru</option>
+															<option value="">Branch Surabaya</option>
+														</select>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<div class="col-sm">
+														<label for="" class="form-label labeling-form">Keterangan</label>
+														<input type="text" placeholder="Your text here" name="" id="" class="form-control" required />
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
+												<button type="submit" class="btn btn-primary" tabindex="-1">Update Data</button>
+											</div>
+										</form>
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="row">
+						<div class="row mb-3">
 							<div class="col-sm">
 								<div class="card">
 									<div class="card-body">
-										<h5 class="mb-4">Daftar Pengguna</h5>
+										<h5 class="mb-4">History BAST</h5>
 										<table class="display" name="tableBarang" id="tableBarang">
 											<thead>
 												<tr>
 													<th>#</th>
-													<th>Full Name</th>
-													<th>Departement</th>
-													<th>NIK</th>
-													<th>Placement</th>
-													<th>Date</th>
+													<th>NO BAST</th>
+													<th>Deskripsi Inventaris</th>
+													<th>Kondisi</th>
+													<th>Diserahkan Oleh</th>
+													<th>Diterima Oleh</th>
+													<th>Keterangan</th>
 													<th></th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr>
 													<td>1</td>
-													<td>M Nurhasan Mahmudi</td>
-													<td>HR & GA</td>
-													<td>JPC-JKT-825</td>
-													<td>Workshop Gunung Putri</td>
-													<td class="fs-6">10.40 PM 11-11-2022</td>
+													<td>GA/2022/08/005</td>
+													<td>MHN-2022-001</td>
+													<td>BAIK</td>
+													<td>M N MAHMUDI (HR & GA)</td>
+													<td>KEVIN ALNIAGARA (FA)</td>
+													<td>DIPINJAM KE SITE SGT</td>
 													<td>
-														<a href="user-details.html" class="btn btn-sm btn-light">
+														<button class="btn btn-sm btn-white" onclick="window.location.href = '#'">
 															<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
 																<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
 																<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
 															</svg>
-														</a>
+														</button>
 													</td>
 												</tr>
 												<tr>
 													<td>2</td>
-													<td>M Nurhasan Mahmudi</td>
-													<td>HR & GA</td>
-													<td>JPC-JKT-825</td>
-													<td>Workshop Gunung Putri</td>
-													<td class="fs-6">10.40 PM 11-11-2022</td>
+													<td>GA/2022/08/005</td>
+													<td>MHN-2022-001</td>
+													<td>BAIK</td>
+													<td>M N MAHMUDI (HR & GA)</td>
+													<td>KEVIN ALNIAGARA (FA)</td>
+													<td>DIPINJAM KE SITE SGT</td>
 													<td>
-														<a href="user-details.html" class="btn btn-sm btn-light">
+														<button class="btn btn-sm btn-white" onclick="window.location.href = '#'">
 															<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
 																<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
 																<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
 															</svg>
-														</a>
+														</button>
 													</td>
 												</tr>
 											</tbody>
@@ -172,108 +228,6 @@
 						</div>
 					</div>
 				</footer>
-			</div>
-		</div>
-
-		<!-- Modal Import -->
-		<div class="modal fade" id="modalImport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="exampleModalLabel">Import Data Pengguna</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<div class="container">
-							<form action="" method="post" enctype="multipart/form-data">
-								<div class="row">
-									<div class="col-8">
-										<input type="file" class="form-control" name="importFile" id="importFile" required />
-									</div>
-									<div class="col-4 d-grid gap-3">
-										<div class="btn-group" role="group">
-											<a href="#" class="btn btn-sm btn-white" download><i class="fa-solid fa-download"></i></a>
-											<button type="submit" class="btn btn-sm btn-primary">
-												<i class="fa-solid fa-file-import"></i>
-												Import
-											</button>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-sm btn-white" data-bs-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Modal Tambah Data -->
-		<div class="modal fade" id="modalTambah" tabindex="-1" aria-labelledby="modalTambahLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="modalTambahLabel">Tambah Pengguna</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<form action="" method="post">
-						<div class="modal-body px-4">
-							<div class="row mb-3">
-								<div class="col-sm-8">
-									<label for="" class="form-label labeling-form">Full Name</label>
-									<input type="text" class="form-control" placeholder="You Text Here" name="" id="" autofocus required />
-								</div>
-								<div class="col-sm-4">
-									<label for="" class="form-label labeling-form">Alias</label>
-									<input type="text" class="form-control" placeholder="Your text here" name="" id="" required />
-								</div>
-							</div>
-							<div class="row mb-3">
-								<div class="col-sm">
-									<label for="" class="form-label labeling-form">Deskripsi</label>
-									<input type="text" class="form-control" placeholder="Your text here" name="" id="" required />
-								</div>
-								<div class="col-sm">
-									<label for="" class="form-label labeling-form">Departement</label>
-									<select name="" id="" class="form-select" required>
-										<option value="">Choose</option>
-										<option value="">HR & GA</option>
-										<option value="">IT</option>
-										<option value="">Legal</option>
-									</select>
-								</div>
-							</div>
-							<div class="row mb-3">
-								<div class="col-sm">
-									<label for="" class="form-label labeling-form">Jabatan</label>
-									<input type="text" class="form-control" placeholder="Your text here" name="" id="" required />
-								</div>
-								<div class="col-sm">
-									<label for="" class="form-label labeling-form">Penempatan</label>
-									<select name="" id="" class="form-select" required>
-										<option value="">Choose</option>
-										<option value="">Home Office Mampang</option>
-										<option value="">Workshop Gunung Putri</option>
-										<option value="">Branch Pekanbaru</option>
-										<option value="">Branch Surabaya</option>
-									</select>
-								</div>
-							</div>
-							<div class="row mb-3">
-								<div class="col-sm">
-									<label for="" class="form-label labeling-form">Keterangan</label>
-									<input type="text" placeholder="Your text here" name="" id="" class="form-control" required />
-								</div>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
-							<button type="submit" class="btn btn-primary" tabindex="-1">Tambah</button>
-						</div>
-					</form>
-				</div>
 			</div>
 		</div>
 
