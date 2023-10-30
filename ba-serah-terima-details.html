@@ -193,6 +193,8 @@
 															<th>Kondisi</th>
 															<th>Tahun</th>
 															<th>Alokasi</th>
+															<th>Attach</th>
+															<th>Date</th>
 															<th></th>
 														</tr>
 													</thead>
@@ -209,6 +211,12 @@
 															</td>
 															<td>2022</td>
 															<td>Gunung Putri</td>
+															<td>
+																<button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalUpload">
+																	<i class="fa-solid fa-paperclip"></i>
+																</button>
+															</td>
+															<td class="fs-6">10.40 PM 11-11-2022</td>
 															<td>
 																<button class="btn btn-sm" onclick="confirm('Yakin ingin menghapus data ini?')">
 																	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -229,6 +237,12 @@
 															</td>
 															<td>2022</td>
 															<td>Gunung Putri</td>
+															<td>
+																<button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalUpload">
+																	<i class="fa-solid fa-paperclip"></i>
+																</button>
+															</td>
+															<td class="fs-6">10.40 PM 11-11-2022</td>
 															<td>
 																<button class="btn btn-sm" onclick="confirm('Yakin ingin menghapus data ini?')">
 																	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -353,6 +367,42 @@
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal Upload Bukti Serah Terima Tambah Barang -->
+		<div class="modal fade" id="modalUpload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5 me-3" id="exampleModalLabel">Upload Serah Terima</h1>
+						<a href="dist/source-pdf/source-1.pdf" class="text-decoration-none labeling-form text-decoration-underline" target="_blank">
+							<i class="fa-solid fa-eye"></i>
+							See Attachment
+						</a>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="container">
+							<form action="" method="post" enctype="multipart/form-data">
+								<div class="row">
+									<div class="col-8">
+										<input type="file" class="form-control" name="importFile" id="importFile" required />
+									</div>
+									<div class="col-4 d-grid gap-3">
+										<button type="submit" class="btn btn-sm btn-primary">
+											<i class="fa-solid fa-file-import"></i>
+											Upload
+										</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sm btn-white" data-bs-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
