@@ -1,5 +1,11 @@
 <?php
-	setcookie("failed_log", "", time() - 1, "/")
+	//fungsi ini digunakan jika beberapa kali gagal, dan jika berhasil login failed_log nya di reset/ dihapus 
+	setcookie("failed_log", "", time() - 1, "/");
+
+	//periksa apakah ada cookie user_log
+	if(!isset($_COOKIE["user_log"])){
+		header("Location: login.php");
+	}
 
 ?>
 
