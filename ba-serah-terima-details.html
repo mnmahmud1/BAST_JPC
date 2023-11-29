@@ -180,7 +180,7 @@
 							<div class="col-sm">
 								<div class="card">
 									<div class="card-body">
-										<h5 class="mb-4">Daftar Barang Inventaris - Berita Acara</h5>
+										<h5 class="mb-4">Daftar Barang Inventaris</h5>
 										<div class="row mb-3">
 											<div class="col-sm">
 												<table class="display" name="tableBarang" id="tableBarang">
@@ -279,6 +279,91 @@
 							</div>
 						</div>
 
+						<div class="row mt-3">
+							<div class="col-sm">
+								<div class="card">
+									<div class="card-body">
+										<div class="row mb-3">
+											<h5 class="mb-4">Daftar Lisensi Software Inventaris</h5>
+											<table class="display" name="tableLisensi" id="tableLisensi">
+												<thead>
+													<tr>
+														<th>#</th>
+														<th>No Lisence</th>
+														<th>Deskripsi</th>
+														<th>
+															Serial/ <br />
+															Subscribtion ID
+														</th>
+														<th>
+															Start Date/ <br />
+															End Date
+														</th>
+														<th>Seats</th>
+														<th>Date</th>
+														<th></th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>1</td>
+														<td>IT-LIC-2023-05-15</td>
+														<td>AEC Collection</td>
+														<td>123-ASD23121</td>
+														<td>12/06/2022 -11/06/2023</td>
+														<td>5</td>
+														<td class="fs-6">10.40 PM 11-11-2022</td>
+														<td>
+															<button class="btn btn-sm" onclick="confirm('Yakin ingin menghapus data ini?')">
+																<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+																	<path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+																</svg>
+															</button>
+														</td>
+													</tr>
+													<tr>
+														<td>2</td>
+														<td>IT-LIC-2023-05-15</td>
+														<td>AEC Collection</td>
+														<td>123-ASD23121</td>
+														<td>12/06/2022 -11/06/2023</td>
+														<td>5</td>
+														<td class="fs-6">10.40 PM 11-11-2022</td>
+														<td>
+															<button class="btn btn-sm" onclick="confirm('Yakin ingin menghapus data ini?')">
+																<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+																	<path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+																</svg>
+															</button>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm">
+												<div class="d-grid gap-2">
+													<button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalTambahLisensi">Tambah Data Lisensi</button>
+												</div>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm">
+												<label for="" class="form-label labeling-form">Additional Information</label>
+												<textarea type="text" class="form-control" placeholder="Your Text Here" name="" id=""></textarea>
+											</div>
+										</div>
+										<div class="row mb-4">
+											<div class="col-sm text-end">
+												<a href="berita-acara-serah-terima.html" class="btn btn-light">Cancel</a>
+												<a href="berita-acara-serah-terima.html" class="btn btn-primary">Save</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
 						<div class="row my-4">
 							<form action="" method="post" enctype="multipart/form-data">
 								<div class="col">
@@ -300,7 +385,7 @@
 			</div>
 		</div>
 
-		<!-- Modal Tambah Barang dari barang masuk -->
+		<!-- Modal Tambah Barang -->
 		<div class="modal fade" id="modalTambahBarang" tabindex="-1" aria-labelledby="modalTambahBarangLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-lg">
 				<div class="modal-content">
@@ -372,6 +457,73 @@
 			</div>
 		</div>
 
+		<!-- Modal Tambah Lisensi -->
+		<div class="modal fade" id="modalTambahLisensi" tabindex="-1" aria-labelledby="modalTambahLisensiLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="modalTambahLisensiLabel">Pilih Lisensi Dari Daftar Lisensi</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+
+					<div class="modal-body px-4">
+						<div class="row">
+							<div class="col-sm">
+								<div class="card">
+									<div class="card-body">
+										<h5 class="mb-4">Daftar Lisensi</h5>
+										<table class="display" name="tableTambahLisensi" id="tableTambahLisensi">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>No Lisence</th>
+													<th>Deskripsi</th>
+													<th>
+														Serial/ <br />
+														Subscribtion ID
+													</th>
+													<th>
+														Start Date/ <br />
+														End Date
+													</th>
+													<th>Seats</th>
+													<th></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>1</td>
+													<td>IT-LIC-2023-05-15</td>
+													<td>AEC Collection</td>
+													<td>123-ASD23121</td>
+													<td>12/06/2022 -11/06/2023</td>
+													<td>5</td>
+													<td>
+														<button class="btn btn-sm btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modalUpdateMutasiBarang">Choose</button>
+													</td>
+												</tr>
+												<tr>
+													<td>2</td>
+													<td>IT-LIC-2023-05-15</td>
+													<td>AEC Collection</td>
+													<td>123-ASD23121</td>
+													<td>12/06/2022 -11/06/2023</td>
+													<td>5</td>
+													<td>
+														<button class="btn btn-sm btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modalUpdateMutasiBarang">Choose</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<!-- Modal Upload Bukti Serah Terima Tambah Barang -->
 		<div class="modal fade" id="modalUpload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered">
@@ -428,6 +580,8 @@
 		<script>
 			$(document).ready(function () {
 				$("#tableBarang").DataTable();
+				$("#tableLisensi").DataTable();
+				$("#tableTambahLisensi").DataTable();
 				$("#tableTambahDariBarangMasuk").DataTable();
 			});
 
