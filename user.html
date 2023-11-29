@@ -324,6 +324,14 @@
 			$(".modal").on("shown.bs.modal", function () {
 				$(this).find("[autofocus]").focus();
 			});
+
+			$(document).ready(function () {
+				// Memilih semua elemen input pada halaman
+				$("input").keyup(function () {
+					// Mengubah nilai input menjadi huruf kapital
+					this.value = this.value.toUpperCase();
+				});
+			});
 		</script>
 	</body>
 </html>
