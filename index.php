@@ -1,11 +1,14 @@
 <?php
 	//fungsi ini digunakan jika beberapa kali gagal, dan jika berhasil login failed_log nya di reset/ dihapus 
 	setcookie("failed_log", "", time() - 1, "/");
+    require "koneksi.php";
 
 	//periksa apakah ada cookie user_log
-	if(!isset($_COOKIE["user_log"])){
+	if(!isset($_COOKIE["_beta_log"])){
 		header("Location: login.php");
 	}
+
+    $nameUser = $_COOKIE["_name_log"];
 
 ?>
 
@@ -72,7 +75,7 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="barang.html">Daftar Barang</a>
                                 <a class="nav-link" href="lisensi.html">Daftar Lisensi</a>
-                                <a class="nav-link" href="barang-masuk.html">Barang Masuk</a>
+                                <a class="nav-link" href="barang-masuk.php">Barang Masuk</a>
                                 <a class="nav-link" href="perbaikan.html">Perbaikan Barang</a>
                             </nav>
                         </div>
@@ -109,7 +112,12 @@
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                    Start Bootstrap
+                    <?= $nameUser ?>
+                    <br>
+                    <button type="button" class="btn btn-sm text-white"
+                        onclick="return window.location.href='function.php?logout=1'">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                    </button>
                 </div>
             </nav>
         </div>

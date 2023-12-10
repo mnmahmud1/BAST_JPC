@@ -12,19 +12,21 @@ if(isset($_POST["signin"])){
 	$mail = trim(htmlspecialchars($_POST['mail']));
 	$password = trim(htmlspecialchars($_POST['password']));
 
-	$checkMailReady = mysqli_query($conn, "SELECT id FROM users WHERE email = '$mail' AND as_admin = 1");
+	$checkMailReady = mysqli_query($conn, "SELECT id, name FROM users WHERE email = '$mail' AND as_admin = 1");
 
 	if(mysqli_num_rows($checkMailReady) > 0){
 		$getHashPassword = mysqli_fetch_assoc(mysqli_query($conn, "SELECT password FROM users WHERE email = '$mail' AND as_admin = 1"));
 		if(password_verify($password, $getHashPassword['password'])){
 			$getID = mysqli_fetch_assoc($checkMailReady);
 			$id = $getID['id'];
+            $name = $getID['name'];
 
-			$code = generateRandomCode(8);
-			mysqli_query($conn, "INSERT INTO session_log (user_id, rand_code) VALUES($id, '$code')");
+			// $code = generateRandomCode(8);
+			// mysqli_query($conn, "INSERT INTO session_log (user_id, rand_code) VALUES($id, '$code')");
 			
 			// Menentukan waktu kedaluwarsa cookie (6 jam dalam detik)
-			setcookie("user_log", "$code", time() + 6 * 60 * 60, "/");
+			setcookie("_beta_log", "$id", time() + 6 * 60 * 60, "/");
+			setcookie("_name_log", "$name", time() + 6 * 60 * 60, "/");
 			header("Location: index.php");
 			exit;
 		}
@@ -56,10 +58,20 @@ if(isset($_POST["signin"])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
 
+    <!-- Jquery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
     <link rel="stylesheet" href="dist/css/style.css" />
 </head>
 
 <body style="background-color: #363740">
+    <div class="preloader">
+        <div class="loading">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-sm-4 col-md-6 col-lg-4 mx-auto mt-5">
@@ -107,6 +119,11 @@ if(isset($_POST["signin"])){
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
         integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous">
+    </script>
+    <script>
+    $(document).ready(function() {
+        $(".preloader").fadeOut("slow");
+    });
     </script>
 </body>
 
