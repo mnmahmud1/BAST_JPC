@@ -1,3 +1,31 @@
+<?php
+    require "koneksi.php";
+
+	//periksa apakah ada cookie user_log
+	if(!isset($_COOKIE["_beta_log"])){
+		header("Location: login.php");
+	}
+
+    $nameUser = $_COOKIE["_name_log"];
+    $rrNumber = $_COOKIE["_rr_number_log"];
+
+    $getDetailsRR = mysqli_query($conn, "SELECT created_at FROM good_incoming WHERE number = '$rrNumber'");
+    $getDetailRR = mysqli_fetch_assoc($getDetailsRR); 
+
+    $tanggal_awal = "2024-01-08 20:09:04";
+
+    // Mengonversi string tanggal ke dalam format timestamp
+    $timestamp = strtotime($tanggal_awal);
+
+    // Memformat kembali timestamp sesuai dengan format yang diinginkan
+    $tanggal_akhir = date("d/m/Y", $timestamp);
+
+    // Mencetak hasil
+    echo $tanggal_akhir;
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -100,6 +128,15 @@
                         </a>
                     </div>
                 </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    <?= $nameUser ?>
+                    <br>
+                    <button type="button" class="btn btn-sm text-white"
+                        onclick="return window.location.href='function.php?logout=1'">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                    </button>
+                </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
@@ -122,12 +159,13 @@
                                         <div class="col-sm">
                                             <label for="" class="form-label labeling-form">No. RR</label>
                                             <input type="text" class="form-control" placeholder="You Text Here" name=""
-                                                id="" value="IT-RR-2023-05-01" required readonly />
+                                                id="" value="<?= $rrNumber ?>" required readonly />
                                         </div>
                                         <div class="col-sm">
                                             <label for="" class="form-label labeling-form">Date</label>
-                                            <input type="date" class="form-control" placeholder="Your text here" name=""
-                                                id="datePicker" required readonly />
+                                            <input type="date" class="form-control"
+                                                placeholder="<?php echo date('d/m/Y', strotime($getDetailRR['created_at'])) ?>"
+                                                name="" id="datePicker" required readonly />
                                         </div>
                                     </div>
                                     <div class="row mb-3">

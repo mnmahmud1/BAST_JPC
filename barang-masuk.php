@@ -115,6 +115,11 @@
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
                     <?= $nameUser ?>
+                    <br>
+                    <button type="button" class="btn btn-sm text-white"
+                        onclick="return window.location.href='function.php?logout=1'">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                    </button>
                 </div>
             </nav>
         </div>
@@ -128,8 +133,9 @@
 
                     <div class="row mb-3">
                         <div class="col-sm">
-                            <a href="tambah-laporan-barang-masuk.php" class="btn btn-primary">+ Tambah Laporan
-                                Masuk</a>
+                            <button type="button" class="btn btn-primary"
+                                onclick="window.location.href = 'function.php?addIncomingGood=1'">+ Tambah Laporan
+                                Masuk</button>
                         </div>
                     </div>
 
