@@ -6,22 +6,18 @@
 		header("Location: login.php");
 	}
 
+    $urutBarang = 1;
+
     $nameUser = $_COOKIE["_name_log"];
     $rrNumber = $_COOKIE["_rr_number_log"];
 
-    $getDetailsRR = mysqli_query($conn, "SELECT created_at FROM good_incoming WHERE number = '$rrNumber'");
+    // ambil data created_at untuk Memformat kembali timestamp sesuai dengan format yang diinginkan
+    $getDetailsRR = mysqli_query($conn, "SELECT id, created_at FROM good_incoming WHERE number = '$rrNumber'");
     $getDetailRR = mysqli_fetch_assoc($getDetailsRR); 
-
-    $tanggal_awal = "2024-01-08 20:09:04";
-
-    // Mengonversi string tanggal ke dalam format timestamp
-    $timestamp = strtotime($tanggal_awal);
-
-    // Memformat kembali timestamp sesuai dengan format yang diinginkan
-    $tanggal_akhir = date("d/m/Y", $timestamp);
-
-    // Mencetak hasil
-    echo $tanggal_akhir;
+    
+    // ambil data incoming detail berdasar id good_incoming
+    $idIncoming = $getDetailRR["id"];
+    $getDetailGoodIncoming = mysqli_query($conn, "SELECT description, sn, pwr, po, type, notes FROM good_incoming_details WHERE id_incoming = $idIncoming")
 
 
 ?>
@@ -164,7 +160,7 @@
                                         <div class="col-sm">
                                             <label for="" class="form-label labeling-form">Date</label>
                                             <input type="date" class="form-control"
-                                                placeholder="<?php echo date('d/m/Y', strotime($getDetailRR['created_at'])) ?>"
+                                                value="<?= date("d/m/Y", strtotime($getDetailRR['created_at'])); ?>"
                                                 name="" id="datePicker" required readonly />
                                         </div>
                                     </div>
@@ -184,16 +180,23 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <?php foreach($getDetailGoodIncoming as $getDetail) : ?>
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>Laptop Asus A442U</td>
-                                                        <td>HDZNO1241244</td>
-                                                        <td>2023/JKT-0412</td>
-                                                        <td>2023/JKT-L-0412</td>
+                                                        <td><?= $urutBarang ?></td>
+                                                        <td><?= $getDetail["description"] ?></td>
+                                                        <td><?= $getDetail["sn"] ?></td>
+                                                        <td><?= $getDetail["pwr"] ?></td>
+                                                        <td><?= $getDetail["po"] ?></td>
                                                         <td>
+                                                            <?php if($getDetail["type"] == 1) : ?>
                                                             <i class="fa-solid fa-screwdriver-wrench"></i>
+                                                            <?php elseif($getDetail["type"] == 2) : ?>
+                                                            <i class="fa-solid fa-layer-group"></i>
+                                                            <?php elseif($getDetail["type"] == 3) : ?>
+                                                            <i class="fa-regular fa-newspaper"></i>
+                                                            <?php endif ?>
                                                         </td>
-                                                        <td>Lorem ipsum dolor sit.</td>
+                                                        <td><?= $getDetail["notes"] ?></td>
                                                         <td>
                                                             <button class="btn btn-sm"
                                                                 onclick="confirm('Yakin ingin menghapus data ini?')">
@@ -206,46 +209,7 @@
                                                             </button>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>Laptop Asus A442U</td>
-                                                        <td>HDZNO1241244</td>
-                                                        <td>2023/JKT-0412</td>
-                                                        <td>2023/JKT-L-0412</td>
-                                                        <td><i class="fa-solid fa-layer-group"></i></td>
-                                                        <td>Lorem ipsum dolor sit.</td>
-                                                        <td>
-                                                            <button class="btn btn-sm"
-                                                                onclick="confirm('Yakin ingin menghapus data ini?')">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                    height="16" fill="currentColor" class="bi bi-trash3"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                                                </svg>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>Lisensi Office Pro 2021</td>
-                                                        <td>1231A-2R23R-ASDAS-2R32S-RFDAS</td>
-                                                        <td>2023/JKT-0412</td>
-                                                        <td>2023/JKT-L-0412</td>
-                                                        <td><i class="fa-regular fa-newspaper"></i></td>
-                                                        <td>Lorem ipsum dolor sit.</td>
-                                                        <td>
-                                                            <button class="btn btn-sm"
-                                                                onclick="confirm('Yakin ingin menghapus data ini?')">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                    height="16" fill="currentColor" class="bi bi-trash3"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                                                </svg>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                                                    <?php $urutBarang++; endforeach ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -298,57 +262,59 @@
                     <h1 class="modal-title fs-5" id="modalTambahBarangLabel">Tambah Data</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="post">
+                <form action="function.php" method="post">
                     <div class="modal-body px-4">
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="" class="form-label labeling-form">Deskripsi</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="" id=""
-                                    autofocus required />
+                                <input type="text" class="form-control" placeholder="Your text here" name="desc"
+                                    id="desc" autofocus required />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="" class="form-label labeling-form">Serial Number</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="" id=""
+                                <input type="text" class="form-control" placeholder="Your text here" name="sn" id="sn"
                                     required />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="" class="form-label labeling-form">No. PWR</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="" id=""
+                                <input type="text" class="form-control" placeholder="Your text here" name="pwr" id="pwr"
                                     required />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="" class="form-label labeling-form">No. PO</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="" id=""
+                                <input type="text" class="form-control" placeholder="Your text here" name="po" id="po"
                                     required />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="" class="form-label labeling-form">Tipe Barang Masuk</label>
-                                <select name="" id="" class="form-select" required>
+                                <select name="type" id="type" class="form-select" required>
                                     <option value="">Choose</option>
-                                    <option value="">Goods</option>
-                                    <option value="">Lisence</option>
-                                    <option value="">Consummable</option>
+                                    <option value="1">Goods</option>
+                                    <option value="2">Lisence</option>
+                                    <option value="3">Consummable</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="" class="form-label labeling-form">Notes</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="" id="" />
+                                <input type="text" class="form-control" placeholder="Your text here" name="notes"
+                                    id="notes" />
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" tabindex="-1">Tambah</button>
+                        <button type="submit" class="btn btn-primary" tabindex="-1"
+                            name="tambahBarangMasuk">Tambah</button>
                     </div>
                 </form>
             </div>

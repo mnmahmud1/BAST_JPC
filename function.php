@@ -3,6 +3,9 @@
 require "koneksi.php";
 date_default_timezone_set("Asia/Bangkok");
 
+$dateTime = date('Y-m-d H:i:s');
+$userCreated = $_COOKIE["_beta_log"];
+
 if (isset($_GET["logout"])) {
     unset($_COOKIE['_beta_log']); 
     setcookie('_beta_log', '', -1, '/'); 
@@ -30,8 +33,6 @@ if(isset($_GET["addIncomingGood"])){
         $addNumber = end($explode_number) + 1;
 
         $finalNumber = $testGetDate . $addNumber;
-        $dateTime = date('Y-m-d H:i:s');
-        $userCreated = $_COOKIE["_beta_log"];
 
         mysqli_query($conn, "INSERT INTO good_incoming (number, created_at, created_by) VALUES('$finalNumber','$dateTime', '$userCreated')");
 
@@ -42,8 +43,6 @@ if(isset($_GET["addIncomingGood"])){
         }
     } else if(mysqli_num_rows($getLastNumber) == 0){
         $finalNumber = $testGetDate . "1";
-        $dateTime = date('Y-m-d H:i:s');
-        $userCreated = $_COOKIE["_beta_log"];
 
         mysqli_query($conn, "INSERT INTO good_incoming (number, created_at, created_by) VALUES('$finalNumber','$dateTime', '$userCreated')");
         
@@ -53,4 +52,25 @@ if(isset($_GET["addIncomingGood"])){
             header("Location: tambah-laporan-barang-masuk.php");
         }
     }
+}
+
+if(isset($_POST['tambahBarangMasuk'])){
+    $desc = trim(htmlspecialchars($_POST['desc']));
+    $sn = trim(htmlspecialchars($_POST['sn']));
+    $pwr = trim(htmlspecialchars($_POST['pwr']));
+    $po = trim(htmlspecialchars($_POST['po']));
+    $type = trim(htmlspecialchars($_POST['type']));
+    $notes = trim(htmlspecialchars($_POST['notes']));
+
+    // ambil rr number dari cookie
+    $rrNumber = $_COOKIE["_rr_number_log"];
+    $getIdRR = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id FROM good_incoming WHERE number = '$rrNumber'"));
+    $idRR = $getIdRR["id"];
+
+    mysqli_query($conn, "INSERT INTO good_incoming_details (id_incoming, description, sn, pwr, po, type, notes, created_at, created_by) VALUES($idRR, '$desc', '$sn', '$pwr', '$po', $type, '$notes', '$dateTime', $userCreated)");
+
+    if(mysqli_affected_rows($conn)){
+        header("Location: tambah-laporan-barang-masuk.php");
+    }
+
 }
