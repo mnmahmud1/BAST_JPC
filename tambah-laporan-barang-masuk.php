@@ -12,13 +12,12 @@
     $rrNumber = $_COOKIE["_rr_number_log"];
 
     // ambil data created_at untuk Memformat kembali timestamp sesuai dengan format yang diinginkan
-    $getDetailsRR = mysqli_query($conn, "SELECT id, created_at FROM good_incoming WHERE number = '$rrNumber'");
+    $getDetailsRR = mysqli_query($conn, "SELECT id, notes, created_at FROM good_incoming WHERE number = '$rrNumber'");
     $getDetailRR = mysqli_fetch_assoc($getDetailsRR); 
     
     // ambil data incoming detail berdasar id good_incoming
     $idIncoming = $getDetailRR["id"];
-    $getDetailGoodIncoming = mysqli_query($conn, "SELECT description, sn, pwr, po, type, notes FROM good_incoming_details WHERE id_incoming = $idIncoming")
-
+    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, type, notes FROM good_incoming_details WHERE id_incoming = $idIncoming")
 
 ?>
 
@@ -31,7 +30,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>Dashboard - Tambah Laporan Barang Masuk</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="dist/temp/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -191,15 +190,15 @@
                                                             <?php if($getDetail["type"] == 1) : ?>
                                                             <i class="fa-solid fa-screwdriver-wrench"></i>
                                                             <?php elseif($getDetail["type"] == 2) : ?>
-                                                            <i class="fa-solid fa-layer-group"></i>
-                                                            <?php elseif($getDetail["type"] == 3) : ?>
                                                             <i class="fa-regular fa-newspaper"></i>
+                                                            <?php elseif($getDetail["type"] == 3) : ?>
+                                                            <i class="fa-solid fa-layer-group"></i>
                                                             <?php endif ?>
                                                         </td>
                                                         <td><?= $getDetail["notes"] ?></td>
                                                         <td>
                                                             <button class="btn btn-sm"
-                                                                onclick="confirm('Yakin ingin menghapus data ini?')">
+                                                                onclick="hapusDetailBarang(' <?= $getDetail['id'] ?> ')">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                     height="16" fill="currentColor" class="bi bi-trash3"
                                                                     viewBox="0 0 16 16">
@@ -222,20 +221,23 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm">
-                                            <label for="" class="form-label labeling-form">Additional
-                                                Information</label>
-                                            <textarea type="text" class="form-control" placeholder="Your Text Here"
-                                                name="" id=""></textarea>
+                                    <form action="function.php" method="post">
+                                        <div class="row mb-3">
+                                            <div class="col-sm">
+                                                <label for="notes" class="form-label labeling-form">Additional
+                                                    Information</label>
+                                                <textarea type="text" class="form-control" placeholder="Your Text Here"
+                                                    name="notes" id="notes"><?= $getDetailRR["notes"] ?></textarea>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row mb-4">
-                                        <div class="col-sm text-end">
-                                            <a href="barang-masuk.php" class="btn btn-light">Cancel</a>
-                                            <a href="barang-masuk.php" class="btn btn-primary">Save</a>
+                                        <div class="row mb-4">
+                                            <div class="col-sm text-end">
+                                                <a href="barang-masuk.php" class="btn btn-light">Back</a>
+                                                <button type="submit" class="btn btn-primary"
+                                                    name="updateNotesBarangMasuk">Save</button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -275,7 +277,8 @@
                             <div class="col-sm">
                                 <label for="" class="form-label labeling-form">Serial Number</label>
                                 <input type="text" class="form-control" placeholder="Your text here" name="sn" id="sn"
-                                    required />
+                                    onchange="validateSN()" required />
+                                <span id="snError"></span>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -313,8 +316,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" tabindex="-1"
-                            name="tambahBarangMasuk">Tambah</button>
+                        <button type="submit" class="btn btn-primary" tabindex="-1" name="tambahBarangMasuk"
+                            id="tambahBarangMasuk" disabled>Tambah</button>
                     </div>
                 </form>
             </div>
@@ -324,6 +327,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="dist/temp/js/scripts.js"></script>
+    <script src="dist/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="dist/temp/assets/demo/chart-area-demo.js"></script>
     <script src="dist/temp/assets/demo/chart-bar-demo.js"></script>

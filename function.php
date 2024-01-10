@@ -72,5 +72,45 @@ if(isset($_POST['tambahBarangMasuk'])){
     if(mysqli_affected_rows($conn)){
         header("Location: tambah-laporan-barang-masuk.php");
     }
+}
 
+if(isset($_GET["hapusDetailBarang"])){
+    $id = $_GET['hapusDetailBarang'];
+    
+    mysqli_query($conn, "DELETE FROM good_incoming_details WHERE id = $id");
+    if(mysqli_affected_rows($conn)){
+        header("Location: tambah-laporan-barang-masuk.php");
+    }
+}
+
+if(isset($_POST["updateNotesBarangMasuk"])){
+    $notes = trim(htmlspecialchars($_POST['notes']));
+    
+    // ambil rr number dari cookie
+    $rrNumber = $_COOKIE["_rr_number_log"];
+
+    mysqli_query($conn, "UPDATE good_incoming SET notes = '$notes' WHERE number = '$rrNumber'");
+    if(mysqli_affected_rows($conn)){
+        header("Location: barang-masuk.php");
+    } else {
+        // Jika tidak ada update notes
+        header("Location: barang-masuk.php");
+    }
+}
+
+if(isset($_GET["viewBarangMasuk"])){
+    
+    $numberRR = $_GET["viewBarangMasuk"];
+
+    setcookie("_rr_number_log", "$numberRR", time() + 2 * 60 * 60, "/");
+    header("Location: tambah-laporan-barang-masuk.php");
+}
+
+if(isset($_GET["dumpDaftarBarang"])){
+    $id = $_GET["dumpDaftarBarang"];
+
+    mysqli_query($conn, "UPDATE good_incoming SET as_dump = 1 WHERE id = $id");
+    if(mysqli_affected_rows($conn)){
+        header("Location: barang-masuk.php");
+    }
 }

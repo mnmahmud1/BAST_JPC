@@ -7,6 +7,10 @@
 	}
 
     $nameUser = $_COOKIE["_name_log"];
+    $idUser = $_COOKIE["_beta_log"];
+
+    $urutDaftar = 1;
+    $getBarangMasuk = mysqli_query($conn, "SELECT gi.id, gi.number, (SELECT COUNT(*) FROM good_incoming_details gid WHERE gid.id_incoming = gi.id) AS jml, gi.notes, gi.created_at FROM `good_incoming` gi WHERE gi.created_by = $idUser AND gi.as_dump = 0");
 
 ?>
 
@@ -19,7 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>Dashboard - Daftar Barang Masuk</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="dist/temp/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -156,15 +160,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php foreach($getBarangMasuk as $barangMasuk) : ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>IT-RR-2023-05-01</td>
-                                                <td>3</td>
-                                                <td>Lorem, ipsum dolor.</td>
-                                                <td class="fs-6">10.40 PM 11-11-2022</td>
+                                                <td><?= $urutDaftar ?></td>
+                                                <td><?= $barangMasuk["number"] ?></td>
+                                                <td><?= $barangMasuk["jml"] ?></td>
+                                                <td><?= (strlen($barangMasuk["notes"]) > 20) ? substr($barangMasuk["notes"], 0, 20) . '...' : $barangMasuk["notes"]  ?>
+                                                </td>
+                                                <td class="fs-6"><?= $barangMasuk["created_at"] ?></td>
                                                 <td>
                                                     <div class="dropdown">
-                                                        <a class="btn btn-light" href="#" role="button"
+                                                        <butt class="btn btn-light" href="#" role="button"
                                                             data-bs-toggle="dropdown" aria-expanded="false">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" fill="currentColor"
@@ -172,46 +178,22 @@
                                                                 <path
                                                                     d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
                                                             </svg>
-                                                        </a>
+                                                        </butt>
 
                                                         <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item"
-                                                                    href="detail-barang-masuk.html">View Details</a>
+                                                            <li><button class="dropdown-item"
+                                                                    onclick="window.location.href='function.php?viewBarangMasuk=<?= $barangMasuk['number'] ?>'">View
+                                                                    Details</button>
                                                             </li>
-                                                            <li><a class="dropdown-item" href="#">Print</a></li>
-                                                            <li><a class="dropdown-item" href="#">Delete</a></li>
+                                                            <li><a class=" dropdown-item" href="#">Print</a></li>
+                                                            <li><button class="dropdown-item" href="#"
+                                                                    onclick="hapusDaftarBarang(<?= $barangMasuk['id'] ?>)">Delete</button>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>IT-RR-2023-05-01</td>
-                                                <td>3</td>
-                                                <td>Lorem, ipsum dolor.</td>
-                                                <td class="fs-6">10.40 PM 11-11-2022</td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <a class="btn btn-light" href="#" role="button"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                height="16" fill="currentColor"
-                                                                class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                                                            </svg>
-                                                        </a>
-
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item"
-                                                                    href="detail-barang-masuk.html">View Details</a>
-                                                            </li>
-                                                            <li><a class="dropdown-item" href="#">Print</a></li>
-                                                            <li><a class="dropdown-item" href="#">Delete</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            <?php $urutDaftar++; endforeach ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -234,6 +216,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="dist/temp/js/scripts.js"></script>
+    <script src="dist/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="dist/temp/assets/demo/chart-area-demo.js"></script>
     <script src="dist/temp/assets/demo/chart-bar-demo.js"></script>
