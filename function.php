@@ -109,8 +109,13 @@ if(isset($_GET["viewBarangMasuk"])){
 if(isset($_GET["dumpDaftarBarang"])){
     $id = $_GET["dumpDaftarBarang"];
 
+    // dump list good_incoming
     mysqli_query($conn, "UPDATE good_incoming SET as_dump = 1 WHERE id = $id");
     if(mysqli_affected_rows($conn)){
-        header("Location: barang-masuk.php");
+        // dump list good_incoming_details
+        mysqli_query($conn, "UPDATE good_incoming_details SET as_dump = 1 WHERE id_incoming = $id");
+        if(mysqli_affected_rows($conn)){
+            header("Location: barang-masuk.php");
+        }    
     }
 }

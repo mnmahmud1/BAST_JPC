@@ -17,8 +17,10 @@
     
     // ambil data incoming detail berdasar id good_incoming
     $idIncoming = $getDetailRR["id"];
-    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, type, notes FROM good_incoming_details WHERE id_incoming = $idIncoming")
+    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, type, notes FROM good_incoming_details WHERE id_incoming = $idIncoming");
 
+    // ambil data select tipe invenaris
+    $getInvType = mysqli_query($conn, "SELECT id, name FROM inv_type");
 ?>
 
 <!DOCTYPE html>
@@ -300,9 +302,9 @@
                                 <label for="" class="form-label labeling-form">Tipe Barang Masuk</label>
                                 <select name="type" id="type" class="form-select" required>
                                     <option value="">Choose</option>
-                                    <option value="1">Goods</option>
-                                    <option value="2">Lisence</option>
-                                    <option value="3">Consummable</option>
+                                    <?php foreach($getInvType as $getInv) :  ?>
+                                    <option value="<?= $getInv['id'] ?>"><?= $getInv['name'] ?></option>
+                                    <?php endforeach  ?>
                                 </select>
                             </div>
                         </div>
