@@ -10,12 +10,15 @@
     $idUser = $_COOKIE["_beta_log"];
 
     $urutDaftar = 1;
+    $urutDaftarI = 1;
 	$getDaftarBarangMasuk = mysqli_query($conn, "SELECT good_incoming.number, good_incoming_details.description, good_incoming_details.sn, good_incoming_details.pwr, good_incoming_details.po, good_incoming_details.notes FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.type = 1 AND good_incoming_details.as_inv = 0");
 
 	$getInvGroup = mysqli_query($conn, "SELECT id, name FROM inv_group");
 	$getBranch = mysqli_query($conn, "SELECT id, name FROM branch");
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
+
+    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, goods.created_at FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.id");
 
 ?>
 
@@ -39,6 +42,10 @@
 
     <!-- Datatables Jquery -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+
+    <!-- Place the first <script> tag in your HTML's <head> -->
+    <script src="https://cdn.tiny.cloud/1/vi2wp2m2ujq5iv8tc0kaxpph3s7c7wnhhcdiiu3dcx8ybhwj/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
 
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 </head>
@@ -174,18 +181,20 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php foreach($getDaftarBarangInv as $barangInv) : ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>ASUS Vivobook M310A</td>
-                                                <td>123NDIAPP10042</td>
+                                                <td><?= $urutDaftarI ?></td>
+                                                <td><?= $barangInv["description"] ?></td>
+                                                <td><?= $barangInv["sn"] ?></td>
                                                 <td>
                                                     <h6>
-                                                        <span class="badge bg-success align-middle">BAIK</span>
+                                                        <span
+                                                            class="badge bg-success align-middle"><?= $barangInv["kondisi"] ?></span>
                                                     </h6>
                                                 </td>
-                                                <td>2022</td>
-                                                <td>Gunung Putri</td>
-                                                <td class="fs-6">10.40 PM 11-11-2022</td>
+                                                <td><?= $barangInv["year"] ?></td>
+                                                <td><?= $barangInv["branch"] ?></td>
+                                                <td class="fs-6"><?= $barangInv["created_at"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-white"
                                                         onclick="window.location.href = 'barang-details.html'">
@@ -200,32 +209,7 @@
                                                     </button>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>ASUS Vivobook M310A</td>
-                                                <td>123NDIAPP10042</td>
-                                                <td>
-                                                    <h6>
-                                                        <span class="badge bg-success align-middle">BAIK</span>
-                                                    </h6>
-                                                </td>
-                                                <td>2022</td>
-                                                <td>Gunung Putri</td>
-                                                <td class="fs-6">10.40 PM 11-11-2022</td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-white"
-                                                        onclick="window.location.href = 'barang-details.html'">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor" class="bi bi-info-circle"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                            <path
-                                                                d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                                                        </svg>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            <?php $urutDaftarI++; endforeach ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -290,133 +274,129 @@
                     <h1 class="modal-title fs-5" id="modalTambahLabel">Tambah Barang</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="post">
+                <form action="function.php" method="post">
                     <div class="modal-body px-4">
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">No Inventaris</label>
-                                <input type="text" class="form-control" placeholder="You Text Here" name="" id=""
-                                    autofocus required />
+                                <label for="invM" class="form-label labeling-form">No Inventaris</label>
+                                <input type="text" class="form-control" placeholder="You Text Here" name="invM"
+                                    id="invM" required readonly />
                             </div>
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Serial Number</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="" id=""
-                                    required />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Deskripsi</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="" id=""
-                                    required />
+                                <label for="snM" class="form-label labeling-form">Serial Number</label>
+                                <input type="text" class="form-control" placeholder="Your text here" name="snM" id="snM"
+                                    onchange="validateSNManual()" autofocus required />
+                                <span id="snError"></span>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Spesifikasi</label>
-                                <textarea name="" id="" cols="30" rows="2" class="form-control"
-                                    placeholder="Your text here" required></textarea>
+                                <label for="descriptionM" class="form-label labeling-form">Deskripsi</label>
+                                <input type="text" class="form-control" placeholder="Your text here" name="descriptionM"
+                                    id="descriptionM" required />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Tipe Inventaris</label>
-                                <select name="" id="" class="form-select" required>
-                                    <option value="">Choose</option>
-                                    <option value="">Inventaris Tetap</option>
-                                    <option value="">Inventaris Sementara</option>
-                                </select>
-                            </div>
-                            <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Grup Inventaris</label>
-                                <select name="" id="" class="form-select">
-                                    <option value="">Choose</option>
-                                    <option value="">Laptop</option>
-                                    <option value="">PC</option>
-                                    <option value="">Printer</option>
-                                    <option value="">Webcam</option>
-                                </select>
-                            </div>
-                            <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Peruntukan Inventaris</label>
-                                <select name="" id="" class="form-select" required>
-                                    <option value="">Choose</option>
-                                    <option value="">Infrastuktur</option>
-                                    <option value="">Inventaris User</option>
-                                </select>
+                                <label for="spekM" class="form-label labeling-form">Spesifikasi</label>
+                                <textarea name="spekM" id="spekM" cols="30" rows="2" class="form-control"
+                                    placeholder="Your text here"
+                                    required>PROSESOR : <br> MEMORI :<br> HARD DRIVE :</textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Lokasi</label>
-                                <select name="" id="" class="form-select" required>
+                                <label for="type_invM" class="form-label labeling-form">Tipe Inventaris</label>
+                                <select name="type_invM" id="type_invM" class="form-select" required>
                                     <option value="">Choose</option>
-                                    <option value="">Head Office Jakarta</option>
-                                    <option value="">Workshop Gunung Putri</option>
-                                    <option value="">Branch Office Pekanbaru</option>
-                                    <option value="">Branch Office Surabaya</option>
-                                    <option value="">Branch Office Balikpapan</option>
+                                    <option value="1">HAK MILIK PERUSAHAAN</option>
+                                    <option value="2">SEWAAN</option>
                                 </select>
                             </div>
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Asal Usul</label>
-                                <select name="" id="" class="form-select" required>
+                                <label for="group_invM" class="form-label labeling-form">Grup Inventaris</label>
+                                <select name="group_invM" id="group_invM" class="form-select">
                                     <option value="">Choose</option>
-                                    <option value="">PWR</option>
-                                    <option value="">Hibah</option>
-                                    <option value="">Lain-Lain</option>
+                                    <?php foreach($getInvGroup as $invGroup) : ?>
+                                    <option value="<?= $invGroup['id'] ?>"><?= $invGroup['name'] ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Departemen</label>
-                                <select name="" id="" class="form-select">
+                                <label for="allotment_invM" class="form-label labeling-form">Peruntukan
+                                    Inventaris</label>
+                                <select name="allotment_invM" id="allotment_invM" class="form-select" required>
                                     <option value="">Choose</option>
-                                    <option value="">HR & GA</option>
-                                    <option value="">QC</option>
-                                    <option value="">Project Control</option>
+                                    <option value="1">INFRASTRUKTUR</option>
+                                    <option value="2">INVENTARIS USER</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Tahun Pengadaan</label>
-                                <select name="" id="" class="form-select">
+                                <label for="branchM" class="form-label labeling-form">Lokasi</label>
+                                <select name="branchM" id="branchM" class="form-select" required>
                                     <option value="">Choose</option>
-                                    <option value="">2018</option>
-                                    <option value="">2019</option>
-                                    <option value="">2020</option>
-                                    <option value="">2021</option>
-                                    <option value="">2022</option>
-                                    <option value="">2023</option>
+                                    <?php foreach($getBranch as $branch) : ?>
+                                    <option value="<?= $branch['id'] ?>"><?= $branch['name'] ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Masa Manfaat (Tahun)</label>
-                                <input type="number" class="form-control" placeholder="Your text here" name="" id=""
-                                    required />
+                                <label for="sourceM" class="form-label labeling-form">Asal Usul</label>
+                                <select name="sourceM" id="sourceM" class="form-select" required
+                                    onchange="updateTextarea()">
+                                    <option value="">Choose</option>
+                                    <option value="1">PWR</option>
+                                    <option value="2">HIBAH</option>
+                                    <option value="3">LAIN-LAIN</option>
+                                </select>
                             </div>
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Kondisi</label>
-                                <select name="" id="" class="form-select" required>
+                                <label for="deptM" class="form-label labeling-form">Departemen</label>
+                                <select name="deptM" id="deptM" class="form-select">
                                     <option value="">Choose</option>
-                                    <option value="">Baik</option>
-                                    <option value="">Kurang Baik</option>
-                                    <option value="">Rusak</option>
-                                    <option value="">Scrapt</option>
+                                    <?php foreach($getDept as $dept) : ?>
+                                    <option value="<?= $dept['id'] ?>"><?= $dept['name'] ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Keterangan</label>
-                                <textarea name="" id="" cols="30" rows="2" class="form-control"
+                                <label for="yearM" class="form-label labeling-form">Tahun Pengadaan</label>
+                                <select name="yearM" id="yearM" class="form-select years">
+                                    <option value="">Choose</option>
+                                </select>
+                            </div>
+                            <div class="col-sm">
+                                <label for="useful_invM" class="form-label labeling-form">Masa Manfaat (Tahun)</label>
+                                <input type="number" class="form-control" placeholder="Your text here"
+                                    name="useful_invM" id="useful_invM" required />
+                            </div>
+                            <div class="col-sm">
+                                <label for="condition_invM" class="form-label labeling-form">Kondisi</label>
+                                <select name="condition_invM" id="condition_invM" class="form-select" required>
+                                    <option value="">Choose</option>
+                                    <option value="1">BAIK</option>
+                                    <option value="2">KURANG BAIK</option>
+                                    <option value="3">RUSAK</option>
+                                    <option value="4">SCRAPT</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm">
+                                <label for="notesM" class="form-label labeling-form">Keterangan</label>
+                                <textarea name="notesM" id="notesM" cols="30" rows="2" class="form-control"
                                     placeholder="Your text here" required></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" tabindex="-1">Tambah</button>
+                        <button type="submit" class="btn btn-primary" name="tambahBarangInvManual"
+                            id="tambahBarangInvManual" tabindex="-1">Tambah</button>
                     </div>
                 </form>
             </div>
@@ -497,36 +477,33 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <form action="" method="post">
+                <form action="function.php" method="post">
                     <div class="modal-body px-4">
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="inv" class="form-label labeling-form">No Inventaris</label>
                                 <input type="text" class="form-control" placeholder="You Text Here" name="inv" id="inv"
-                                    required disabled />
+                                    required readonly />
                             </div>
                             <div class="col-sm">
                                 <label for="sn" class="form-label labeling-form">Serial Number</label>
                                 <input type="text" class="form-control" placeholder="Your text here" name="sn" id="sn"
-                                    value="123NDIAPP10042" required readonly />
+                                    value="" required readonly />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="description" class="form-label labeling-form">Deskripsi</label>
                                 <input type="text" class="form-control" placeholder="Your text here" name="description"
-                                    id="description" value="ASUS Vivobook M310A" required readonly />
+                                    id="description" value="" required readonly />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="spek" class="form-label labeling-form">Spesifikasi</label>
                                 <textarea name="spek" id="spek" cols="30" rows="2" class="form-control"
-                                    placeholder="Your text here" required autofocus>
-PROSESOR :
-MEMORI :
-SISTEM OPERASI :
-HARD DRIVE :</textarea>
+                                    placeholder="Your text here" required
+                                    autofocus> PROSESOR : <br> MEMORI :<br> HARD DRIVE :</textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -553,7 +530,7 @@ HARD DRIVE :</textarea>
                                 <select name="allotment_inv" id="allotment_inv" class="form-select" required>
                                     <option value="">Choose</option>
                                     <option value="1">INFRASTRUKTUR</option>
-                                    <option value="2">INVENARIS USER</option>
+                                    <option value="2">INVENTARIS USER</option>
                                 </select>
                             </div>
                         </div>
@@ -569,7 +546,7 @@ HARD DRIVE :</textarea>
                             </div>
                             <div class="col-sm">
                                 <label for="source" class="form-label labeling-form">Asal Usul</label>
-                                <select name="source" id="source" class="form-select" required disabled>
+                                <select name="source" id="source" class="form-select" required aria-readonly="">
                                     <option value="1" selected>PWR</option>
                                 </select>
                             </div>
@@ -586,15 +563,8 @@ HARD DRIVE :</textarea>
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="year" class="form-label labeling-form">Tahun Pengadaan</label>
-                                <select name="year" id="year" class="form-select">
+                                <select name="year" id="year" class="form-select years">
                                     <option value="">Choose</option>
-                                    <option value="2018">2018</option>
-                                    <option value="2019">2019</option>
-                                    <option value="2020">2020</option>
-                                    <option value="2021">2021</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
                                 </select>
                             </div>
                             <div class="col-sm">
@@ -624,7 +594,8 @@ HARD DRIVE :</textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" tabindex="-1">Tambah</button>
+                        <button type="submit" class="btn btn-primary" name="mutasiBarangMasukKeBarang"
+                            tabindex="-1">Tambah</button>
                     </div>
                 </form>
             </div>
@@ -634,6 +605,7 @@ HARD DRIVE :</textarea>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="dist/temp/js/scripts.js"></script>
+    <script src="dist/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="dist/temp/js/datatables-simple-demo.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" />
@@ -667,10 +639,18 @@ HARD DRIVE :</textarea>
 
     // buat form input validation agar uppercase
     $(document).ready(function() {
-        $("input[type=text], textarea").keyup(function() {
+        $("input[type=text], textarea").on("input", function() {
+            // Simpan posisi kursor
+            var caretPos = this.selectionStart;
+
+            // Ubah nilai menjadi huruf kapital
             $(this).val($(this).val().toUpperCase());
+
+            // Kembalikan posisi kursor
+            this.setSelectionRange(caretPos, caretPos);
         });
     });
+
 
     // tombol untuk kirim baris ke modal html
     $(document).ready(function() {
@@ -725,7 +705,7 @@ HARD DRIVE :</textarea>
                 var invoiceNumber = invWithoutOrder + newOrder;
 
                 // Set nilai nomor invoice ke input dengan id #inv
-                $('#inv').val(invoiceNumber);
+                $('#inv, #invM').val(invoiceNumber);
             },
             error: function() {
                 // Penanganan kesalahan jika terjadi
@@ -733,7 +713,66 @@ HARD DRIVE :</textarea>
             }
         });
     });
+
+    // <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
+    tinymce.init({
+        selector: '#spek, #spekM',
+        height: 200,
+        plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Author name',
+        mergetags_list: [{
+                value: 'First.Name',
+                title: 'First Name'
+            },
+            {
+                value: 'Email',
+                title: 'Email'
+            },
+        ],
+        ai_request: (request, respondWith) => respondWith.string(() => Promise.reject(
+            "See docs to implement AI Assistant")),
+    });
+
+    // Mendapatkan semua elemen dengan class "years"
+    var yearSelects = document.querySelectorAll(".years");
+
+    // Loop melalui setiap elemen dengan class "years"
+    yearSelects.forEach(function(yearSelect) {
+        // Mendapatkan tahun saat ini
+        var currentYear = new Date().getFullYear();
+
+        // Loop untuk menambahkan opsi tahun dari tahun sekarang ke belakang 10 tahun
+        for (var i = currentYear; i >= currentYear - 10; i--) {
+            var option = document.createElement("option");
+            option.value = i;
+            option.text = i;
+
+            // Menambahkan opsi tahun ke elemen select
+            yearSelect.appendChild(option);
+        }
+    });
+
+    function updateTextarea() {
+        var selectElement = document.getElementById("sourceM");
+        var textareaElement = document.getElementById("notesM");
+
+        // Mendapatkan nilai yang dipilih
+        var selectedValue = selectElement.value;
+
+        // Periksa nilai yang dipilih
+        if (selectedValue === "1") {
+            // Jika PWR dipilih, tambahkan teks ke textarea
+            textareaElement.value = "REFF PWR ; REFF PO ;";
+        } else {
+            // Jika pilihan selain PWR dipilih, tidak menghapus teks yang telah dimasukkan manual
+            // Hanya menambahkan teks berdasarkan pilihan
+            textareaElement.value += "REFF " + selectElement.options[selectElement.selectedIndex].text + "; ";
+        }
+    }
     </script>
+
 </body>
 
 </html>

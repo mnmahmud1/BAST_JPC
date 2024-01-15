@@ -370,8 +370,15 @@
     });
 
     $(document).ready(function() {
-        $("input[type=text]").keyup(function() {
+        $("input[type=text], textarea").on("input", function() {
+            // Simpan posisi kursor
+            var caretPos = this.selectionStart;
+
+            // Ubah nilai menjadi huruf kapital
             $(this).val($(this).val().toUpperCase());
+
+            // Kembalikan posisi kursor
+            this.setSelectionRange(caretPos, caretPos);
         });
     });
     </script>

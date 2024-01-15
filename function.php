@@ -119,3 +119,55 @@ if(isset($_GET["dumpDaftarBarang"])){
         }    
     }
 }
+
+if(isset($_POST["mutasiBarangMasukKeBarang"])){
+    $inv = trim(htmlspecialchars($_POST['inv']));
+    $sn = trim(htmlspecialchars($_POST['sn']));
+    $description = trim(htmlspecialchars($_POST['description']));
+    $spek = $_POST["spek"];
+    $type_inv = trim(htmlspecialchars($_POST['type_inv']));
+    $group_inv = trim(htmlspecialchars($_POST['group_inv']));
+    $allotment_inv = trim(htmlspecialchars($_POST['allotment_inv']));
+    $branch = trim(htmlspecialchars($_POST['branch']));
+    $source = trim(htmlspecialchars($_POST['source']));
+    $dept = trim(htmlspecialchars($_POST['dept']));
+    $year = trim(htmlspecialchars($_POST['year']));
+    $useful_inv = trim(htmlspecialchars($_POST['useful_inv']));
+    $condition_inv = trim(htmlspecialchars($_POST['condition_inv']));
+    $notes = trim(htmlspecialchars($_POST['notes']));
+    
+    
+    mysqli_query($conn, "INSERT INTO goods (number, sn, description, specification, id_inv_type, id_inv_group, id_inv_allotment, id_inv_branch, id_inv_source, id_inv_dept, year, useful_period, id_inv_condition, notes, created_at, created_by) VALUES('$inv', '$sn', '$description', '$spek', $type_inv, $group_inv, $allotment_inv, $branch, $source, $dept, '$year', $useful_inv, $condition_inv, '$notes', '$dateTime', $userCreated)");
+
+    if(mysqli_affected_rows($conn)){
+        // update good_incoming_details as_inv = 1
+        mysqli_query($conn, "UPDATE good_incoming_details SET as_inv = 1 WHERE sn = '$sn'");
+        if(mysqli_affected_rows($conn)){
+            header("Location: barang.php");
+        }    
+    }
+}
+
+if(isset($_POST["tambahBarangInvManual"])){
+    $inv = trim(htmlspecialchars($_POST['invM']));
+    $sn = trim(htmlspecialchars($_POST['snM']));
+    $description = trim(htmlspecialchars($_POST['descriptionM']));
+    $spek = $_POST["spekM"];
+    $type_inv = trim(htmlspecialchars($_POST['type_invM']));
+    $group_inv = trim(htmlspecialchars($_POST['group_invM']));
+    $allotment_inv = trim(htmlspecialchars($_POST['allotment_invM']));
+    $branch = trim(htmlspecialchars($_POST['branchM']));
+    $source = trim(htmlspecialchars($_POST['sourceM']));
+    $dept = trim(htmlspecialchars($_POST['deptM']));
+    $year = trim(htmlspecialchars($_POST['yearM']));
+    $useful_inv = trim(htmlspecialchars($_POST['useful_invM']));
+    $condition_inv = trim(htmlspecialchars($_POST['condition_invM']));
+    $notes = trim(htmlspecialchars($_POST['notesM']));
+    
+    mysqli_query($conn, "INSERT INTO goods (number, sn, description, specification, id_inv_type, id_inv_group, id_inv_allotment, id_inv_branch, id_inv_source, id_inv_dept, year, useful_period, id_inv_condition, notes, created_at, created_by) VALUES('$inv', '$sn', '$description', '$spek', $type_inv, $group_inv, $allotment_inv, $branch, $source, $dept, '$year', $useful_inv, $condition_inv, '$notes', '$dateTime', $userCreated)");
+
+    if(mysqli_affected_rows($conn)){
+        header("Location: barang.php");
+    }    
+    
+}
