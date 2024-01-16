@@ -17,7 +17,7 @@
     
     // ambil data incoming detail berdasar id good_incoming
     $idIncoming = $getDetailRR["id"];
-    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, type, notes FROM good_incoming_details WHERE id_incoming = $idIncoming");
+    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, type, notes, img FROM good_incoming_details WHERE id_incoming = $idIncoming");
 
     // ambil data select tipe invenaris
     $getInvType = mysqli_query($conn, "SELECT id, name FROM inv_type");
@@ -177,6 +177,7 @@
                                                         <th>No. PO</th>
                                                         <th>Type</th>
                                                         <th>Notes</th>
+                                                        <th>Img</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -198,6 +199,19 @@
                                                             <?php endif ?>
                                                         </td>
                                                         <td><?= $getDetail["notes"] ?></td>
+                                                        <td>
+                                                            <button class="btn btn-sm"
+                                                                onclick="showImageModal('<?= $getDetail['img'] ?>')">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor"
+                                                                    class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                                                    <path
+                                                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                                                                </svg>
+                                                            </button>
+                                                        </td>
                                                         <td>
                                                             <button class="btn btn-sm"
                                                                 onclick="hapusDetailBarang(' <?= $getDetail['id'] ?> ')">
@@ -266,7 +280,7 @@
                     <h1 class="modal-title fs-5" id="modalTambahBarangLabel">Tambah Data</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="function.php" method="post">
+                <form action="function.php" method="post" enctype="multipart/form-data">
                     <div class="modal-body px-4">
                         <div class="row mb-3">
                             <div class="col-sm">
@@ -315,6 +329,16 @@
                                     id="notes" />
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-sm">
+                                <label for="image" class="form-label labeling-form">Upload Image</label>
+                                <input type="file" class="form-control" name="image" id="image" accept="image/*"
+                                    onchange="compressAndPreviewImage()" required />
+                                <p id="imageInfo"></p>
+                                <img id="imagePreview" src="#" alt="Image Preview"
+                                    style="max-width: 100%; max-height: 200px; margin-top: 10px; display: none;">
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
@@ -322,6 +346,26 @@
                             id="tambahBarangMasuk" disabled>Tambah</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Image -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImage" src="#" alt="Image Preview"
+                        style="max-width: 100%; max-height: 300px; margin: auto; display: block;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -381,6 +425,74 @@
             this.setSelectionRange(caretPos, caretPos);
         });
     });
+
+    function compressAndPreviewImage() {
+        var input = document.getElementById('image');
+        var imageInfo = document.getElementById('imageInfo');
+        var imagePreview = document.getElementById('imagePreview');
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var img = new Image();
+                img.src = e.target.result;
+
+                img.onload = function() {
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+
+                    // Set the dimensions to compress the image
+                    var maxWidth = 300; // Adjust as needed
+                    var maxHeight = 200; // Adjust as needed
+
+                    var width = img.width;
+                    var height = img.height;
+
+                    // Calculate new dimensions to maintain aspect ratio
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width *= maxHeight / height;
+                            height = maxHeight;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    // Draw image on canvas with new dimensions
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Convert canvas content to base64 encoded string
+                    var compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7); // Adjust quality as needed
+
+                    // Display compressed image preview
+                    imagePreview.src = compressedDataUrl;
+                    imagePreview.style.display = 'block';
+
+                    // Display image info
+                    var imageSize = input.files[0].size / 1024; // Convert to KB
+                    imageInfo.innerHTML = 'Image Size: ' + imageSize.toFixed(2) + ' KB';
+
+                    // Enable submit button
+                    document.getElementById('tambahBarangMasuk').disabled = false;
+                };
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function showImageModal(imageName) {
+        var modalImage = document.getElementById('modalImage');
+        modalImage.src = 'dist/img/' + imageName;
+        $('#imageModal').modal('show');
+    }
     </script>
 </body>
 

@@ -18,7 +18,7 @@
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
 
-    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, goods.created_at FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.id");
+    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, goods.img FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.id");
 
 ?>
 
@@ -171,12 +171,13 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <th>No. Inv</th>
                                                 <th>Deskripsi</th>
                                                 <th>SN</th>
                                                 <th>Kondisi</th>
                                                 <th>Tahun</th>
                                                 <th>Alokasi</th>
-                                                <th>Update</th>
+                                                <th>Img</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -184,17 +185,40 @@
                                             <?php foreach($getDaftarBarangInv as $barangInv) : ?>
                                             <tr>
                                                 <td><?= $urutDaftarI ?></td>
+                                                <td><?= $barangInv["number"] ?></td>
                                                 <td><?= $barangInv["description"] ?></td>
                                                 <td><?= $barangInv["sn"] ?></td>
                                                 <td>
                                                     <h6>
+                                                        <?php if($barangInv["kondisi"] === "BAIK") : ?>
                                                         <span
                                                             class="badge bg-success align-middle"><?= $barangInv["kondisi"] ?></span>
+                                                        <?php elseif($barangInv["kondisi"] === "KURANG_BAIK") : ?>
+                                                        <span
+                                                            class="badge bg-warning align-middle"><?= $barangInv["kondisi"] ?></span>
+                                                        <?php elseif($barangInv["kondisi"] === "RUSAK") : ?>
+                                                        <span
+                                                            class="badge bg-danger align-middle"><?= $barangInv["kondisi"] ?></span>
+                                                        <?php elseif($barangInv["kondisi"] === "SCRAPT") : ?>
+                                                        <span
+                                                            class="badge bg-dark align-middle"><?= $barangInv["kondisi"] ?></span>
+                                                        <?php endif ?>
                                                     </h6>
                                                 </td>
                                                 <td><?= $barangInv["year"] ?></td>
                                                 <td><?= $barangInv["branch"] ?></td>
-                                                <td class="fs-6"><?= $barangInv["created_at"] ?></td>
+                                                <td>
+                                                    <button class="btn btn-sm"
+                                                        onclick="showImageModal('<?= $barangInv['img'] ?>')">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            fill="currentColor" class="bi bi-eye-fill"
+                                                            viewBox="0 0 16 16">
+                                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                                            <path
+                                                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                                 <td>
                                                     <button class="btn btn-sm btn-white"
                                                         onclick="window.location.href = 'barang-details.html'">
@@ -274,7 +298,7 @@
                     <h1 class="modal-title fs-5" id="modalTambahLabel">Tambah Barang</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="function.php" method="post">
+                <form action="function.php" method="post" enctype="multipart/form-data">
                     <div class="modal-body px-4">
                         <div class="row mb-3">
                             <div class="col-sm">
@@ -386,10 +410,20 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-sm">
+                            <div class="col-sm-6">
                                 <label for="notesM" class="form-label labeling-form">Keterangan</label>
                                 <textarea name="notesM" id="notesM" cols="30" rows="2" class="form-control"
                                     placeholder="Your text here" required></textarea>
+                            </div>
+                            <div class="col-sm">
+                                <label for="imageM" class="form-label labeling-form">Upload Image</label>
+                                <input type="file" class="form-control" name="imageM" id="imageM" accept="image/*"
+                                    onchange="compressAndPreviewImage()" required />
+                            </div>
+                            <div class="col-sm">
+                                <p id="imageInfo"></p>
+                                <img id="imagePreview" src="#" alt="Image Preview"
+                                    style="max-width: 100%; max-height: 50px; margin-top: 10px; display: none;">
                             </div>
                         </div>
                     </div>
@@ -602,6 +636,44 @@
         </div>
     </div>
 
+    <!-- Modal for Image -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImage" src="#" alt="Image Preview"
+                        style="max-width: 100%; max-height: 300px; margin: auto; display: block;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Image Preview -->
+    <div class="modal fade" id="imageModalTambah" tabindex="-1" role="dialog" aria-labelledby="imageModalTambahLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalTambahLabel">Image Preview</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImagePreview" src="#" alt="Image Preview" style="max-width: 100%; max-height: 400px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="dist/temp/js/scripts.js"></script>
@@ -769,6 +841,74 @@
             // Jika pilihan selain PWR dipilih, tidak menghapus teks yang telah dimasukkan manual
             // Hanya menambahkan teks berdasarkan pilihan
             textareaElement.value += "REFF " + selectElement.options[selectElement.selectedIndex].text + "; ";
+        }
+    }
+
+    function showImageModal(imageName) {
+        var modalImage = document.getElementById('modalImage');
+        modalImage.src = 'dist/img/' + imageName;
+        $('#imageModal').modal('show');
+    }
+
+    function compressAndPreviewImage() {
+        var input = document.getElementById('imageM');
+        var imageInfo = document.getElementById('imageInfo');
+        var imagePreview = document.getElementById('imagePreview');
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var img = new Image();
+                img.src = e.target.result;
+
+                img.onload = function() {
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+
+                    // Set the dimensions to compress the image
+                    var maxWidth = 300; // Adjust as needed
+                    var maxHeight = 200; // Adjust as needed
+
+                    var width = img.width;
+                    var height = img.height;
+
+                    // Calculate new dimensions to maintain aspect ratio
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width *= maxHeight / height;
+                            height = maxHeight;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+
+                    // Draw image on canvas with new dimensions
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Convert canvas content to base64 encoded string
+                    var compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7); // Adjust quality as needed
+
+                    // Display compressed image preview
+                    imagePreview.src = compressedDataUrl;
+                    imagePreview.style.display = 'block';
+
+                    // Display image info
+                    var imageSize = input.files[0].size / 1024; // Convert to KB
+                    imageInfo.innerHTML = 'Image Size: ' + imageSize.toFixed(2) + ' KB';
+
+                    // Enable submit button
+                    document.getElementById('tambahBarangMasuk').disabled = false;
+                };
+            };
+
+            reader.readAsDataURL(input.files[0]);
         }
     }
     </script>

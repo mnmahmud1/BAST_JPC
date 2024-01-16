@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 15, 2024 at 04:05 PM
+-- Generation Time: Jan 16, 2024 at 04:32 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -130,6 +130,7 @@ CREATE TABLE `goods` (
   `useful_period` int(11) NOT NULL,
   `id_inv_condition` int(11) NOT NULL,
   `notes` text NOT NULL,
+  `img` varchar(60) DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `created_at` datetime NOT NULL,
   `as_dump` tinyint(1) NOT NULL DEFAULT 0,
@@ -140,9 +141,12 @@ CREATE TABLE `goods` (
 -- Dumping data for table `goods`
 --
 
-INSERT INTO `goods` (`id`, `number`, `sn`, `description`, `specification`, `id_inv_type`, `id_inv_group`, `id_inv_allotment`, `id_inv_branch`, `id_inv_source`, `id_inv_dept`, `year`, `useful_period`, `id_inv_condition`, `notes`, `updated_at`, `created_at`, `as_dump`, `created_by`) VALUES
-(2, 'IT/REG/2024/01/01', 'ABP-1232-AWD3-23FS-234F', 'SOUND SYSTEM MIFA K12', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 5, 1, 1, 1, 1, '2024', 5, 1, 'REFF PWR 2023/JKT-0142; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; TES', '2024-01-13 05:14:11', '2024-01-13 12:14:11', 0, 1),
-(3, 'IT/REG/2024/01/02', 'ASDASDSF', 'MOUSE WIRELESS LOGITECH M190', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 1, 2, 2, 1, 3, '2024', 2, 1, 'REFF PWR ; REFF PO ;', '2024-01-15 15:03:04', '2024-01-15 22:03:04', 0, 1);
+INSERT INTO `goods` (`id`, `number`, `sn`, `description`, `specification`, `id_inv_type`, `id_inv_group`, `id_inv_allotment`, `id_inv_branch`, `id_inv_source`, `id_inv_dept`, `year`, `useful_period`, `id_inv_condition`, `notes`, `img`, `updated_at`, `created_at`, `as_dump`, `created_by`) VALUES
+(2, 'IT/REG/2024/01/01', 'ABP-1232-AWD3-23FS-234F', 'SOUND SYSTEM MIFA K12', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 5, 1, 1, 1, 1, '2024', 5, 1, 'REFF PWR 2023/JKT-0142; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; TES', NULL, '2024-01-13 05:14:11', '2024-01-13 12:14:11', 0, 1),
+(3, 'IT/REG/2024/01/02', 'ASDASDSF', 'MOUSE WIRELESS LOGITECH M190', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 1, 2, 2, 1, 3, '2024', 2, 1, 'REFF PWR ; REFF PO ;', NULL, '2024-01-15 15:03:04', '2024-01-15 22:03:04', 0, 1),
+(4, 'IT/REG/2024/01/03', '2223LZ917BZ8', 'MOUSE WIRELESS LOGITECH M190', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 1, 2, 2, 1, 2, '2024', 2, 1, 'REFF PWR 2023/JKT-0241; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; UNTUK MAHMUD', '72ff743b4caff43a37b2aa7c764a514b.jpg', '2024-01-16 13:40:45', '2024-01-16 20:40:45', 0, 1),
+(5, 'IT/REG/2024/01/04', '132234-ASDASD-23423DA', 'LISENSI AEC 2024', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 2, 3, 2, 1, 1, 1, '2023', 1, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/6; TES', '', '2024-01-16 15:07:43', '2024-01-16 22:07:43', 0, 1),
+(6, 'IT/REG/2024/01/05', 'APASAJABOLEH', 'LAPTOP ACER E5-471', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 2, 1, 2, 1, 3, 1, '2024', 3, 2, 'REFF LAIN-LAIN;', '25dc0b54a56cccef1051cbf493397b22.png', '2024-01-16 15:28:06', '2024-01-16 22:10:48', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -190,6 +194,7 @@ CREATE TABLE `good_incoming_details` (
   `po` varchar(20) NOT NULL,
   `type` int(11) NOT NULL,
   `notes` text DEFAULT NULL,
+  `img` varchar(60) DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `created_at` datetime NOT NULL,
   `as_inv` tinyint(1) NOT NULL DEFAULT 0,
@@ -201,12 +206,13 @@ CREATE TABLE `good_incoming_details` (
 -- Dumping data for table `good_incoming_details`
 --
 
-INSERT INTO `good_incoming_details` (`id`, `id_incoming`, `description`, `sn`, `pwr`, `po`, `type`, `notes`, `updated_at`, `created_at`, `as_inv`, `as_dump`, `created_by`) VALUES
-(1, 5, 'SOUND SYSTEM MIFA K12', 'ABP-1232-AWD3-23FS-234F', '2023/JKT-0142', '2023/JKT-L-0123', 1, 'TES', '2024-01-13 05:14:11', '2024-01-09 21:14:42', 1, 0, 1),
-(2, 5, 'LISENSI AEC 2024', 'ABP-1232-AWD3-23FS-234F1', '2024/JKT-0023', 'MEMO/JKT-0011', 2, 'AEC 2024 UNTUK ENG', '2024-01-13 04:47:20', '2024-01-09 21:28:04', 0, 0, 1),
-(6, 7, 'SOUND SYSTEM MIFA K12', '12312BHJB1JH23B', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', '2024-01-10 13:45:10', '2024-01-10 20:45:10', 0, 0, 1),
-(7, 7, 'LISENSI AEC 2024', '132234-ASDASD-23423DA', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', '2024-01-10 14:02:57', '2024-01-10 21:02:57', 0, 0, 1),
-(8, 7, 'LISENSI SOLIDWORKS 2024', 'ASDADA-2342Q34A-SDDASD', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', '2024-01-10 14:03:34', '2024-01-10 21:03:34', 0, 0, 1);
+INSERT INTO `good_incoming_details` (`id`, `id_incoming`, `description`, `sn`, `pwr`, `po`, `type`, `notes`, `img`, `updated_at`, `created_at`, `as_inv`, `as_dump`, `created_by`) VALUES
+(1, 5, 'SOUND SYSTEM MIFA K12', 'ABP-1232-AWD3-23FS-234F', '2023/JKT-0142', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-01-13 05:14:11', '2024-01-09 21:14:42', 1, 0, 1),
+(2, 5, 'LISENSI AEC 2024', 'ABP-1232-AWD3-23FS-234F1', '2024/JKT-0023', 'MEMO/JKT-0011', 2, 'AEC 2024 UNTUK ENG', NULL, '2024-01-13 04:47:20', '2024-01-09 21:28:04', 0, 0, 1),
+(6, 7, 'SOUND SYSTEM MIFA K12', '12312BHJB1JH23B', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', NULL, '2024-01-10 13:45:10', '2024-01-10 20:45:10', 0, 0, 1),
+(7, 7, 'LISENSI AEC 2024', '132234-ASDASD-23423DA', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-01-16 15:07:43', '2024-01-10 21:02:57', 1, 0, 1),
+(8, 7, 'LISENSI SOLIDWORKS 2024', 'ASDADA-2342Q34A-SDDASD', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', NULL, '2024-01-10 14:03:34', '2024-01-10 21:03:34', 0, 0, 1),
+(9, 5, 'MOUSE WIRELESS LOGITECH M190', '2223LZ917BZ8', '2023/JKT-0241', '2023/JKT-L-0123', 1, 'UNTUK MAHMUD', '72ff743b4caff43a37b2aa7c764a514b.jpg', '2024-01-16 13:40:45', '2024-01-16 19:37:07', 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -242,7 +248,7 @@ CREATE TABLE `inv_condition` (
 
 INSERT INTO `inv_condition` (`id`, `name`, `updated_at`, `created_at`, `created_by`) VALUES
 (1, 'BAIK', '2024-01-13 05:36:02', '2024-01-13 06:35:49', 1),
-(2, 'KURANG  BAIK', '2024-01-13 05:36:02', '2024-01-13 06:35:49', 1),
+(2, 'KURANG_BAIK', '2024-01-16 15:30:58', '2024-01-13 06:35:49', 1),
 (3, 'RUSAK', '2024-01-13 05:36:13', '2024-01-13 06:36:04', 1),
 (4, 'SCRAPT', '2024-01-13 05:36:13', '2024-01-13 06:36:04', 1);
 
@@ -537,7 +543,7 @@ ALTER TABLE `dept`
 -- AUTO_INCREMENT for table `goods`
 --
 ALTER TABLE `goods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `good_incoming`
@@ -549,7 +555,7 @@ ALTER TABLE `good_incoming`
 -- AUTO_INCREMENT for table `good_incoming_details`
 --
 ALTER TABLE `good_incoming_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `inv_allotment`

@@ -67,10 +67,35 @@ if(isset($_POST['tambahBarangMasuk'])){
     $getIdRR = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id FROM good_incoming WHERE number = '$rrNumber'"));
     $idRR = $getIdRR["id"];
 
-    mysqli_query($conn, "INSERT INTO good_incoming_details (id_incoming, description, sn, pwr, po, type, notes, created_at, created_by) VALUES($idRR, '$desc', '$sn', '$pwr', '$po', $type, '$notes', '$dateTime', $userCreated)");
+    // Pengaturan direktori untuk menyimpan gambar
+    $uploadDir = __DIR__ . "/dist/img/";
 
-    if(mysqli_affected_rows($conn)){
-        header("Location: tambah-laporan-barang-masuk.php");
+    // Mendapatkan informasi file gambar
+    $imageName = $_FILES['image']['name'];
+    $imageTmpName = $_FILES['image']['tmp_name'];
+
+    // Mendapatkan ekstensi file gambar
+    $imageExt = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+
+    // Generate nama file acak menggunakan md5
+    $imageNameHashed = md5(uniqid("", true)) . "." . $imageExt;
+
+    // Mengecek apakah file yang diunggah adalah gambar
+    $allowedExtensions = array("jpg", "jpeg", "png", "gif");
+    if (in_array($imageExt, $allowedExtensions)) {
+        // Menyimpan gambar ke direktori
+        move_uploaded_file($imageTmpName, $uploadDir . $imageNameHashed);
+
+        // Menyimpan nama file gambar ke database
+        mysqli_query($conn, "INSERT INTO good_incoming_details (id_incoming, description, sn, pwr, po, type, notes, img, created_at, created_by) VALUES($idRR, '$desc', '$sn', '$pwr', '$po', $type, '$notes', '$imageNameHashed', '$dateTime', $userCreated)");
+
+        if(mysqli_affected_rows($conn)){
+            header("Location: tambah-laporan-barang-masuk.php");
+        } else {
+            echo "Failed to update database with image information.";
+        }
+    } else {
+        echo "Invalid file format. Allowed formats: jpg, jpeg, png, gif.";
     }
 }
 
@@ -135,9 +160,12 @@ if(isset($_POST["mutasiBarangMasukKeBarang"])){
     $useful_inv = trim(htmlspecialchars($_POST['useful_inv']));
     $condition_inv = trim(htmlspecialchars($_POST['condition_inv']));
     $notes = trim(htmlspecialchars($_POST['notes']));
+
+    $getImage = mysqli_fetch_assoc(mysqli_query($conn, "SELECT img FROM good_incoming_details WHERE sn = '$sn' "));
+    $img = $getImage["img"];
     
     
-    mysqli_query($conn, "INSERT INTO goods (number, sn, description, specification, id_inv_type, id_inv_group, id_inv_allotment, id_inv_branch, id_inv_source, id_inv_dept, year, useful_period, id_inv_condition, notes, created_at, created_by) VALUES('$inv', '$sn', '$description', '$spek', $type_inv, $group_inv, $allotment_inv, $branch, $source, $dept, '$year', $useful_inv, $condition_inv, '$notes', '$dateTime', $userCreated)");
+    mysqli_query($conn, "INSERT INTO goods (number, sn, description, specification, id_inv_type, id_inv_group, id_inv_allotment, id_inv_branch, id_inv_source, id_inv_dept, year, useful_period, id_inv_condition, notes, img, created_at, created_by) VALUES('$inv', '$sn', '$description', '$spek', $type_inv, $group_inv, $allotment_inv, $branch, $source, $dept, '$year', $useful_inv, $condition_inv, '$notes', '$img', '$dateTime', $userCreated)");
 
     if(mysqli_affected_rows($conn)){
         // update good_incoming_details as_inv = 1
@@ -163,11 +191,36 @@ if(isset($_POST["tambahBarangInvManual"])){
     $useful_inv = trim(htmlspecialchars($_POST['useful_invM']));
     $condition_inv = trim(htmlspecialchars($_POST['condition_invM']));
     $notes = trim(htmlspecialchars($_POST['notesM']));
-    
-    mysqli_query($conn, "INSERT INTO goods (number, sn, description, specification, id_inv_type, id_inv_group, id_inv_allotment, id_inv_branch, id_inv_source, id_inv_dept, year, useful_period, id_inv_condition, notes, created_at, created_by) VALUES('$inv', '$sn', '$description', '$spek', $type_inv, $group_inv, $allotment_inv, $branch, $source, $dept, '$year', $useful_inv, $condition_inv, '$notes', '$dateTime', $userCreated)");
 
-    if(mysqli_affected_rows($conn)){
-        header("Location: barang.php");
-    }    
+    // Pengaturan direktori untuk menyimpan gambar
+    $uploadDir = __DIR__ . "/dist/img/";
+
+    // Mendapatkan informasi file gambar
+    $imageName = $_FILES['imageM']['name'];
+    $imageTmpName = $_FILES['imageM']['tmp_name'];
+
+    // Mendapatkan ekstensi file gambar
+    $imageExt = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+
+    // Generate nama file acak menggunakan md5
+    $imageNameHashed = md5(uniqid("", true)) . "." . $imageExt;
+    
+    // Mengecek apakah file yang diunggah adalah gambar
+    $allowedExtensions = array("jpg", "jpeg", "png", "gif");
+    if (in_array($imageExt, $allowedExtensions)) {
+        // Menyimpan gambar ke direktori
+        move_uploaded_file($imageTmpName, $uploadDir . $imageNameHashed);
+
+        // Menyimpan nama file gambar ke database
+        mysqli_query($conn, "INSERT INTO goods (number, sn, description, specification, id_inv_type, id_inv_group, id_inv_allotment, id_inv_branch, id_inv_source, id_inv_dept, year, useful_period, id_inv_condition, notes, img, created_at, created_by) VALUES('$inv', '$sn', '$description', '$spek', $type_inv, $group_inv, $allotment_inv, $branch, $source, $dept, '$year', $useful_inv, $condition_inv, '$notes', '$imageNameHashed', '$dateTime', $userCreated)");
+
+        if(mysqli_affected_rows($conn)){
+            header("Location: barang.php");
+        } else {
+            echo "Failed to update database with image information.";
+        }
+    } else {
+        echo "Invalid file format. Allowed formats: jpg, jpeg, png, gif.";
+    }
     
 }

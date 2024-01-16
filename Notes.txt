@@ -9,3 +9,19 @@ ex: -> barang.html / goods.html
        - barang-masuk-details.html / goods-incoming-details.html
 
 #3 Mengubah nama-nama tombol menjadi bahasa inggris
+=======================================
+SELECT 
+    gi.number, 
+    (SELECT COUNT(*) FROM good_incoming_details gid WHERE gid.id_incoming = gi.id) AS count_details, 
+    gi.notes, 
+    gi.created_at,
+    gi.id
+FROM 
+    `good_incoming` gi
+WHERE 
+    gi.created_by = 1;
+=================================
+PR
+
+1. menghilangkan kode RR Cookie saat keluar dari halaman barang masuk
+2. Menambahkan rekomendasi deskripsi barang dari nama barang yang sudah ada di database
