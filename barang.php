@@ -221,7 +221,7 @@
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-sm btn-white"
-                                                        onclick="window.location.href = 'barang-details.html'">
+                                                        onclick="window.location.href = 'barang-details.php?inv=<?= $barangInv['number'] ?>'">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                             fill="currentColor" class="bi bi-info-circle"
                                                             viewBox="0 0 16 16">
@@ -452,7 +452,7 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body table-responsive">
                                     <h5 class="mb-4">Daftar Barang Masuk</h5>
                                     <table class="display table-responsive" name="tableTambahDariBarangMasuk"
                                         id="tableTambahDariBarangMasuk">

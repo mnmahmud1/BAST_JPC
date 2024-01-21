@@ -224,3 +224,33 @@ if(isset($_POST["tambahBarangInvManual"])){
     }
     
 }
+
+if(isset($_POST["updateDetailBarang"])){
+    $inv = trim(htmlspecialchars($_POST['inv']));
+    // $sn = trim(htmlspecialchars($_POST['sn']));
+    $description = trim(htmlspecialchars($_POST['description']));
+    $spek = $_POST["spek"];
+    $type_inv = trim(htmlspecialchars($_POST['type_inv']));
+    $group_inv = trim(htmlspecialchars($_POST['group_inv']));
+    $allotment_inv = trim(htmlspecialchars($_POST['allotment_inv']));
+    $branch = trim(htmlspecialchars($_POST['branch']));
+    $source = trim(htmlspecialchars($_POST['source']));
+    $dept = trim(htmlspecialchars($_POST['dept']));
+    $year = trim(htmlspecialchars($_POST['year']));
+    $useful_inv = trim(htmlspecialchars($_POST['useful_inv']));
+    $condition_inv = trim(htmlspecialchars($_POST['condition_inv']));
+    $notes = trim(htmlspecialchars($_POST['notes']));
+
+    // $getImage = mysqli_fetch_assoc(mysqli_query($conn, "SELECT img FROM good_incoming_details WHERE sn = '$sn' "));
+    // $img = $getImage["img"];
+
+    mysqli_query($conn, "UPDATE goods SET description = '$description', specification = '$spek', id_inv_type = $type_inv, id_inv_group = $group_inv, id_inv_allotment = $allotment_inv, id_inv_branch = $branch, id_inv_source = $source, id_inv_dept = $dept, year = $year, useful_period = $useful_inv, id_inv_condition = $condition_inv, notes = '$notes' WHERE number = '$inv'");
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: barang-details.php?inv=". $inv);
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: barang-details.php?inv=". $inv);
+    }
+}
