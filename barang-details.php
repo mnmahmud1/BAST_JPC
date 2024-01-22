@@ -46,7 +46,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 
     <!-- Place the first <script> tag in your HTML's <head> -->
-    <script src="https://cdn.tiny.cloud/1/vi2wp2m2ujq5iv8tc0kaxpph3s7c7wnhhcdiiu3dcx8ybhwj/tinymce/6/tinymce.min.js"
+    <script src="https://cdn.tiny.cloud/1/qmbej4hb799ztlyxlce0xqdyf3xmgb1ddaike9wg3cf1vx6b/tinymce/6/tinymce.min.js"
         referrerpolicy="origin"></script>
 
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
@@ -475,7 +475,6 @@
     tinymce.init({
         selector: '#spek',
         height: 200,
-        plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
         toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
         tinycomments_mode: 'embedded',
         tinycomments_author: 'Author name',
