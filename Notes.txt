@@ -26,3 +26,4 @@ PR
 1. menghilangkan kode RR Cookie saat keluar dari halaman barang masuk
 2. Menambahkan rekomendasi deskripsi barang dari nama barang yang sudah ada di database di tambah data barang masuk
 3. tambahkan notif berhasil disetiap update/input/dump data semua halaman
+4. tambahkan tombol generate SN di tambah data barang-masum / tambah barang (untuk barang yang tidak punya SN ; labeling ditambah SN ; biasanya untuk PC)
