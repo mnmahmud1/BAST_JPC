@@ -61,3 +61,25 @@ function validateSNManual() {
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhr.send("snBarang=" + snInput);
 }
+
+// fungsi validasi SN di form barang.php
+function validateInitialManual() {
+	var snInput = document.getElementById("initial").value;
+	var snError = document.getElementById("initialError");
+	var submitButton = document.getElementById("tambahUser");
+
+	// Kirim permintaan AJAX ke file PHP untuk memeriksa keberadaan nomor unik di database
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			var response = xhr.responseText;
+			snError.innerHTML = response;
+
+			// Nonaktifkan atau aktifkan tombol berdasarkan respons dari server
+			submitButton.disabled = response.includes("sudah ada dalam database");
+		}
+	};
+	xhr.open("POST", "check-initial.php", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.send("initialCheck=" + snInput);
+}

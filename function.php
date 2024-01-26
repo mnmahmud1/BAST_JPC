@@ -254,3 +254,43 @@ if(isset($_POST["updateDetailBarang"])){
         header("Location: barang-details.php?inv=". $inv);
     }
 }
+
+if(isset($_POST["tambahUser"])){
+    $name = trim(htmlspecialchars($_POST['name']));
+    $initial = trim(htmlspecialchars($_POST['initial']));
+    $nik = trim(htmlspecialchars($_POST['nik']));
+    $dept = trim(htmlspecialchars($_POST['dept']));
+    $branch = trim(htmlspecialchars($_POST['branch']));
+    $job = trim(htmlspecialchars($_POST['job']));
+    $notes = trim(htmlspecialchars($_POST['notes']));
+    
+    mysqli_query($conn, "INSERT INTO users (initial, name, nik, position, id_dept, id_branch, notes, created_at, created_by) VALUES('$initial', '$name', '$nik', '$job', $dept, $branch, '$notes', '$userCreated', $userCreated)");
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: user.php");
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: user.php");
+    }
+}
+
+if(isset($_POST["updateUser"])){
+    $name = trim(htmlspecialchars($_POST['name']));
+    $initial = trim(htmlspecialchars($_POST['initial']));
+    $nik = trim(htmlspecialchars($_POST['nik']));
+    $dept = trim(htmlspecialchars($_POST['dept']));
+    $branch = trim(htmlspecialchars($_POST['branch']));
+    $job = trim(htmlspecialchars($_POST['job']));
+    $notes = trim(htmlspecialchars($_POST['notes']));
+    
+    mysqli_query($conn, "UPDATE users SET name = '$name', nik = '$nik', position = '$job', id_dept = $dept, id_branch = $branch, notes = '$notes' WHERE initial = '$initial'");
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: user-details.php?Initial=" . $initial);
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: user-details.php?Initial=" . $initial);
+    }
+}

@@ -29,3 +29,5 @@ PR
 4. tambahkan tombol generate SN di tambah data barang-masum / tambah barang (untuk barang yang tidak punya SN ; labeling ditambah SN ; biasanya untuk PC)
 5. Menambahkan form user sperti kode anydesk dsb, kemudian daftar akun dari user. sehingga jika ada user yang resign dapat langsung diidentifikasi akun yang dimilikinya.
 6. Membuat Form Rekapitulasi Penggunaan Iventaris per user JPC
+7. Buat konfirmasi hapus dengan modal dengan menuliskan barangnya, seperti menghapus github.
+8. Tammbahkan batasan input form sesuai di database
