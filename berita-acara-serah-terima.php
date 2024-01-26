@@ -10,14 +10,10 @@
     $idUser = $_COOKIE["_beta_log"];
 
     $urutDaftar = 1;
-	$getDaftarBarangMasuk = mysqli_query($conn, "SELECT good_incoming.number, good_incoming_details.description, good_incoming_details.sn, good_incoming_details.pwr, good_incoming_details.po, good_incoming_details.notes FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.type = 1 AND good_incoming_details.as_inv = 0");
 
-	$getInvGroup = mysqli_query($conn, "SELECT id, name FROM inv_group");
 	$getBranch = mysqli_query($conn, "SELECT id, name FROM branch");
-	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
-	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
-
-    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, goods.img FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.id");
+	$getUsersAdmin = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_admin = 1 AND as_dump = 0;");
+	$getUsersAll = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_dump = 0;");
 
 ?>
 
@@ -136,8 +132,11 @@
 
                     <div class="row mb-3">
                         <div class="col-sm">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">+
-                                Tambah Berita Acara</button>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambah">+
+                                    Tambah Berita Acara</button>
+                                <button class="btn btn-outline-primary">Pengembalian</button>
+                            </div>
                         </div>
                     </div>
 
@@ -259,58 +258,61 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalTambahLabel">Tambah Barang</h1>
+                    <h1 class="modal-title fs-5" id="modalTambahLabel">Tambah - Berita Acara Serah Terima Inventaris
+                    </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="" method="post">
                     <div class="modal-body px-4">
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">No Berita Acara</label>
-                                <input type="text" class="form-control" placeholder="You Text Here" name="" id=""
-                                    autofocus required />
+                                <label for="bast" class="form-label labeling-form">No Berita Acara</label>
+                                <input type="text" class="form-control" placeholder="You Text Here" name="bast"
+                                    id="bast" readonly required />
                             </div>
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Lokasi</label>
-                                <select name="" id="" class="form-select" required>
+                                <label for="branch" class="form-label labeling-form">Lokasi</label>
+                                <select name="branch" id="branch" class="form-select" autofocus required>
                                     <option value="">Choose</option>
-                                    <option value="">Head Office Jakarta</option>
-                                    <option value="">Workshop Gunung Putri</option>
-                                    <option value="">Branch Office Pekanbaru</option>
-                                    <option value="">Branch Office Surabaya</option>
-                                    <option value="">Branch Office Balikpapan</option>
+                                    <?php foreach($getBranch as $branch) : ?>
+                                    <option value="<?= $branch['id'] ?>"><?= $branch['name'] ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Diserahkan Oleh</label>
-                                <select name="" id="" class="form-select" required>
+                                <label for="submitted" class="form-label labeling-form">Diserahkan Oleh (IT)</label>
+                                <select name="submitted" id="submitted" class="form-select" required>
                                     <option value="">Choose</option>
-                                    <option value="">M Nurhasan Mahmudi</option>
-                                    <option value="">Ali Rakhman</option>
+                                    <?php foreach($getUsersAdmin as $admin) : ?>
+                                    <option value="<?= $admin['id'] ?>" data-dept="<?= $admin['dept_name'] ?>">
+                                        <?= $admin['name'] ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Departement</label>
-                                <input type="text" name="" id="" class="form-control" placeholder="HR & GA / IT"
-                                    readonly />
+                                <label for="dept-submitted" class="form-label labeling-form">Departement
+                                    Penyerah</label>
+                                <input type="text" name="dept-submitted" id="dept-submitted" class="form-control"
+                                    value="Choose" readonly />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Diterima Oleh</label>
-                                <select name="" id="" class="form-select" required>
+                                <label for="accepted" class="form-label labeling-form">Diterima Oleh</label>
+                                <select name="accepted" id="accepted" class="form-select" required>
                                     <option value="">Choose</option>
-                                    <option value="">M Nurhasan Mahmudi</option>
-                                    <option value="">Ali Rakhman</option>
-                                    <option value="">Kevin Alniagara</option>
+                                    <?php foreach($getUsersAll as $user) : ?>
+                                    <option value="<?= $user['id'] ?>" data-dept="<?= $user['dept_name'] ?>">
+                                        <?= $user['name'] ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Departement</label>
-                                <input type="text" name="" id="" class="form-control" placeholder="Finance Accounting"
-                                    readonly />
+                                <label for="dept-accepted" class="form-label labeling-form">Departement Penerima</label>
+                                <input type="text" name="dept-accepted" id="dept-accepted" class="form-control"
+                                    placeholder="Finance Accounting" readonly />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -364,6 +366,80 @@
     // Every time a modal is shown, if it has an autofocus element, focus on it.
     $(".modal").on("shown.bs.modal", function() {
         $(this).find("[autofocus]").focus();
+    });
+
+    // fungsi penomoran BAST langsung
+    $(document).ready(function() {
+        // Dapatkan tanggal saat ini
+        var currentDate = new Date();
+
+        // Dapatkan tahun dari tanggal saat ini
+        var year = currentDate.getFullYear();
+
+        // Dapatkan bulan dari tanggal saat ini (tambah 1 karena bulan dimulai dari 0)
+        var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+
+        // Bangun nomor invoice tanpa urutan terlebih dahulu
+        var bastWithoutOrder = 'IT/BAST/' + year + '/' + month + '/';
+
+        // Lakukan AJAX request ke server untuk memeriksa urutan terakhir di database
+        $.ajax({
+            url: 'automatic-add-no-bast.php',
+            method: 'POST',
+            data: {
+                bastWithoutOrder: bastWithoutOrder
+            },
+            success: function(response) {
+                // Tanggapan dari server berisi urutan terakhir dari database
+                var lastOrder = parseInt(response);
+
+                // Tambahkan 1 ke urutan terakhir
+                var newOrder = (lastOrder).toString().padStart(2, '0');
+
+                // Bangun nomor invoice lengkap
+                var invoiceNumber = bastWithoutOrder + newOrder;
+
+                // Set nilai nomor invoice ke input dengan id #bast
+                $('#bast').val(invoiceNumber);
+            },
+            error: function() {
+                // Penanganan kesalahan jika terjadi
+                console.error('Error checking database for order number.');
+            }
+        });
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Ambil elemen select dan input
+        var selectSubmited = document.getElementById("submitted");
+        var inputDept = document.getElementById("dept-submitted");
+
+        // Tambahkan event listener pada perubahan nilai select
+        selectSubmited.addEventListener("change", function() {
+            // Ambil nilai dan data-dept dari opsi terpilih
+            var selectedOption = selectSubmited.options[selectSubmited.selectedIndex];
+            var selectedDept = selectedOption.getAttribute("data-dept");
+
+            // Set nilai input dengan data-dept terpilih
+            inputDept.value = selectedDept;
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Ambil elemen select dan input
+        var selectSubmited = document.getElementById("accepted");
+        var inputDept = document.getElementById("dept-accepted");
+
+        // Tambahkan event listener pada perubahan nilai select
+        selectSubmited.addEventListener("change", function() {
+            // Ambil nilai dan data-dept dari opsi terpilih
+            var selectedOption = selectSubmited.options[selectSubmited.selectedIndex];
+            var selectedDept = selectedOption.getAttribute("data-dept");
+
+            // Set nilai input dengan data-dept terpilih
+            inputDept.value = selectedDept;
+        });
     });
     </script>
 </body>
