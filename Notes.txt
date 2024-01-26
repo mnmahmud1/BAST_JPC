@@ -28,3 +28,4 @@ PR
 3. tambahkan notif berhasil disetiap update/input/dump data semua halaman
 4. tambahkan tombol generate SN di tambah data barang-masum / tambah barang (untuk barang yang tidak punya SN ; labeling ditambah SN ; biasanya untuk PC)
 5. Menambahkan form user sperti kode anydesk dsb, kemudian daftar akun dari user. sehingga jika ada user yang resign dapat langsung diidentifikasi akun yang dimilikinya.
+6. Membuat Form Rekapitulasi Penggunaan Iventaris per user JPC
