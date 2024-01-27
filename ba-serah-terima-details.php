@@ -125,24 +125,13 @@
                                             <div class="col-sm">
                                                 <label for="" class="form-label labeling-form">No Berita Acara</label>
                                                 <input type="text" class="form-control" placeholder="You Text Here"
-                                                    name="" id="" autofocus required />
-                                            </div>
-                                            <div class="col-sm">
-                                                <label for="" class="form-label labeling-form">Lokasi</label>
-                                                <select name="" id="" class="form-select" required>
-                                                    <option value="">Choose</option>
-                                                    <option value="">Head Office Jakarta</option>
-                                                    <option value="">Workshop Gunung Putri</option>
-                                                    <option value="">Branch Office Pekanbaru</option>
-                                                    <option value="">Branch Office Surabaya</option>
-                                                    <option value="">Branch Office Balikpapan</option>
-                                                </select>
+                                                    name="" id="" readonly required />
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-sm">
                                                 <label for="" class="form-label labeling-form">Diserahkan Oleh</label>
-                                                <select name="" id="" class="form-select" required>
+                                                <select name="" id="" class="form-select" disabled required>
                                                     <option value="">Choose</option>
                                                     <option value="">M Nurhasan Mahmudi</option>
                                                     <option value="">Ali Rakhman</option>
@@ -157,7 +146,7 @@
                                         <div class="row mb-3">
                                             <div class="col-sm">
                                                 <label for="" class="form-label labeling-form">Diterima Oleh</label>
-                                                <select name="" id="" class="form-select" required>
+                                                <select name="" id="" class="form-select" disabled required>
                                                     <option value="">Choose</option>
                                                     <option value="">M Nurhasan Mahmudi</option>
                                                     <option value="">Ali Rakhman</option>

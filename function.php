@@ -264,7 +264,7 @@ if(isset($_POST["tambahUser"])){
     $job = trim(htmlspecialchars($_POST['job']));
     $notes = trim(htmlspecialchars($_POST['notes']));
     
-    mysqli_query($conn, "INSERT INTO users (initial, name, nik, position, id_dept, id_branch, notes, created_at, created_by) VALUES('$initial', '$name', '$nik', '$job', $dept, $branch, '$notes', '$userCreated', $userCreated)");
+    mysqli_query($conn, "INSERT INTO users (initial, name, nik, position, id_dept, id_branch, notes, created_at, created_by) VALUES('$initial', '$name', '$nik', '$job', $dept, $branch, '$notes', '$userCreated', '$dateTime')");
 
     if(mysqli_affected_rows($conn)){
         // Jika ada perubahan pada update
@@ -292,5 +292,24 @@ if(isset($_POST["updateUser"])){
     } else {
         // Jika Tidak ada perubahan pada update
         header("Location: user-details.php?Initial=" . $initial);
+    }
+}
+
+if(isset($_POST["addBastGiven"])){
+    $bast = trim(htmlspecialchars($_POST['bast']));
+    $branch = trim(htmlspecialchars($_POST['branch']));
+    $submitted = trim(htmlspecialchars($_POST['submitted']));
+    $accepted = trim(htmlspecialchars($_POST['accepted']));
+    $notes = trim(htmlspecialchars($_POST['notes']));
+    
+    
+    mysqli_query($conn, "INSERT INTO bast_report (number, id_user_submitted, id_user_accepted, notes, created_at, created_by) VALUES('$bast', $submitted, $accepted, '$notes', '$dateTime', '$userCreated')"); 
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: berita-acara-serah-terima.php");
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: berita-acara-serah-terima.php");
     }
 }

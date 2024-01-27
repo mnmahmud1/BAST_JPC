@@ -15,6 +15,7 @@
 	$getUsersAdmin = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_admin = 1 AND as_dump = 0;");
 	$getUsersAll = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_dump = 0;");
 
+	$getBast = mysqli_query($conn, "SELECT bast_report.number, bast_report.status, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, dept_accepted.name AS accepted_dept, bast_report.notes, bast_report.created_at FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.as_dump = 0");
 ?>
 
 <!DOCTYPE html>
@@ -159,10 +160,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php foreach($getBast as $bast) : ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>GA/2022/08/005</td>
+                                                <td><?= $urutDaftar ?></td>
+                                                <td><?= $bast['number'] ?></td>
                                                 <td>
+                                                    <?php if($bast['status'] == 0) : ?>
                                                     <span class="text-primary">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                             fill="currentColor"
@@ -172,35 +175,7 @@
                                                                 d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-5.904-2.803a.5.5 0 1 1 .707.707L6.707 10h2.768a.5.5 0 0 1 0 1H5.5a.5.5 0 0 1-.5-.5V6.525a.5.5 0 0 1 1 0v2.768l4.096-4.096z" />
                                                         </svg>
                                                     </span>
-                                                </td>
-                                                <td>KEVIN ALNIAGARA (FA)</td>
-                                                <td>M N MAHMUDI (HR & GA)</td>
-                                                <td>DIPINJAM KE SITE SGT</td>
-                                                <td class="fs-6">10.40 PM 11-11-2022</td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-white" type="button"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                height="16" fill="currentColor"
-                                                                class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                                                            </svg>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item"
-                                                                    href="ba-serah-terima-details.php">Details</a></li>
-                                                            <li><a class="dropdown-item" href="#">See Pdf</a></li>
-                                                            <li><a class="dropdown-item" href="#">Print</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>GA/2022/08/005</td>
-                                                <td>
+                                                    <?php elseif($bast['status'] == 1) : ?>
                                                     <span class="text-secondary">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                             fill="currentColor" class="bi bi-arrow-up-right-circle-fill"
@@ -209,11 +184,12 @@
                                                                 d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707l-4.096 4.096z" />
                                                         </svg>
                                                     </span>
+                                                    <?php endif ?>
                                                 </td>
-                                                <td>M N MAHMUDI (HR & GA)</td>
-                                                <td>KEVIN ALNIAGARA (FA)</td>
-                                                <td>DIPINJAM KE SITE SGT</td>
-                                                <td class="fs-6">10.40 PM 11-11-2022</td>
+                                                <td><?= $bast['submitted_name'] ?> (<?= $bast['submitted_dept'] ?>)</td>
+                                                <td><?= $bast['accepted_name'] ?> (<?= $bast['accepted_dept'] ?>)</td>
+                                                <td><?= $bast['notes'] ?></td>
+                                                <td class="fs-6"><?= $bast['created_at'] ?></td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button class="btn btn-sm btn-white" type="button"
@@ -234,6 +210,8 @@
                                                     </div>
                                                 </td>
                                             </tr>
+                                            <?php $urutDaftar++; endforeach ?>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -262,7 +240,7 @@
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="post">
+                <form action="function.php" method="post">
                     <div class="modal-body px-4">
                         <div class="row mb-3">
                             <div class="col-sm">
@@ -270,20 +248,11 @@
                                 <input type="text" class="form-control" placeholder="You Text Here" name="bast"
                                     id="bast" readonly required />
                             </div>
-                            <div class="col-sm">
-                                <label for="branch" class="form-label labeling-form">Lokasi</label>
-                                <select name="branch" id="branch" class="form-select" autofocus required>
-                                    <option value="">Choose</option>
-                                    <?php foreach($getBranch as $branch) : ?>
-                                    <option value="<?= $branch['id'] ?>"><?= $branch['name'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="submitted" class="form-label labeling-form">Diserahkan Oleh (IT)</label>
-                                <select name="submitted" id="submitted" class="form-select" required>
+                                <select name="submitted" id="submitted" class="form-select" autofocus required>
                                     <option value="">Choose</option>
                                     <?php foreach($getUsersAdmin as $admin) : ?>
                                     <option value="<?= $admin['id'] ?>" data-dept="<?= $admin['dept_name'] ?>">
@@ -312,20 +281,21 @@
                             <div class="col-sm">
                                 <label for="dept-accepted" class="form-label labeling-form">Departement Penerima</label>
                                 <input type="text" name="dept-accepted" id="dept-accepted" class="form-control"
-                                    placeholder="Finance Accounting" readonly />
+                                    value="Choose" readonly />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Keterangan</label>
-                                <textarea name="" id="" cols="30" rows="2" class="form-control"
+                                <label for="notes" class="form-label labeling-form">Keterangan</label>
+                                <textarea name="notes" id="notes" cols="30" rows="2" class="form-control"
                                     placeholder="Your text here" required></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" tabindex="-1">Tambah</button>
+                        <button type="submit" class="btn btn-primary" tabindex="-1" name="addBastGiven"
+                            id="addBastGiven">Tambah</button>
                     </div>
                 </form>
             </div>
@@ -439,6 +409,20 @@
 
             // Set nilai input dengan data-dept terpilih
             inputDept.value = selectedDept;
+        });
+    });
+
+    // buat form input validation agar uppercase
+    $(document).ready(function() {
+        $("input[type=text], textarea").on("input", function() {
+            // Simpan posisi kursor
+            var caretPos = this.selectionStart;
+
+            // Ubah nilai menjadi huruf kapital
+            $(this).val($(this).val().toUpperCase());
+
+            // Kembalikan posisi kursor
+            this.setSelectionRange(caretPos, caretPos);
         });
     });
     </script>

@@ -79,7 +79,7 @@
                                 <a class="nav-link" href="perbaikan.html">Perbaikan Barang</a>
                             </nav>
                         </div>
-                        <a class="nav-link" href="user.html">
+                        <a class="nav-link" href="user.php">
                             <div class="sb-nav-link-icon">
                                 <i class="fa-solid fa-users"></i>
                             </div>
@@ -98,8 +98,8 @@
                         <div class="collapse" id="collapseLayoutsBAST" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="berita-acara-serah-terima.html">Serah Terima Inventaris</a>
-                                <a class="nav-link" href="barang-acara-scrapt.html">Scrapt Inventaris</a>
+                                <a class="nav-link" href="berita-acara-serah-terima.php">Serah Terima Inventaris</a>
+                                <a class="nav-link" href="barang-acara-scrapt.php">Scrapt Inventaris</a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#">
