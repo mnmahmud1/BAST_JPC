@@ -723,7 +723,6 @@
         });
     });
 
-
     // tombol untuk kirim baris ke modal html
     $(document).ready(function() {
         $('.send-modal').click(function() {

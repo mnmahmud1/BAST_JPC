@@ -31,3 +31,4 @@ PR
 6. Membuat Form Rekapitulasi Penggunaan Iventaris per user JPC
 7. Buat konfirmasi hapus dengan modal dengan menuliskan barangnya, seperti menghapus github.
 8. Tammbahkan batasan input form sesuai di database
+9. tambahkan form upload lampiran pada setiap input yang membutuhkan pemberkasan boleh gambar/dokumen Auto Detect untuk ditampilkan langsung pdf/img

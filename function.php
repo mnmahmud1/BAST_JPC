@@ -313,3 +313,31 @@ if(isset($_POST["addBastGiven"])){
         header("Location: berita-acara-serah-terima.php");
     }
 }
+
+if(isset($_POST["mutasiBarangMasukKeLisensi"])){
+    $inv = trim(htmlspecialchars($_POST['inv']));
+    $sn = trim(htmlspecialchars($_POST['sn']));
+    $description = trim(htmlspecialchars($_POST['description']));
+    $type_lisence = trim(htmlspecialchars($_POST['type_lisence']));
+    $seats = trim(htmlspecialchars($_POST['seats']));
+    $date_start = trim(htmlspecialchars($_POST['date_start']));
+    $date_end = trim(htmlspecialchars($_POST['date_end']));
+    $dept = trim(htmlspecialchars($_POST['dept']));
+    $branch = trim(htmlspecialchars($_POST['branch']));
+    $source = trim(htmlspecialchars($_POST['source']));
+    $notes = trim(htmlspecialchars($_POST['notes']));
+    
+    mysqli_query($conn, "INSERT INTO lisences (number, sn, description, id_lic_type, seats, date_start, date_end, id_lic_dept, id_lic_branch, id_lic_source, notes, created_at, created_by) VALUES('$inv', '$sn', '$description', $type_lisence, $seats, '$date_start', '$date_end', $dept, $branch, $source, '$notes', '$dateTime', '$userCreated')");
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        mysqli_query($conn, "UPDATE good_incoming_details SET as_inv = 1 WHERE sn = '$sn'");
+        
+        if(mysqli_affected_rows($conn)){
+            header("Location: lisensi.php");
+        } else {
+            // Jika Tidak ada perubahan pada update
+            header("Location: lisensi.php");
+        }
+    }
+}
