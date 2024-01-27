@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2024 at 04:32 PM
+-- Generation Time: Jan 27, 2024 at 05:22 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -30,14 +30,22 @@ SET time_zone = "+00:00";
 CREATE TABLE `bast_report` (
   `id` int(11) NOT NULL,
   `number` varchar(50) NOT NULL,
-  `id_bast_branch` varchar(50) NOT NULL,
   `id_user_submitted` int(3) NOT NULL,
   `id_user_accepted` int(3) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
   `notes` text NOT NULL,
-  `user_id` int(2) DEFAULT NULL,
+  `as_dump` tinyint(1) NOT NULL DEFAULT 0,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `created_at` datetime NOT NULL
+  `created_at` datetime NOT NULL,
+  `created_by` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `bast_report`
+--
+
+INSERT INTO `bast_report` (`id`, `number`, `id_user_submitted`, `id_user_accepted`, `status`, `notes`, `as_dump`, `updated_at`, `created_at`, `created_by`) VALUES
+(3, 'IT/BAST/2024/01/01', 1, 2, 1, 'TES', 0, '2024-01-27 03:55:01', '2024-01-27 10:54:05', 1);
 
 -- --------------------------------------------------------
 
@@ -106,7 +114,8 @@ INSERT INTO `dept` (`id`, `initial`, `name`, `updated_at`, `created_at`, `create
 (1, 'HRGA', 'HR & GA', '2024-01-12 16:24:37', '2024-01-12 17:23:57', 1),
 (2, 'QC', 'QUALITY CONTROL', '2024-01-12 16:24:37', '2024-01-12 17:23:57', 1),
 (3, 'PC', 'PROJECT CONTROL', '2024-01-12 16:24:56', '2024-01-12 17:24:40', 1),
-(4, 'PECRANES', 'PE CRANES', '2024-01-12 16:24:56', '2024-01-12 17:24:40', 1);
+(4, 'PECRANES', 'PE CRANES', '2024-01-12 16:24:56', '2024-01-12 17:24:40', 1),
+(5, 'PS', 'PRODUCT & SERVICES', '2024-01-27 04:17:59', '2024-01-27 05:17:44', 1);
 
 -- --------------------------------------------------------
 
@@ -142,11 +151,11 @@ CREATE TABLE `goods` (
 --
 
 INSERT INTO `goods` (`id`, `number`, `sn`, `description`, `specification`, `id_inv_type`, `id_inv_group`, `id_inv_allotment`, `id_inv_branch`, `id_inv_source`, `id_inv_dept`, `year`, `useful_period`, `id_inv_condition`, `notes`, `img`, `updated_at`, `created_at`, `as_dump`, `created_by`) VALUES
-(2, 'IT/REG/2024/01/01', 'ABP-1232-AWD3-23FS-234F', 'SOUND SYSTEM MIFA K12', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 5, 1, 1, 1, 1, '2024', 5, 1, 'REFF PWR 2023/JKT-0142; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; TES', NULL, '2024-01-13 05:14:11', '2024-01-13 12:14:11', 0, 1),
+(2, 'IT/REG/2024/01/01', 'ABP-1232-AWD3-23FS-234F', 'SOUND SYSTEM MIFA K12', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 4, 1, 2, 1, 1, '2023', 3, 1, 'REFF PWR 2023/JKT-0142; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; TES', NULL, '2024-01-21 14:50:33', '2024-01-13 12:14:11', 0, 1),
 (3, 'IT/REG/2024/01/02', 'ASDASDSF', 'MOUSE WIRELESS LOGITECH M190', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 1, 2, 2, 1, 3, '2024', 2, 1, 'REFF PWR ; REFF PO ;', NULL, '2024-01-15 15:03:04', '2024-01-15 22:03:04', 0, 1),
 (4, 'IT/REG/2024/01/03', '2223LZ917BZ8', 'MOUSE WIRELESS LOGITECH M190', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 1, 2, 2, 1, 2, '2024', 2, 1, 'REFF PWR 2023/JKT-0241; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; UNTUK MAHMUD', '72ff743b4caff43a37b2aa7c764a514b.jpg', '2024-01-16 13:40:45', '2024-01-16 20:40:45', 0, 1),
 (5, 'IT/REG/2024/01/04', '132234-ASDASD-23423DA', 'LISENSI AEC 2024', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 2, 3, 2, 1, 1, 1, '2023', 1, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/6; TES', '', '2024-01-16 15:07:43', '2024-01-16 22:07:43', 0, 1),
-(6, 'IT/REG/2024/01/05', 'APASAJABOLEH', 'LAPTOP ACER E5-471', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 2, 1, 2, 1, 3, 1, '2024', 3, 2, 'REFF LAIN-LAIN;', '25dc0b54a56cccef1051cbf493397b22.png', '2024-01-16 15:28:06', '2024-01-16 22:10:48', 0, 1);
+(6, 'IT/REG/2024/01/05', 'APASAJABOLEH', 'LAPTOP ACER ASPIRE E14 E5-471', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 2, 1, 2, 1, 3, 1, '2024', 10, 2, 'REFF LAIN-LAIN;', '25dc0b54a56cccef1051cbf493397b22.png', '2024-01-21 14:52:28', '2024-01-16 22:10:48', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -177,7 +186,8 @@ INSERT INTO `good_incoming` (`id`, `number`, `notes`, `updated_at`, `created_at`
 (7, 'IT/RR/2024/01/6', NULL, '2024-01-10 13:45:00', '2024-01-10 20:45:00', 1, 0),
 (8, 'IT/RR/2024/01/7', NULL, '2024-01-10 14:06:13', '2024-01-10 21:06:13', 1, 0),
 (9, 'IT/RR/2024/01/8', NULL, '2024-01-12 14:06:52', '2024-01-12 21:06:52', 1, 0),
-(10, 'IT/RR/2024/01/9', NULL, '2024-01-12 16:12:28', '2024-01-12 23:12:28', 1, 0);
+(10, 'IT/RR/2024/01/9', NULL, '2024-01-12 16:12:28', '2024-01-12 23:12:28', 1, 0),
+(11, 'IT/RR/2024/01/10', NULL, '2024-01-17 12:13:03', '2024-01-17 19:13:03', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -212,7 +222,8 @@ INSERT INTO `good_incoming_details` (`id`, `id_incoming`, `description`, `sn`, `
 (6, 7, 'SOUND SYSTEM MIFA K12', '12312BHJB1JH23B', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', NULL, '2024-01-10 13:45:10', '2024-01-10 20:45:10', 0, 0, 1),
 (7, 7, 'LISENSI AEC 2024', '132234-ASDASD-23423DA', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-01-16 15:07:43', '2024-01-10 21:02:57', 1, 0, 1),
 (8, 7, 'LISENSI SOLIDWORKS 2024', 'ASDADA-2342Q34A-SDDASD', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', NULL, '2024-01-10 14:03:34', '2024-01-10 21:03:34', 0, 0, 1),
-(9, 5, 'MOUSE WIRELESS LOGITECH M190', '2223LZ917BZ8', '2023/JKT-0241', '2023/JKT-L-0123', 1, 'UNTUK MAHMUD', '72ff743b4caff43a37b2aa7c764a514b.jpg', '2024-01-16 13:40:45', '2024-01-16 19:37:07', 1, 0, 1);
+(9, 5, 'MOUSE WIRELESS LOGITECH M190', '2223LZ917BZ8', '2023/JKT-0241', '2023/JKT-L-0123', 1, 'UNTUK MAHMUD', '72ff743b4caff43a37b2aa7c764a514b.jpg', '2024-01-16 13:40:45', '2024-01-16 19:37:07', 1, 0, 1),
+(10, 5, 'MOUSE WIRELESS LOGITECH M170', '12712BJHDJSAD', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'UNTUK EKA', 'a75c0c76c7237831e9003115b0396070.jpg', '2024-01-20 15:42:44', '2024-01-20 22:42:44', 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -392,7 +403,7 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `email` varchar(50) DEFAULT NULL,
   `password` varchar(60) DEFAULT NULL,
-  `initial` varchar(10) NOT NULL,
+  `initial` varchar(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `nik` varchar(15) NOT NULL,
   `position` varchar(50) NOT NULL,
@@ -400,16 +411,19 @@ CREATE TABLE `users` (
   `id_branch` int(11) NOT NULL,
   `notes` text NOT NULL,
   `as_admin` int(1) NOT NULL DEFAULT 0,
+  `as_dump` tinyint(1) NOT NULL DEFAULT 0,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `created_at` datetime NOT NULL
+  `created_at` datetime NOT NULL,
+  `created_by` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `password`, `initial`, `name`, `nik`, `position`, `id_dept`, `id_branch`, `notes`, `as_admin`, `updated_at`, `created_at`) VALUES
-(1, 'mahmudi.nurhasan@jpc.co.id', '$2a$12$54lFY47DRTOrUzlOB0lQ7.rP5sgNhenSPI.abJii.VhQisX3sA6Im', 'MHN', 'M NURHASAN MAHMUDI', 'JPC-JKT-825', 'IT SUPPORT', 1, 1, '', 1, '2023-11-29 09:16:18', '2023-11-29 09:28:31');
+INSERT INTO `users` (`id`, `email`, `password`, `initial`, `name`, `nik`, `position`, `id_dept`, `id_branch`, `notes`, `as_admin`, `as_dump`, `updated_at`, `created_at`, `created_by`) VALUES
+(1, 'mahmudi.nurhasan@jpc.co.id', '$2a$12$54lFY47DRTOrUzlOB0lQ7.rP5sgNhenSPI.abJii.VhQisX3sA6Im', 'MHN', 'M NURHASAN MAHMUDI', 'JPC-JKT-825', 'IT SUPPORT', 1, 2, 'TES', 1, 0, '2024-01-26 15:58:34', '2023-11-29 09:28:31', NULL),
+(2, NULL, NULL, 'RCF', 'RICO FERNANDES', 'JPC-JKT-812', 'TECHNICAL SUPPORT', 5, 2, '-', 0, 0, '2024-01-27 04:18:13', '0000-00-00 00:00:00', NULL);
 
 --
 -- Indexes for dumped tables
@@ -519,7 +533,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bast_report`
 --
 ALTER TABLE `bast_report`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `bast_report_details`
@@ -537,7 +551,7 @@ ALTER TABLE `branch`
 -- AUTO_INCREMENT for table `dept`
 --
 ALTER TABLE `dept`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `goods`
@@ -549,13 +563,13 @@ ALTER TABLE `goods`
 -- AUTO_INCREMENT for table `good_incoming`
 --
 ALTER TABLE `good_incoming`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `good_incoming_details`
 --
 ALTER TABLE `good_incoming_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `inv_allotment`
@@ -609,7 +623,7 @@ ALTER TABLE `source`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
