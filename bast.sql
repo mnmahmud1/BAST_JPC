@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2024 at 05:22 AM
+-- Generation Time: Jan 27, 2024 at 05:57 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -218,10 +218,10 @@ CREATE TABLE `good_incoming_details` (
 
 INSERT INTO `good_incoming_details` (`id`, `id_incoming`, `description`, `sn`, `pwr`, `po`, `type`, `notes`, `img`, `updated_at`, `created_at`, `as_inv`, `as_dump`, `created_by`) VALUES
 (1, 5, 'SOUND SYSTEM MIFA K12', 'ABP-1232-AWD3-23FS-234F', '2023/JKT-0142', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-01-13 05:14:11', '2024-01-09 21:14:42', 1, 0, 1),
-(2, 5, 'LISENSI AEC 2024', 'ABP-1232-AWD3-23FS-234F1', '2024/JKT-0023', 'MEMO/JKT-0011', 2, 'AEC 2024 UNTUK ENG', NULL, '2024-01-13 04:47:20', '2024-01-09 21:28:04', 0, 0, 1),
-(6, 7, 'SOUND SYSTEM MIFA K12', '12312BHJB1JH23B', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', NULL, '2024-01-10 13:45:10', '2024-01-10 20:45:10', 0, 0, 1),
+(2, 5, 'LISENSI AEC 2024', 'ABP-1232-AWD3-23FS-234F1', '2024/JKT-0023', 'MEMO/JKT-0011', 2, 'AEC 2024 UNTUK ENG', NULL, '2024-01-27 16:17:21', '2024-01-09 21:28:04', 1, 0, 1),
+(6, 7, 'SOUND SYSTEM MIFA K12', '12312BHJB1JH23B', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-01-27 15:18:23', '2024-01-10 20:45:10', 0, 0, 1),
 (7, 7, 'LISENSI AEC 2024', '132234-ASDASD-23423DA', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-01-16 15:07:43', '2024-01-10 21:02:57', 1, 0, 1),
-(8, 7, 'LISENSI SOLIDWORKS 2024', 'ASDADA-2342Q34A-SDDASD', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', NULL, '2024-01-10 14:03:34', '2024-01-10 21:03:34', 0, 0, 1),
+(8, 7, 'LISENSI SOLIDWORKS 2024', 'ASDADA-2342Q34A-SDDASD', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', NULL, '2024-01-27 16:18:15', '2024-01-10 21:03:34', 1, 0, 1),
 (9, 5, 'MOUSE WIRELESS LOGITECH M190', '2223LZ917BZ8', '2023/JKT-0241', '2023/JKT-L-0123', 1, 'UNTUK MAHMUD', '72ff743b4caff43a37b2aa7c764a514b.jpg', '2024-01-16 13:40:45', '2024-01-16 19:37:07', 1, 0, 1),
 (10, 5, 'MOUSE WIRELESS LOGITECH M170', '12712BJHDJSAD', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'UNTUK EKA', 'a75c0c76c7237831e9003115b0396070.jpg', '2024-01-20 15:42:44', '2024-01-20 22:42:44', 0, 0, 1);
 
@@ -314,30 +314,6 @@ INSERT INTO `inv_type` (`id`, `name`, `updated_at`, `created_at`, `created_by`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `licences`
---
-
-CREATE TABLE `licences` (
-  `id` int(11) NOT NULL,
-  `number` varchar(100) NOT NULL,
-  `sn` varchar(100) NOT NULL,
-  `desc` varchar(100) NOT NULL,
-  `id_lic_type` int(2) NOT NULL,
-  `seats` int(2) NOT NULL,
-  `date_start` datetime NOT NULL,
-  `date_end` datetime NOT NULL,
-  `id_lic_dept` int(2) NOT NULL,
-  `id_lic_branch` int(2) NOT NULL,
-  `id_lic_source` int(2) NOT NULL,
-  `notes` text NOT NULL,
-  `user_id` int(2) DEFAULT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `created_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `lic_type`
 --
 
@@ -348,6 +324,39 @@ CREATE TABLE `lic_type` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lisences`
+--
+
+CREATE TABLE `lisences` (
+  `id` int(11) NOT NULL,
+  `number` varchar(20) NOT NULL,
+  `sn` varchar(100) NOT NULL,
+  `description` varchar(150) NOT NULL,
+  `id_lic_type` int(2) NOT NULL,
+  `seats` int(3) NOT NULL,
+  `date_start` datetime NOT NULL,
+  `date_end` datetime DEFAULT NULL,
+  `id_lic_dept` int(2) NOT NULL,
+  `id_lic_branch` int(2) NOT NULL,
+  `id_lic_source` int(2) NOT NULL,
+  `notes` text NOT NULL,
+  `as_dump` tinyint(1) NOT NULL DEFAULT 0,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `created_at` datetime NOT NULL,
+  `created_by` int(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `lisences`
+--
+
+INSERT INTO `lisences` (`id`, `number`, `sn`, `description`, `id_lic_type`, `seats`, `date_start`, `date_end`, `id_lic_dept`, `id_lic_branch`, `id_lic_source`, `notes`, `as_dump`, `updated_at`, `created_at`, `created_by`) VALUES
+(2, 'IT/LIC/2024/01/01', 'ABP-1232-AWD3-23FS-234F1', 'LISENSI AEC 2024', 2, 5, '2024-01-27 00:00:00', '2025-01-27 00:00:00', 1, 2, 1, 'REFF PWR 2024/JKT-0023; REFF PO MEMO/JKT-0011; RR IT IT/RR/2024/01/4; AEC 2024 UNTUK ENG', 0, '2024-01-27 16:17:21', '2024-01-27 23:17:21', 1),
+(3, 'IT/LIC/2024/01/02', 'ASDADA-2342Q34A-SDDASD', 'LISENSI SOLIDWORKS 2024', 1, 1, '2024-01-24 00:00:00', '0000-00-00 00:00:00', 4, 2, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/6; TES', 0, '2024-01-27 16:18:15', '2024-01-27 23:18:15', 1);
 
 -- --------------------------------------------------------
 
@@ -496,15 +505,15 @@ ALTER TABLE `inv_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `licences`
---
-ALTER TABLE `licences`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `lic_type`
 --
 ALTER TABLE `lic_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `lisences`
+--
+ALTER TABLE `lisences`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -596,16 +605,16 @@ ALTER TABLE `inv_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `licences`
---
-ALTER TABLE `licences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `lic_type`
 --
 ALTER TABLE `lic_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `lisences`
+--
+ALTER TABLE `lisences`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `session_log`

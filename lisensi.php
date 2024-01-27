@@ -187,7 +187,7 @@
                                                     <?= date("d/m/Y", strtotime($lisensi['date_end'])) ?>
                                                     <?php endif ?>
                                                 </td>
-                                                <td>5</td>
+                                                <td><?= $lisensi['seats'] ?></td>
                                                 <td class="fs-6"><?= $lisensi['created_at'] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-white"
