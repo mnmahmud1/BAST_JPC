@@ -83,3 +83,33 @@ function validateInitialManual() {
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhr.send("initialCheck=" + snInput);
 }
+
+//Melalukan pemindaian cookie secara otomatis jika cookie login sudah kadaluarsa
+$(document).ready(function () {
+	// Fungsi untuk memeriksa cookie
+	function checkCookie() {
+		// Ambil nilai cookie dengan nama "_beta_log"
+		var betaLogCookie = getCookie("_beta_log");
+
+		// Jika cookie tidak ada atau sudah kedaluwarsa
+		if (!betaLogCookie) {
+			// Lakukan pemindahan halaman ke login.php
+			window.location.href = "login.php";
+		}
+	}
+
+	// Fungsi untuk mendapatkan nilai cookie berdasarkan nama
+	function getCookie(name) {
+		var cookies = document.cookie.split(";");
+		for (var i = 0; i < cookies.length; i++) {
+			var cookie = cookies[i].trim();
+			if (cookie.indexOf(name + "=") === 0) {
+				return cookie.substring(name.length + 1);
+			}
+		}
+		return null;
+	}
+
+	// Panggil fungsi checkCookie setiap 5 detik (5000 milidetik)
+	setInterval(checkCookie, 1000);
+});
