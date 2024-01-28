@@ -221,9 +221,9 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-white"
-                                                data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" class="btn btn-primary" tabindex="-1">Tambah</button>
+                                            <button type="button" class="btn btn-white" data-bs-dismiss="modal"
+                                                tabindex="-1">Back</button>
+                                            <button type="submit" class="btn btn-primary">Update</button>
                                         </div>
                                     </form>
                                 </div>

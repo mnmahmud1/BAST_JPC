@@ -60,7 +60,7 @@
     </div>
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand ps-3" href="index.php">Start Bootstrap</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
             <i class="fas fa-bars"></i>
@@ -72,7 +72,7 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-tachometer-alt"></i>
                             </div>
@@ -91,13 +91,13 @@
                         <div class="collapse show" id="collapseLayouts" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link active" href="barang.html">Daftar Barang</a>
-                                <a class="nav-link" href="lisensi.html">Daftar Lisensi</a>
+                                <a class="nav-link active" href="barang.php">Daftar Barang</a>
+                                <a class="nav-link" href="lisensi.php">Daftar Lisensi</a>
                                 <a class="nav-link" href="barang-masuk.php">Barang Masuk</a>
-                                <a class="nav-link" href="perbaikan.html">Perbaikan Barang</a>
+                                <a class="nav-link" href="perbaikan.php">Perbaikan Barang</a>
                             </nav>
                         </div>
-                        <a class="nav-link" href="user.html">
+                        <a class="nav-link" href="user.php">
                             <div class="sb-nav-link-icon">
                                 <i class="fa-solid fa-users"></i>
                             </div>
@@ -116,8 +116,8 @@
                         <div class="collapse" id="collapseLayoutsBAST" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="berita-acara-serah-terima.html">Serah Terima Inventaris</a>
-                                <a class="nav-link" href="barang-acara-scrapt.html">Scrapt Inventaris</a>
+                                <a class="nav-link" href="berita-acara-serah-terima.php">Serah Terima Inventaris</a>
+                                <a class="nav-link" href="barang-acara-scrapt.php">Scrapt Inventaris</a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#">

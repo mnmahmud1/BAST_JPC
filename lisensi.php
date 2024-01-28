@@ -191,7 +191,7 @@
                                                 <td class="fs-6"><?= $lisensi['created_at'] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-white"
-                                                        onclick="window.location.href = 'lisensi-details.html'">
+                                                        onclick="window.location.href = 'lisensi-details.php'">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                             fill="currentColor" class="bi bi-info-circle"
                                                             viewBox="0 0 16 16">
