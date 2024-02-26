@@ -341,3 +341,31 @@ if(isset($_POST["mutasiBarangMasukKeLisensi"])){
         }
     }
 }
+
+if(isset($_POST["tambahLisensiManual"])){
+    $inv = trim(htmlspecialchars($_POST['invM']));
+    $sn = trim(htmlspecialchars($_POST['snM']));
+    $description = trim(htmlspecialchars($_POST['descriptionM']));
+    $type_lisence = trim(htmlspecialchars($_POST['type_lisenceM']));
+    $seats = trim(htmlspecialchars($_POST['seatsM']));
+    $date_start = trim(htmlspecialchars($_POST['date_startM']));
+    $date_end = trim(htmlspecialchars($_POST['date_endM']));
+    $dept = trim(htmlspecialchars($_POST['deptM']));
+    $branch = trim(htmlspecialchars($_POST['branchM']));
+    $source = trim(htmlspecialchars($_POST['sourceM']));
+    $notes = trim(htmlspecialchars($_POST['notesM']));
+    
+    mysqli_query($conn, "INSERT INTO lisences (number, sn, description, id_lic_type, seats, date_start, date_end, id_lic_dept, id_lic_branch, id_lic_source, notes, created_at, created_by) VALUES('$inv', '$sn', '$description', $type_lisence, $seats, '$date_start', '$date_end', $dept, $branch, $source, '$notes', '$dateTime', '$userCreated')");
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        mysqli_query($conn, "UPDATE good_incoming_details SET as_inv = 1 WHERE sn = '$sn'");
+        
+        if(mysqli_affected_rows($conn)){
+            header("Location: lisensi.php");
+        } else {
+            // Jika Tidak ada perubahan pada update
+            header("Location: lisensi.php");
+        }
+    }
+}

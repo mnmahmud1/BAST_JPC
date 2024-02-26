@@ -232,94 +232,103 @@
                     <h1 class="modal-title fs-5" id="modalTambahLabel">Tambah Lisensi</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="post">
+                <form action="function.php" method="post">
                     <div class="modal-body px-4">
                         <div class="row mb-3">
                             <div class="col-sm-4">
-                                <label for="" class="form-label labeling-form">No Lisensi</label>
-                                <input type="text" class="form-control" placeholder="You Text Here" name="" id=""
+                                <label for="invM" class="form-label labeling-form">No Lisensi</label>
+                                <input type="text" class="form-control" placeholder="You Text Here" name="invM"
+                                    id="invM" readonly required />
+                            </div>
+                            <div class="col-sm-8">
+                                <label for="snM" class="form-label labeling-form">Serial/Subscribtion ID</label>
+                                <input type="text" class="form-control" placeholder="Your text here" name="snM" id="snM"
                                     autofocus required />
                             </div>
-                            <div class="col-sm-8">
-                                <label for="" class="form-label labeling-form">Serial/Subscribtion ID</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="" id=""
-                                    required />
-                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-8">
-                                <label for="" class="form-label labeling-form">Deskripsi Lisensi</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="" id=""
-                                    required />
+                                <label for="descriptionM" class="form-label labeling-form">Deskripsi Lisensi</label>
+                                <input type="text" class="form-control" placeholder="Your text here" name="descriptionM"
+                                    id="descriptionM" required />
                             </div>
                             <div class="col-sm-4">
-                                <label for="" class="form-label labeling-form">Type Lisence</label>
-                                <select name="" id="" class="form-select" required>
+                                <label for="type_lisenceM" class="form-label labeling-form">Type Lisence</label>
+                                <select name="type_lisenceM" id="type_lisenceM" class="form-select type_lisence"
+                                    required>
                                     <option value="">Choose</option>
-                                    <option value="">Perpetual Lisence</option>
-                                    <option value="">Subscribtion Lisence</option>
+                                    <option value="1">PERPETUAL LISENCE</option>
+                                    <option value="2">SUBSCRIBTION LISENCE</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Seats</label>
-                                <input type="number" class="form-control" placeholder="Your text here" name="" id=""
-                                    required />
+                                <label for="seatsM" class="form-label labeling-form">Seats</label>
+                                <input type="number" class="form-control" placeholder="Your text here" name="seatsM"
+                                    id="seatsM" required />
                             </div>
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Date Start</label>
-                                <input type="date" class="form-control" placeholder="Your text here" name="" id=""
-                                    required />
+                                <label for="date_startM" class="form-label labeling-form">Date Start</label>
+                                <input type="date" class="form-control" placeholder="Your text here" name="date_startM"
+                                    id="date_startM" required />
                             </div>
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Date End</label>
-                                <input type="date" class="form-control" placeholder="Your text here" name="" id=""
-                                    required />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Departemen</label>
-                                <select name="" id="" class="form-select">
-                                    <option value="">Choose</option>
-                                    <option value="">HR & GA</option>
-                                    <option value="">QC</option>
-                                    <option value="">Project Control</option>
-                                </select>
-                            </div>
-                            <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Lokasi</label>
-                                <select name="" id="" class="form-select" required>
-                                    <option value="">Choose</option>
-                                    <option value="">Head Office Jakarta</option>
-                                    <option value="">Workshop Gunung Putri</option>
-                                    <option value="">Branch Office Pekanbaru</option>
-                                    <option value="">Branch Office Surabaya</option>
-                                    <option value="">Branch Office Balikpapan</option>
-                                </select>
-                            </div>
-                            <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Asal Usul</label>
-                                <select name="" id="" class="form-select" required>
-                                    <option value="">Choose</option>
-                                    <option value="">PWR</option>
-                                    <option value="">Hibah</option>
-                                    <option value="">Lain-Lain</option>
-                                </select>
+                                <label for="date_endM" class="form-label labeling-form">Date End <span
+                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-title="Jika Perpetual Lisence maka form ini dibiarkan kosong">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2" />
+                                        </svg>
+                                    </span></label>
+                                <input type="date" class="form-control date_end" placeholder="Your text here"
+                                    name="date_endM" id="date_endM" required />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Keterangan</label>
-                                <textarea name="" id="" cols="30" rows="2" class="form-control"
+                                <label for="deptM" class="form-label labeling-form">Departemen</label>
+                                <select name="deptM" id="deptM" class="form-select">
+                                    <option value="">Choose</option>
+                                    <?php foreach($getDept as $dept) : ?>
+                                    <option value="<?= $dept['id'] ?>"><?= $dept['name'] ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <div class="col-sm">
+                                <label for="branchM" class="form-label labeling-form">Lokasi</label>
+                                <select name="branchM" id="branchM" class="form-select" required>
+                                    <option value="">Choose</option>
+                                    <?php foreach($getBranch as $branch) : ?>
+                                    <option value="<?= $branch['id'] ?>"><?= $branch['name'] ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <div class="col-sm">
+                                <label for="sourceM" class="form-label labeling-form">Asal Usul</label>
+                                <select name="sourceM" id="sourceM" class="form-select" required
+                                    onchange="updateTextarea()">
+                                    <option value="">Choose</option>
+                                    <option value="1">PWR</option>
+                                    <option value="2">HIBAH</option>
+                                    <option value="3">LAIN-LAIN</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm">
+                                <label for="notesM" class="form-label labeling-form">Keterangan</label>
+                                <textarea name="notesM" id="notesM" cols="30" rows="2" class="form-control"
                                     placeholder="Your text here" required></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" tabindex="-1">Tambah</button>
+                        <button type="button" class="btn btn-white" data-bs-dismiss="modal"
+                            tabindex="-1">Cancel</button>
+                        <button type="submit" name="tambahLisensiManual" class="btn btn-primary">Tambah</button>
                     </div>
                 </form>
             </div>
@@ -412,20 +421,21 @@
                             </div>
                             <div class="col-sm-8">
                                 <label for="sn" class="form-label labeling-form">Serial/Subscribtion ID</label>
-                                <input type="text" class="form-control" placeholder="Your text here"
-                                    value="12DA2-23RFSFSDFSD" name="sn" id="sn" required readonly />
+                                <input type="text" class="form-control" placeholder="Your text here" value="" name="sn"
+                                    id="sn" required readonly />
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm-8">
                                 <label for="description" class="form-label labeling-form">Deskripsi Lisensi</label>
-                                <input type="text" class="form-control" placeholder="Your text here"
-                                    value="SolidWorks 2023 Lisence" name="description" id="description" required
-                                    readonly />
+                                <input type="text" class="form-control" placeholder="Your text here" value=""
+                                    name="description" id="description" required readonly />
                             </div>
                             <div class="col-sm-4">
-                                <label for="type_lisence" class="form-label labeling-form">Type Lisence</label>
-                                <select name="type_lisence" id="type_lisence" class="form-select" autofocus required>
+                                <label for="type_lisence" class="form-label labeling-form">Type
+                                    Lisence</label>
+                                <select name="type_lisence" id="type_lisence" class="form-select type_lisence" autofocus
+                                    required>
                                     <option value="">Choose</option>
                                     <option value="1">PERPETUAL LISENCE</option>
                                     <option value="2">SUBSCRIBTION LISENCE</option>
@@ -453,8 +463,8 @@
                                                 d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2" />
                                         </svg>
                                     </span></label>
-                                <input type="date" class="form-control" placeholder="Your text here" name="date_end"
-                                    id="date_end" required />
+                                <input type="date" class="form-control date_end" placeholder="Your text here"
+                                    name="date_end" id="date_end" required />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -618,17 +628,17 @@
 
     $(document).ready(function() {
         // Tambahkan event listener pada perubahan nilai select
-        $('#type_lisence').on('change', function() {
+        $('.type_lisence').on('change', function() {
             // Ambil nilai terpilih
             var selectedValue = $(this).val();
 
             // Cek apakah "PERPETUAL LISENCE" terpilih
             if (selectedValue === '1') {
                 // Nonaktifkan input date
-                $('#date_end').prop('disabled', true);
+                $('.date_end').prop('disabled', true);
             } else {
                 // Aktifkan kembali input date
-                $('#date_end').prop('disabled', false);
+                $('.date_end').prop('disabled', false);
             }
         });
     });
@@ -636,6 +646,24 @@
     // enable tooltip 
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+    function updateTextarea() {
+        var selectElement = document.getElementById("sourceM");
+        var textareaElement = document.getElementById("notesM");
+
+        // Mendapatkan nilai yang dipilih
+        var selectedValue = selectElement.value;
+
+        // Periksa nilai yang dipilih
+        if (selectedValue === "1") {
+            // Jika PWR dipilih, tambahkan teks ke textarea
+            textareaElement.value = "REFF PWR ; REFF PO ;";
+        } else {
+            // Jika pilihan selain PWR dipilih, tidak menghapus teks yang telah dimasukkan manual
+            // Hanya menambahkan teks berdasarkan pilihan
+            textareaElement.value += "REFF " + selectElement.options[selectElement.selectedIndex].text + "; ";
+        }
+    }
     </script>
 </body>
 
