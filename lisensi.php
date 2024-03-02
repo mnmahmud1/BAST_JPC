@@ -191,7 +191,7 @@
                                                 <td class="fs-6"><?= $lisensi['created_at'] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-white"
-                                                        onclick="window.location.href = 'lisensi-details.php'">
+                                                        onclick="window.location.href = 'lisensi-details.php?inv=<?= $lisensi['number'] ?>'">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                             fill="currentColor" class="bi bi-info-circle"
                                                             viewBox="0 0 16 16">
@@ -243,7 +243,8 @@
                             <div class="col-sm-8">
                                 <label for="snM" class="form-label labeling-form">Serial/Subscribtion ID</label>
                                 <input type="text" class="form-control" placeholder="Your text here" name="snM" id="snM"
-                                    autofocus required />
+                                    onchange="validateSNLisensi()" autofocus required />
+                                <span id="snError"></span>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -328,7 +329,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-bs-dismiss="modal"
                             tabindex="-1">Cancel</button>
-                        <button type="submit" name="tambahLisensiManual" class="btn btn-primary">Tambah</button>
+                        <button type="submit" name="tambahLisensiManual" id="tambahLisensiManual"
+                            class="btn btn-primary">Tambah</button>
                     </div>
                 </form>
             </div>
@@ -636,9 +638,13 @@
             if (selectedValue === '1') {
                 // Nonaktifkan input date
                 $('.date_end').prop('disabled', true);
+                // Hilangkan atribut required
+                $('.date_end').removeAttr('required');
             } else {
                 // Aktifkan kembali input date
                 $('.date_end').prop('disabled', false);
+                // Tambahkan atribut required
+                $('.date_end').prop('required', true);
             }
         });
     });

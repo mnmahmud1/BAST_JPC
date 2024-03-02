@@ -113,3 +113,25 @@ $(document).ready(function () {
 	// Panggil fungsi checkCookie setiap 5 detik (5000 milidetik)
 	setInterval(checkCookie, 1000);
 });
+
+// fungsi validasi SN di form lisensi.php
+function validateSNLisensi() {
+	var snInput = document.getElementById("snM").value;
+	var snError = document.getElementById("snError");
+	var submitButton = document.getElementById("tambahLisensiManual");
+
+	// Kirim permintaan AJAX ke file PHP untuk memeriksa keberadaan nomor unik di database
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			var response = xhr.responseText;
+			snError.innerHTML = response;
+
+			// Nonaktifkan atau aktifkan tombol berdasarkan respons dari server
+			submitButton.disabled = response.includes("sudah ada dalam database");
+		}
+	};
+	xhr.open("POST", "check-sn-lisensi.php", true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.send("sn-lisensi=" + snInput);
+}

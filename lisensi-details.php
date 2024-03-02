@@ -9,6 +9,17 @@
     $nameUser = $_COOKIE["_name_log"];
     $idUser = $_COOKIE["_beta_log"];
 
+    $number = $_GET["inv"];
+	$queryGetDaftarLisensi = mysqli_query($conn, "SELECT lisences.number, lisences.sn, lisences.description, lisences.id_lic_type, lisences.seats, lisences.date_start, lisences.date_end, lisences.id_lic_branch, lisences.id_lic_dept, lisences.id_lic_source, lisences.notes, branch.name AS branch, dept.name AS dept, source.name AS source FROM lisences INNER JOIN branch ON lisences.id_lic_branch = branch.id INNER JOIN dept ON lisences.id_lic_dept = dept.id INNER JOIN source ON lisences.id_lic_source = source.id WHERE lisences.number = '$number'");
+    $getDaftarLisensiInv = mysqli_fetch_assoc($queryGetDaftarLisensi);
+	if($number == '' OR mysqli_num_rows($queryGetDaftarLisensi) == 0){
+		header("Location: lisensi.php");
+	}
+
+    $getBranch = mysqli_query($conn, "SELECT id, name FROM branch");
+	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
+	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
+
     $urutDaftar = 1;
 
 ?>
@@ -120,7 +131,7 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h3 class="mt-4">Details - Lisensi SolidWorks 2023</h3>
+                    <h3 class="mt-4">Details - <?= $getDaftarLisensiInv["description"] ?></h3>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="lisensi.php">Lisensi</a></li>
@@ -133,97 +144,142 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="mb-4">Deskripsi Lisensi</h5>
-                                    <form action="" method="post">
+                                    <form action="function.php" method="post">
                                         <div class="modal-body px-4">
                                             <div class="row mb-3">
                                                 <div class="col-sm-4">
-                                                    <label for="" class="form-label labeling-form">No Lisensi</label>
+                                                    <label for="inv" class="form-label labeling-form">No
+                                                        Lisensi</label>
                                                     <input type="text" class="form-control" placeholder="You Text Here"
-                                                        name="" id="" required />
+                                                        name="inv" id="inv"
+                                                        value="<?= $getDaftarLisensiInv["number"] ?>" readonly />
                                                 </div>
                                                 <div class="col-sm-8">
-                                                    <label for="" class="form-label labeling-form">Serial/Subscribtion
+                                                    <label for="sn" class="form-label labeling-form">Serial/Subscribtion
                                                         ID</label>
                                                     <input type="text" class="form-control" placeholder="Your text here"
-                                                        name="" id="" required />
+                                                        name="sn" id="sn" value="<?= $getDaftarLisensiInv["sn"] ?>"
+                                                        readonly />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <div class="col-sm-8">
-                                                    <label for="" class="form-label labeling-form">Deskripsi
+                                                    <label for="description" class="form-label labeling-form">Deskripsi
                                                         Lisensi</label>
                                                     <input type="text" class="form-control" placeholder="Your text here"
-                                                        name="" id="" required />
+                                                        name="description" id="description"
+                                                        value="<?= $getDaftarLisensiInv["description"] ?>" required />
                                                 </div>
                                                 <div class="col-sm-4">
-                                                    <label for="" class="form-label labeling-form">Type Lisence</label>
-                                                    <select name="" id="" class="form-select" required>
-                                                        <option value="">Choose</option>
-                                                        <option value="">Perpetual License</option>
-                                                        <option value="">Subscribtion Lisence</option>
+                                                    <label for="type_lic" class="form-label labeling-form">Type
+                                                        Lisence</label>
+                                                    <select name="type_lic" id="type_lic"
+                                                        class="form-select type_lisence" required>
+                                                        <?php if($getDaftarLisensiInv['id_lic_type'] == 1) : ?>
+                                                        <option value="<?= $getDaftarLisensiInv['id_lic_type'] ?>">
+                                                            PERPETUAL LISENCE - DEFAULT</option>
+                                                        <?php elseif($getDaftarLisensiInv['id_lic_type'] == 2) : ?>
+                                                        <option value="<?= $getDaftarLisensiInv['id_lic_type'] ?>">
+                                                            SUBSCRIBTION LISENCE - DEFAULT</option>
+                                                        <?php endif ?>
+                                                        <option value="1">PERPETUAL LISENCE</option>
+                                                        <option value="2">SUBSCRIBTION LISENCE</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <div class="col-sm">
-                                                    <label for="" class="form-label labeling-form">Seats</label>
+                                                    <label for="seats" class="form-label labeling-form">Seats</label>
                                                     <input type="number" class="form-control"
-                                                        placeholder="Your text here" name="" id="" required />
+                                                        placeholder="Your text here" name="seats" id="seats"
+                                                        value="<?= $getDaftarLisensiInv["seats"] ?>" required />
                                                 </div>
                                                 <div class="col-sm">
-                                                    <label for="" class="form-label labeling-form">Date Start</label>
-                                                    <input type="date" class="form-control" placeholder="Your text here"
-                                                        name="" id="" required />
+                                                    <label for="date_start" class="form-label labeling-form">Date
+                                                        Start</label>
+                                                    <input type="date" class="form-control" name="date_start"
+                                                        id="date_start"
+                                                        value="<?= date("Y-m-d", strtotime($getDaftarLisensiInv["date_start"])) ?>"
+                                                        required />
                                                 </div>
                                                 <div class="col-sm">
-                                                    <label for="" class="form-label labeling-form">Date End</label>
-                                                    <input type="date" class="form-control" placeholder="Your text here"
-                                                        name="" id="" required />
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-sm">
-                                                    <label for="" class="form-label labeling-form">Departemen</label>
-                                                    <select name="" id="" class="form-select">
-                                                        <option value="">Choose</option>
-                                                        <option value="">HR & GA</option>
-                                                        <option value="">QC</option>
-                                                        <option value="">Project Control</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm">
-                                                    <label for="" class="form-label labeling-form">Lokasi</label>
-                                                    <select name="" id="" class="form-select" required>
-                                                        <option value="">Choose</option>
-                                                        <option value="">Head Office Jakarta</option>
-                                                        <option value="">Workshop Gunung Putri</option>
-                                                        <option value="">Branch Office Pekanbaru</option>
-                                                        <option value="">Branch Office Surabaya</option>
-                                                        <option value="">Branch Office Balikpapan</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm">
-                                                    <label for="" class="form-label labeling-form">Asal Usul</label>
-                                                    <select name="" id="" class="form-select" required>
-                                                        <option value="">Choose</option>
-                                                        <option value="">PWR</option>
-                                                        <option value="">Hibah</option>
-                                                        <option value="">Lain-Lain</option>
-                                                    </select>
+                                                    <label for="date_end" class="form-label labeling-form">Date
+                                                        End <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            data-bs-title="Jika Perpetual Lisence maka form ini dibiarkan kosong">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" fill="currentColor"
+                                                                class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2" />
+                                                            </svg>
+                                                        </span></label>
+                                                    <input type="date" class="form-control date_end" name="date_end"
+                                                        id="date_end"
+                                                        value="<?= date("Y-m-d", strtotime($getDaftarLisensiInv["date_end"])) ?>" />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <div class="col-sm">
-                                                    <label for="" class="form-label labeling-form">Keterangan</label>
-                                                    <textarea name="" id="" cols="30" rows="2" class="form-control"
-                                                        placeholder="Your text here" required></textarea>
+                                                    <label for="dept"
+                                                        class="form-label labeling-form">Departemen</label>
+                                                    <select name="dept" id="dept" class="form-select">
+                                                        <option value="<?= $getDaftarLisensiInv['id_lic_dept'] ?>"
+                                                            selected>
+                                                            <?= $getDaftarLisensiInv['dept'] ?> - DEFAULT</option>
+                                                        <?php foreach($getDept as $dept) : ?>
+                                                        <option value="<?= $dept['id'] ?>"><?= $dept['name'] ?></option>
+                                                        <?php endforeach ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <label for="branch" class="form-label labeling-form">Lokasi</label>
+                                                    <select name="branch" id="branch" class="form-select" required>
+                                                        <option value="<?= $getDaftarLisensiInv['id_lic_branch'] ?>"
+                                                            selected><?= $getDaftarLisensiInv['branch'] ?> - DEFAULT
+                                                        </option>
+                                                        <?php foreach($getBranch as $branch) : ?>
+                                                        <option value="<?= $branch['id'] ?>"><?= $branch['name'] ?>
+                                                        </option>
+                                                        <?php endforeach ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <label for="source" class="form-label labeling-form">Asal
+                                                        Usul</label>
+                                                    <select name="source" id="source" class="form-select"
+                                                        onchange="updateTextarea()" required>
+                                                        <?php if($getDaftarLisensiInv['id_lic_source'] == 1) : ?>
+                                                        <option value="<?= $getDaftarLisensiInv['id_lic_source'] ?>">
+                                                            PWR - DEFAULT</option>
+                                                        <?php elseif($getDaftarLisensiInv['id_lic_source'] == 2) : ?>
+                                                        <option value="<?= $getDaftarLisensiInv['id_lic_source'] ?>">
+                                                            HIBAH - DEFAULT</option>
+                                                        <?php elseif($getDaftarLisensiInv['id_lic_source'] == 3) : ?>
+                                                        <option value="<?= $getDaftarLisensiInv['id_lic_source'] ?>">
+                                                            LAIN-LAIN - DEFAULT</option>
+                                                        <?php endif ?>
+                                                        <option value="1">PWR</option>
+                                                        <option value="2">HIBAH</option>
+                                                        <option value="3">LAIN-LAIN</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm">
+                                                    <label for="notes"
+                                                        class="form-label labeling-form">Keterangan</label>
+                                                    <textarea name="notes" id="notes" cols="30" rows="2"
+                                                        class="form-control" placeholder="Your text here"
+                                                        required><?= $getDaftarLisensiInv["notes"] ?></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-white" data-bs-dismiss="modal"
+                                                onclick="window.location.href = 'lisensi.php'"
                                                 tabindex="-1">Back</button>
-                                            <button type="submit" class="btn btn-primary">Update</button>
+                                            <button type="submit" class="btn btn-primary"
+                                                name="updateDetailLisensi">Update</button>
                                         </div>
                                     </form>
                                 </div>
@@ -363,6 +419,59 @@
             this.setSelectionRange(caretPos, caretPos);
         });
     });
+
+    function updateTextarea() {
+        var selectElement = document.getElementById("source");
+        var textareaElement = document.getElementById("notes");
+
+        // Mendapatkan nilai yang dipilih
+        var selectedValue = selectElement.value;
+
+        // Periksa nilai yang dipilih
+        if (selectedValue === "1") {
+            // Jika PWR dipilih, tambahkan teks ke textarea
+            textareaElement.value += "REFF PWR ; REFF PO ;";
+        } else {
+            // Jika pilihan selain PWR dipilih, tidak menghapus teks yang telah dimasukkan manual
+            // Hanya menambahkan teks berdasarkan pilihan
+            textareaElement.value += "REFF " + selectElement.options[selectElement.selectedIndex].text + "; ";
+        }
+    }
+
+    $(document).ready(function() {
+        // Cek nilai .type_lisence saat halaman dimuat
+        var initialValue = $('.type_lisence').val();
+
+        // Jika nilai awal sudah "1", nonaktifkan input date
+        if (initialValue === '1') {
+            $('.date_end').prop('disabled', true);
+        }
+
+        // Tambahkan event listener pada perubahan nilai select
+        $('.type_lisence').on('change', function() {
+            // Ambil nilai terpilih
+            var selectedValue = $(this).val();
+
+            // Cek apakah "PERPETUAL LISENCE" terpilih
+            if (selectedValue === '1') {
+                // Nonaktifkan input date
+                $('.date_end').prop('disabled', true);
+                // Hilangkan atribut required
+                $('.date_end').removeAttr('required');
+            } else {
+                // Aktifkan kembali input date
+                $('.date_end').prop('disabled', false);
+                // Tambahkan atribut required
+                $('.date_end').prop('required', true);
+            }
+        });
+    });
+
+
+
+    // enable tooltip 
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
 </body>
 

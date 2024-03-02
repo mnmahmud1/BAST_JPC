@@ -521,7 +521,7 @@
         // Periksa nilai yang dipilih
         if (selectedValue === "1") {
             // Jika PWR dipilih, tambahkan teks ke textarea
-            textareaElement.value = "REFF PWR ; REFF PO ;";
+            textareaElement.value += "REFF PWR ; REFF PO ;";
         } else {
             // Jika pilihan selain PWR dipilih, tidak menghapus teks yang telah dimasukkan manual
             // Hanya menambahkan teks berdasarkan pilihan

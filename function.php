@@ -369,3 +369,31 @@ if(isset($_POST["tambahLisensiManual"])){
         }
     }
 }
+
+if(isset($_POST["updateDetailLisensi"])){
+    $inv = trim(htmlspecialchars($_POST['inv']));
+    // $sn = trim(htmlspecialchars($_POST['sn']));
+    $description = trim(htmlspecialchars($_POST['description']));
+    $type_lic = trim(htmlspecialchars($_POST['type_lic']));
+    $seats = trim(htmlspecialchars($_POST['seats']));
+    $date_start = trim(htmlspecialchars($_POST['date_start']));
+    $date_end = trim(htmlspecialchars($_POST['date_end']));
+    $branch = trim(htmlspecialchars($_POST['branch']));
+    $source = trim(htmlspecialchars($_POST['source']));
+    $dept = trim(htmlspecialchars($_POST['dept']));
+    $notes = trim(htmlspecialchars($_POST['notes']));
+
+    if(isset($date_end)){
+        mysqli_query($conn, "UPDATE lisences SET description = '$description', id_lic_type = $type_lic, seats = $seats, date_start = '$date_start', date_end = '$date_end', id_lic_branch = $branch, id_lic_source = $source, id_lic_dept = $dept, notes = '$notes' WHERE number = '$inv'");
+    } else {
+        mysqli_query($conn, "UPDATE lisences SET description = '$description', id_lic_type = $type_lic, seats = $seats, date_start = '$date_start', id_lic_branch = $branch, id_lic_source = $source, id_lic_dept = $dept, notes = '$notes' WHERE number = '$inv'");
+    }
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: lisensi-details.php?inv=". $inv);
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: lisensi-details.php?inv=". $inv);
+    }
+}
