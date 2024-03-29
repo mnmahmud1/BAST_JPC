@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2024 at 05:57 PM
+-- Generation Time: Mar 29, 2024 at 04:47 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -151,7 +151,7 @@ CREATE TABLE `goods` (
 --
 
 INSERT INTO `goods` (`id`, `number`, `sn`, `description`, `specification`, `id_inv_type`, `id_inv_group`, `id_inv_allotment`, `id_inv_branch`, `id_inv_source`, `id_inv_dept`, `year`, `useful_period`, `id_inv_condition`, `notes`, `img`, `updated_at`, `created_at`, `as_dump`, `created_by`) VALUES
-(2, 'IT/REG/2024/01/01', 'ABP-1232-AWD3-23FS-234F', 'SOUND SYSTEM MIFA K12', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 4, 1, 2, 1, 1, '2023', 3, 1, 'REFF PWR 2023/JKT-0142; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; TES', NULL, '2024-01-21 14:50:33', '2024-01-13 12:14:11', 0, 1),
+(2, 'IT/REG/2024/01/01', 'ABP-1232-AWD3-23FS-234F', 'SOUND SYSTEM MIFA K12', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 4, 1, 2, 1, 1, '2024', 3, 1, 'REFF PWR 2023/JKT-0142; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; TES', NULL, '2024-03-02 13:26:58', '2024-01-13 12:14:11', 0, 1),
 (3, 'IT/REG/2024/01/02', 'ASDASDSF', 'MOUSE WIRELESS LOGITECH M190', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 1, 2, 2, 1, 3, '2024', 2, 1, 'REFF PWR ; REFF PO ;', NULL, '2024-01-15 15:03:04', '2024-01-15 22:03:04', 0, 1),
 (4, 'IT/REG/2024/01/03', '2223LZ917BZ8', 'MOUSE WIRELESS LOGITECH M190', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 1, 2, 2, 1, 2, '2024', 2, 1, 'REFF PWR 2023/JKT-0241; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; UNTUK MAHMUD', '72ff743b4caff43a37b2aa7c764a514b.jpg', '2024-01-16 13:40:45', '2024-01-16 20:40:45', 0, 1),
 (5, 'IT/REG/2024/01/04', '132234-ASDASD-23423DA', 'LISENSI AEC 2024', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 2, 3, 2, 1, 1, 1, '2023', 1, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/6; TES', '', '2024-01-16 15:07:43', '2024-01-16 22:07:43', 0, 1),
@@ -223,7 +223,8 @@ INSERT INTO `good_incoming_details` (`id`, `id_incoming`, `description`, `sn`, `
 (7, 7, 'LISENSI AEC 2024', '132234-ASDASD-23423DA', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-01-16 15:07:43', '2024-01-10 21:02:57', 1, 0, 1),
 (8, 7, 'LISENSI SOLIDWORKS 2024', 'ASDADA-2342Q34A-SDDASD', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', NULL, '2024-01-27 16:18:15', '2024-01-10 21:03:34', 1, 0, 1),
 (9, 5, 'MOUSE WIRELESS LOGITECH M190', '2223LZ917BZ8', '2023/JKT-0241', '2023/JKT-L-0123', 1, 'UNTUK MAHMUD', '72ff743b4caff43a37b2aa7c764a514b.jpg', '2024-01-16 13:40:45', '2024-01-16 19:37:07', 1, 0, 1),
-(10, 5, 'MOUSE WIRELESS LOGITECH M170', '12712BJHDJSAD', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'UNTUK EKA', 'a75c0c76c7237831e9003115b0396070.jpg', '2024-01-20 15:42:44', '2024-01-20 22:42:44', 0, 0, 1);
+(10, 5, 'MOUSE WIRELESS LOGITECH M170', '12712BJHDJSAD', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'UNTUK EKA', 'a75c0c76c7237831e9003115b0396070.jpg', '2024-01-20 15:42:44', '2024-01-20 22:42:44', 0, 0, 1),
+(11, 5, 'LISENSI SOLIDWORKS 2024', '121NNDF-23423R2-23423F', '2024/JKT-0056', '2024/JKT-L-0023', 2, 'UNTUK ENGINERING', 'c4e786da9f59f9f0b5adb0b59d098355.jpg', '2024-02-26 13:27:07', '2024-02-26 20:27:07', 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -356,7 +357,8 @@ CREATE TABLE `lisences` (
 
 INSERT INTO `lisences` (`id`, `number`, `sn`, `description`, `id_lic_type`, `seats`, `date_start`, `date_end`, `id_lic_dept`, `id_lic_branch`, `id_lic_source`, `notes`, `as_dump`, `updated_at`, `created_at`, `created_by`) VALUES
 (2, 'IT/LIC/2024/01/01', 'ABP-1232-AWD3-23FS-234F1', 'LISENSI AEC 2024', 2, 5, '2024-01-27 00:00:00', '2025-01-27 00:00:00', 1, 2, 1, 'REFF PWR 2024/JKT-0023; REFF PO MEMO/JKT-0011; RR IT IT/RR/2024/01/4; AEC 2024 UNTUK ENG', 0, '2024-01-27 16:17:21', '2024-01-27 23:17:21', 1),
-(3, 'IT/LIC/2024/01/02', 'ASDADA-2342Q34A-SDDASD', 'LISENSI SOLIDWORKS 2024', 1, 1, '2024-01-24 00:00:00', '0000-00-00 00:00:00', 4, 2, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/6; TES', 0, '2024-01-27 16:18:15', '2024-01-27 23:18:15', 1);
+(3, 'IT/LIC/2024/01/02', 'ASDADA-2342Q34A-SDDASD', 'LISENSI SOLIDWORKS 2024', 1, 1, '2024-01-24 00:00:00', '0000-00-00 00:00:00', 5, 7, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/6; TES', 0, '2024-03-02 17:37:27', '2024-01-27 23:18:15', 1),
+(4, 'IT/LIC/2024/02/01', 'AREA1-123DD-87WF3-14C5G-23MKL', 'MICROSOFT OFFICE PRO PLUS 2021', 1, 3, '2024-02-26 00:00:00', '0000-00-00 00:00:00', 3, 2, 1, 'REFF PWR 2023/JKT-0014 ; REFF PO 2023/JKT-L-0002;', 0, '2024-03-02 17:36:36', '2024-02-26 21:33:22', 1);
 
 -- --------------------------------------------------------
 
@@ -578,7 +580,7 @@ ALTER TABLE `good_incoming`
 -- AUTO_INCREMENT for table `good_incoming_details`
 --
 ALTER TABLE `good_incoming_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `inv_allotment`
@@ -614,7 +616,7 @@ ALTER TABLE `lic_type`
 -- AUTO_INCREMENT for table `lisences`
 --
 ALTER TABLE `lisences`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `session_log`
