@@ -62,7 +62,7 @@
     </div>
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+        <a class="navbar-brand ps-3" href="index.php">Start Bootstrap</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
             <i class="fas fa-bars"></i>
@@ -74,7 +74,7 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-tachometer-alt"></i>
                             </div>
@@ -94,12 +94,12 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link active" href="barang.php">Daftar Barang</a>
-                                <a class="nav-link" href="lisensi.html">Daftar Lisensi</a>
+                                <a class="nav-link" href="lisensi.php">Daftar Lisensi</a>
                                 <a class="nav-link" href="barang-masuk.php">Barang Masuk</a>
                                 <a class="nav-link" href="perbaikan.html">Perbaikan Barang</a>
                             </nav>
                         </div>
-                        <a class="nav-link" href="user.html">
+                        <a class="nav-link" href="user.php">
                             <div class="sb-nav-link-icon">
                                 <i class="fa-solid fa-users"></i>
                             </div>
@@ -118,8 +118,8 @@
                         <div class="collapse" id="collapseLayoutsBAST" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="berita-acara-serah-terima.html">Serah Terima Inventaris</a>
-                                <a class="nav-link" href="barang-acara-scrapt.html">Scrapt Inventaris</a>
+                                <a class="nav-link" href="berita-acara-serah-terima.php">Serah Terima Inventaris</a>
+                                <a class="nav-link" href="barang-acara-scrapt.php">Scrapt Inventaris</a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#">
@@ -404,7 +404,10 @@
 
                     <div class="row mb-4 justify-content-end">
                         <div class="col-sm-3 text-end">
-                            <a href="#" class="text-danger fw-bold text-decoration-none">Delete Barang Inventaris</a>
+                            <button name="deleteButton" id="deleteButton" class="btn btn-outline-danger fw-bold"
+                                data-bs-toggle="modal" data-bs-target="#modalDelete"
+                                data-sn="<?= $getDaftarBarangInv['sn'] ?>"
+                                data-inv="<?= $getDaftarBarangInv['number'] ?>">Delete Barang Inventaris</button>
                         </div>
                     </div>
                 </div>
@@ -417,6 +420,33 @@
                     </div>
                 </div>
             </footer>
+        </div>
+    </div>
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="modalDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="modalDeleteLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="function.php" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalDeleteLabel">Are you absolutely sure?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Please type <span class="fw-bold" id="nameGood"><span id="goodInvDelete"></span></span>
+                            to confirm.</p>
+                        <input type="text" name="typeGood" id="typeGood" class="form-control border-danger"
+                            placeholder="Please type bold text above" autofocus autocomplete="off" required />
+                        <input type="text" name="snDelete" id="snDelete" hidden>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-bs-dismiss="modal" tabindex="1">Close</button>
+                        <button type="submit" name="deleteGood" id="deleteGood" class="btn btn-danger">Confirm to
+                            Delete</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -528,6 +558,30 @@
             textareaElement.value += "REFF " + selectElement.options[selectElement.selectedIndex].text + "; ";
         }
     }
+
+    // Delete Function
+    $(document).ready(function() {
+        $('#deleteGood').prop('disabled', true);
+
+        $('#nameGood, #typeGood').keyup(function() {
+            if ($('#nameGood').text() == '' && $('#typeGood').val() == '') {
+                $('#deleteGood').prop('disabled', true);
+            } else if ($('#nameGood').text() == $('#typeGood').val()) {
+                $('#deleteGood').prop('disabled', false);
+            } else {
+                $('#deleteGood').prop('disabled', true);
+            }
+        });
+    });
+
+    // Fix 1 modal for all list
+    $(document).on('click', '#deleteButton', function(e) {
+        let sn = $(this).data('sn')
+        let inv = $(this).data('inv')
+
+        $('#snDelete').val(sn) // hapus berdasarkan SN = hanya masuk dump category
+        $('#goodInvDelete').text(inv)
+    });
     </script>
 </body>
 

@@ -397,3 +397,17 @@ if(isset($_POST["updateDetailLisensi"])){
         header("Location: lisensi-details.php?inv=". $inv);
     }
 }
+
+if(isset($_POST["deleteGood"])){
+    $snDelete = trim(htmlspecialchars($_POST['snDelete']));
+    
+    mysqli_query($conn, "UPDATE goods SET as_dump = 1 WHERE sn = '$snDelete'");
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: barang-details.php");
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: barang-details.php");
+    }
+}

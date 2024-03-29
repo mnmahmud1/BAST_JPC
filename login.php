@@ -108,7 +108,7 @@ if(isset($_POST["signin"])){
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-4 col-md-6 col-lg-4 mx-auto mt-2 text-white">Search Document <a href="search.html"
+            <div class="col-sm-4 col-md-6 col-lg-4 mx-auto mt-2 text-white">Search Document <a href="search.php"
                     class="fw-bold text-decoration-none text-decoration-underline text-white">Here</a></div>
         </div>
     </div>
