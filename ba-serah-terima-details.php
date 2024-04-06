@@ -8,12 +8,16 @@
 
     $nameUser = $_COOKIE["_name_log"];
     $idUser = $_COOKIE["_beta_log"];
+    $numA = 1;
 
     $bast_number = $_GET["bast"];
-    $queryGetBAST = mysqli_query($conn, "SELECT id FROM bast_report WHERE number = '$bast_number'");
+    $queryGetBAST = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_user_name, dept_submitted.name AS submitted_dept_name, users_accepted.name AS accepted_user_name, dept_accepted.name AS accepted_dept_name, bast_report.notes FROM bast_report INNER JOIN users AS users_submitted ON users_submitted.id = bast_report.id_user_submitted INNER JOIN users AS users_accepted ON users_accepted.id = bast_report.id_user_accepted INNER JOIN dept AS dept_submitted ON dept_submitted.id = users_submitted.id_dept INNER JOIN dept AS dept_accepted ON dept_accepted.id = users_accepted.id_dept WHERE bast_report.number = '$bast_number'");
+    $getBAST = mysqli_fetch_assoc($queryGetBAST);
     if($bast_number == '' OR mysqli_num_rows($queryGetBAST) == 0){
 		header("Location: berita-acara-serah-terima.php");
 	}
+
+    $getAllGoods = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, goods.year, branch.name branch_name FROM goods INNER JOIN branch ON branch.id = goods.id_inv_branch WHERE  goods.as_dump = 0 AND goods.as_bast = 0");
 ?>
 
 <!DOCTYPE html>
@@ -185,8 +189,8 @@
                                                         <label for="" class="form-label labeling-form">No Berita
                                                             Acara</label>
                                                         <input type="text" class="form-control"
-                                                            placeholder="You Text Here" name="" id="" readonly
-                                                            required />
+                                                            placeholder="You Text Here" name="" id=""
+                                                            value="<?= $getBAST['number'] ?>" readonly required />
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -194,16 +198,16 @@
                                                         <label for="" class="form-label labeling-form">Diserahkan
                                                             Oleh</label>
                                                         <select name="" id="" class="form-select" disabled required>
-                                                            <option value="">Choose</option>
-                                                            <option value="">M Nurhasan Mahmudi</option>
-                                                            <option value="">Ali Rakhman</option>
+                                                            <option value="" selected>
+                                                                <?= $getBAST['submitted_user_name'] ?></option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm">
                                                         <label for=""
                                                             class="form-label labeling-form">Departement</label>
                                                         <input type="text" name="" id="" class="form-control"
-                                                            placeholder="HR & GA / IT" readonly />
+                                                            placeholder="<?= $getBAST['submitted_dept_name'] ?>"
+                                                            readonly />
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -211,17 +215,16 @@
                                                         <label for="" class="form-label labeling-form">Diterima
                                                             Oleh</label>
                                                         <select name="" id="" class="form-select" disabled required>
-                                                            <option value="">Choose</option>
-                                                            <option value="">M Nurhasan Mahmudi</option>
-                                                            <option value="">Ali Rakhman</option>
-                                                            <option value="">Kevin Alniagara</option>
+                                                            <option value="" selected>
+                                                                <?= $getBAST['accepted_user_name'] ?></option>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm">
                                                         <label for=""
                                                             class="form-label labeling-form">Departement</label>
                                                         <input type="text" name="" id="" class="form-control"
-                                                            placeholder="Finance Accounting" readonly />
+                                                            placeholder="<?= $getBAST['accepted_dept_name'] ?>"
+                                                            readonly />
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -229,7 +232,8 @@
                                                         <label for=""
                                                             class="form-label labeling-form">Keterangan</label>
                                                         <textarea name="" id="" cols="30" rows="2" class="form-control"
-                                                            placeholder="Your text here" required></textarea>
+                                                            placeholder="Your text here"
+                                                            required><?= $getBAST['notes'] ?></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -299,38 +303,6 @@
                                                                     </button>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
-                                                                <td>2</td>
-                                                                <td>IT/REG/2023/04/01</td>
-                                                                <td>Converter USB HDMI</td>
-                                                                <td>HDZNO1241244</td>
-                                                                <td>
-                                                                    <h6>
-                                                                        <span
-                                                                            class="badge bg-success align-middle">BAIK</span>
-                                                                    </h6>
-                                                                </td>
-                                                                <td>2022</td>
-                                                                <td>Gunung Putri</td>
-                                                                <td>
-                                                                    <button class="btn btn-sm" data-bs-toggle="modal"
-                                                                        data-bs-target="#modalUpload">
-                                                                        <i class="fa-solid fa-paperclip"></i>
-                                                                    </button>
-                                                                </td>
-                                                                <td class="fs-6">10.40 PM 11-11-2022</td>
-                                                                <td>
-                                                                    <button class="btn btn-sm"
-                                                                        onclick="confirm('Yakin ingin menghapus data ini?')">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="16" height="16" fill="currentColor"
-                                                                            class="bi bi-trash3" viewBox="0 0 16 16">
-                                                                            <path
-                                                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                                                        </svg>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -338,14 +310,13 @@
                                             <div class="row mb-3">
                                                 <div class="col-sm">
                                                     <div class="d-grid gap-2">
-                                                        <button class="btn btn-sm btn-outline-primary"
-                                                            data-bs-toggle="modal"
+                                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                                             data-bs-target="#modalTambahBarang">Tambah Data
                                                             Barang</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row mb-3">
+                                            <!-- <div class="row mb-3">
                                                 <div class="col-sm">
                                                     <label for="" class="form-label labeling-form">Additional
                                                         Information</label>
@@ -360,7 +331,7 @@
                                                     <a href="berita-acara-serah-terima.php"
                                                         class="btn btn-primary">Save</a>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -438,14 +409,13 @@
                                             <div class="row mb-3">
                                                 <div class="col-sm">
                                                     <div class="d-grid gap-2">
-                                                        <button class="btn btn-sm btn-outline-primary"
-                                                            data-bs-toggle="modal"
+                                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                                             data-bs-target="#modalTambahLisensi">Tambah Data
                                                             Lisensi</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row mb-3">
+                                            <!-- <div class="row mb-3">
                                                 <div class="col-sm">
                                                     <label for="" class="form-label labeling-form">Additional
                                                         Information</label>
@@ -460,7 +430,7 @@
                                                     <a href="berita-acara-serah-terima.php"
                                                         class="btn btn-primary">Save</a>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -488,23 +458,16 @@
                                         <div class="scrollable">
                                             <ul class="timeline mb-5">
                                                 <li>
-                                                    <span class="fw-bold">New Web Design</span>
-                                                    <p class="fs-6">21 March, 2014</p>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-                                                        scelerisque diam non nisi semper, et elementum lorem ornare.
-                                                        Maecenas
-                                                        placerat facilisis mollis. Duis sagittis ligula in sodales
-                                                        vehicula....
+                                                    <span class="fw-bold">Charger Rusak</span>
+                                                    <p class="fs-6">10.40 PM 23-03-2024</p>
+                                                    <p>Charger diganti dengan PWR 2023/JKT-0012
                                                     </p>
                                                 </li>
                                                 <li>
-                                                    <span class="fw-bold">21 000 Job Seekers</span>
-                                                    <p class="fs-6">4 March, 2014</p>
-                                                    <p>Curabitur purus sem, malesuada eu luctus eget, suscipit sed
-                                                        turpis.
-                                                        Nam
-                                                        pellentesque felis vitae justo accumsan, sed semper nisi
-                                                        sollicitudin...
+                                                    <span class="fw-bold">Upgrade RAM to 16GB</span>
+                                                    <p class="fs-6">10.40 PM 11-03-2024</p>
+                                                    <p>Karena saat buka aplikasi bersamaan lemot, laptop di upgrade
+                                                        tambahan 8GB RAM bekas.
                                                     </p>
                                                 </li>
                                             </ul>
@@ -583,42 +546,26 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php foreach($getAllGoods as $good) : ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>MHN-2023-001</td>
-                                                <td>ASUS Vivobook M310A</td>
-                                                <td>123NDIAPP10042</td>
+                                                <td><?= $numA ?></td>
+                                                <td><?= $good["number"] ?></td>
+                                                <td><?= $good["description"] ?></td>
+                                                <td><?= $good["sn"] ?></td>
                                                 <td>
                                                     <h6>
                                                         <span class="badge bg-success align-middle">BAIK</span>
                                                     </h6>
                                                 </td>
-                                                <td>2022</td>
-                                                <td>Gunung Putri</td>
+                                                <td><?= $good["year"] ?></td>
+                                                <td><?= $good["branch_name"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-success rounded-pill"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#modalUpdateMutasiBarang">Choose</button>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>MHN-2023-001</td>
-                                                <td>ASUS Vivobook M310A</td>
-                                                <td>123NDIAPP10042</td>
-                                                <td>
-                                                    <h6>
-                                                        <span class="badge bg-success align-middle">BAIK</span>
-                                                    </h6>
-                                                </td>
-                                                <td>2022</td>
-                                                <td>Gunung Putri</td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-success rounded-pill"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modalUpdateMutasiBarang">Choose</button>
-                                                </td>
-                                            </tr>
+                                            <?php $numA++; endforeach ?>
                                         </tbody>
                                     </table>
                                 </div>
