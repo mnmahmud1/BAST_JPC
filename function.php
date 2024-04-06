@@ -264,7 +264,7 @@ if(isset($_POST["tambahUser"])){
     $job = trim(htmlspecialchars($_POST['job']));
     $notes = trim(htmlspecialchars($_POST['notes']));
     
-    mysqli_query($conn, "INSERT INTO users (initial, name, nik, position, id_dept, id_branch, notes, created_at, created_by) VALUES('$initial', '$name', '$nik', '$job', $dept, $branch, '$notes', '$userCreated', '$dateTime')");
+    mysqli_query($conn, "INSERT INTO users (initial, name, nik, position, id_dept, id_branch, notes, created_at, created_by) VALUES('$initial', '$name', '$nik', '$job', $dept, $branch, '$notes', '$dateTime', '$userCreated')");
 
     if(mysqli_affected_rows($conn)){
         // Jika ada perubahan pada update

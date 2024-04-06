@@ -15,7 +15,7 @@
 	$getUsersAdmin = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_admin = 1 AND as_dump = 0;");
 	$getUsersAll = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_dump = 0;");
 
-	$getBast = mysqli_query($conn, "SELECT bast_report.number, bast_report.status, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, dept_accepted.name AS accepted_dept, bast_report.notes, bast_report.created_at FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.as_dump = 0");
+	$getBast = mysqli_query($conn, "SELECT bast_report.number, bast_report.status, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, dept_accepted.name AS accepted_dept, bast_report.notes, bast_report.created_at FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.as_dump = 0 ORDER BY bast_report.created_at DESC");
 ?>
 
 <!DOCTYPE html>
@@ -203,7 +203,8 @@
                                                         </button>
                                                         <ul class="dropdown-menu">
                                                             <li><a class="dropdown-item"
-                                                                    href="ba-serah-terima-details.php">Details</a></li>
+                                                                    href="ba-serah-terima-details.php?bast=<?= $bast['number'] ?>">Details</a>
+                                                            </li>
                                                             <li><a class="dropdown-item" href="#">See Pdf</a></li>
                                                             <li><a class="dropdown-item" href="#">Print</a></li>
                                                         </ul>
@@ -211,7 +212,6 @@
                                                 </td>
                                             </tr>
                                             <?php $urutDaftar++; endforeach ?>
-
                                         </tbody>
                                     </table>
                                 </div>
