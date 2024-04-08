@@ -35,3 +35,4 @@ PR
 10. menyesuaikan max length form input sesuai dengan database
 11. tambahkan periode waktu di setting agar daftar barang masuk tidak bisa diubah (bisa dirubah apabila periode waktu diubah ke backdate).
 12. tambah menu ttd custom untuk serah terima bast
+13. buat sebuah halaman dimana semua as_dump ditampilkan dan dapat dipulihkan

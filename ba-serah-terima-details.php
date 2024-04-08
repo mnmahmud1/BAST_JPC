@@ -9,6 +9,8 @@
     $nameUser = $_COOKIE["_name_log"];
     $idUser = $_COOKIE["_beta_log"];
     $numA = 1;
+    $numB = 1;
+    $numC = 1;
 
     $bast_number = $_GET["bast"];
     $queryGetBAST = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_user_name, dept_submitted.name AS submitted_dept_name, users_accepted.name AS accepted_user_name, dept_accepted.name AS accepted_dept_name, bast_report.notes FROM bast_report INNER JOIN users AS users_submitted ON users_submitted.id = bast_report.id_user_submitted INNER JOIN users AS users_accepted ON users_accepted.id = bast_report.id_user_accepted INNER JOIN dept AS dept_submitted ON dept_submitted.id = users_submitted.id_dept INNER JOIN dept AS dept_accepted ON dept_accepted.id = users_accepted.id_dept WHERE bast_report.number = '$bast_number'");
@@ -17,7 +19,9 @@
 		header("Location: berita-acara-serah-terima.php");
 	}
 
-    $getAllGoods = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, goods.year, branch.name branch_name FROM goods INNER JOIN branch ON branch.id = goods.id_inv_branch WHERE  goods.as_dump = 0 AND goods.as_bast = 0");
+    $getAllGoods = mysqli_query($conn, "SELECT goods.id, goods.number, goods.description, goods.sn, goods.year, branch.name branch_name FROM goods INNER JOIN branch ON branch.id = goods.id_inv_branch WHERE goods.as_dump = 0 AND goods.as_bast = 0");
+    $getGoodsInBAST = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name branch, bast_report_details.attach FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good INNER JOIN branch ON branch.id = goods.id_inv_branch INNER JOIN inv_condition ON inv_condition.id = goods.id_inv_condition WHERE bast_report_details.bast_number = '$bast_number'");
+    $getHistoryUsage = mysqli_query($conn, "SELECT tittle, description, attach, created_at FROM bast_usage_history WHERE bast_number = '$bast_number'");
 ?>
 
 <!DOCTYPE html>
@@ -183,64 +187,64 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="mb-4">Deskripsi Berita Acara</h5>
-                                            <form action="" method="post">
-                                                <div class="row mb-3">
-                                                    <div class="col-sm">
-                                                        <label for="" class="form-label labeling-form">No Berita
-                                                            Acara</label>
-                                                        <input type="text" class="form-control"
-                                                            placeholder="You Text Here" name="" id=""
-                                                            value="<?= $getBAST['number'] ?>" readonly required />
-                                                    </div>
+
+                                            <div class="row mb-3">
+                                                <div class="col-sm">
+                                                    <label for="" class="form-label labeling-form">No Berita
+                                                        Acara</label>
+                                                    <input type="text" class="form-control" placeholder="You Text Here"
+                                                        name="" id="" value="<?= $getBAST['number'] ?>" readonly
+                                                        required />
                                                 </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-sm">
-                                                        <label for="" class="form-label labeling-form">Diserahkan
-                                                            Oleh</label>
-                                                        <select name="" id="" class="form-select" disabled required>
-                                                            <option value="" selected>
-                                                                <?= $getBAST['submitted_user_name'] ?></option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm">
-                                                        <label for=""
-                                                            class="form-label labeling-form">Departement</label>
-                                                        <input type="text" name="" id="" class="form-control"
-                                                            placeholder="<?= $getBAST['submitted_dept_name'] ?>"
-                                                            readonly />
-                                                    </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm">
+                                                    <label for="" class="form-label labeling-form">Diserahkan
+                                                        Oleh</label>
+                                                    <select name="" id="" class="form-select" disabled required>
+                                                        <option value="" selected>
+                                                            <?= $getBAST['submitted_user_name'] ?></option>
+                                                    </select>
                                                 </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-sm">
-                                                        <label for="" class="form-label labeling-form">Diterima
-                                                            Oleh</label>
-                                                        <select name="" id="" class="form-select" disabled required>
-                                                            <option value="" selected>
-                                                                <?= $getBAST['accepted_user_name'] ?></option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm">
-                                                        <label for=""
-                                                            class="form-label labeling-form">Departement</label>
-                                                        <input type="text" name="" id="" class="form-control"
-                                                            placeholder="<?= $getBAST['accepted_dept_name'] ?>"
-                                                            readonly />
-                                                    </div>
+                                                <div class="col-sm">
+                                                    <label for="" class="form-label labeling-form">Departement</label>
+                                                    <input type="text" name="" id="" class="form-control"
+                                                        placeholder="<?= $getBAST['submitted_dept_name'] ?>" readonly />
                                                 </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-sm">
+                                                    <label for="" class="form-label labeling-form">Diterima
+                                                        Oleh</label>
+                                                    <select name="" id="" class="form-select" disabled required>
+                                                        <option value="" selected>
+                                                            <?= $getBAST['accepted_user_name'] ?></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm">
+                                                    <label for="" class="form-label labeling-form">Departement</label>
+                                                    <input type="text" name="" id="" class="form-control"
+                                                        placeholder="<?= $getBAST['accepted_dept_name'] ?>" readonly />
+                                                </div>
+                                            </div>
+                                            <form action="function.php" method="post">
                                                 <div class="row mb-3">
                                                     <div class="col-sm">
-                                                        <label for=""
+                                                        <label for="description"
                                                             class="form-label labeling-form">Keterangan</label>
-                                                        <textarea name="" id="" cols="30" rows="2" class="form-control"
-                                                            placeholder="Your text here"
+                                                        <textarea name="description" id="description" cols="30" rows="2"
+                                                            class="form-control" placeholder="Your text here"
                                                             required><?= $getBAST['notes'] ?></textarea>
+                                                        <input type="text" name="bast" value="<?= $bast_number ?>"
+                                                            hidden>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-white"
                                                         data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="btn btn-primary" tabindex="-1">Update
-                                                        Data</button>
+                                                    <button type="submit" name="updateDescBAST"
+                                                        class="btn btn-outline-primary" tabindex="-1">Update
+                                                        Description</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -266,31 +270,41 @@
                                                                 <th>Tahun</th>
                                                                 <th>Alokasi</th>
                                                                 <th>Attach</th>
-                                                                <th>Date</th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            <?php foreach($getGoodsInBAST as $good) : ?>
                                                             <tr>
-                                                                <td>1</td>
-                                                                <td>MHN-2023-001</td>
-                                                                <td>ASUS Vivobook M310A</td>
-                                                                <td>123NDIAPP10042</td>
+                                                                <td><?= $numB ?></td>
+                                                                <td><?= $good["number"] ?></td>
+                                                                <td><?= $good["description"] ?></td>
+                                                                <td><?= $good["sn"] ?></td>
                                                                 <td>
                                                                     <h6>
+                                                                        <?php if($good["kondisi"] === "BAIK") : ?>
                                                                         <span
-                                                                            class="badge bg-success align-middle">BAIK</span>
+                                                                            class="badge bg-success align-middle"><?= $good["kondisi"] ?></span>
+                                                                        <?php elseif($good["kondisi"] === "KURANG_BAIK") : ?>
+                                                                        <span
+                                                                            class="badge bg-warning align-middle"><?= $good["kondisi"] ?></span>
+                                                                        <?php elseif($good["kondisi"] === "RUSAK") : ?>
+                                                                        <span
+                                                                            class="badge bg-danger align-middle"><?= $good["kondisi"] ?></span>
+                                                                        <?php elseif($good["kondisi"] === "SCRAPT") : ?>
+                                                                        <span
+                                                                            class="badge bg-dark align-middle"><?= $good["kondisi"] ?></span>
+                                                                        <?php endif ?>
                                                                     </h6>
                                                                 </td>
-                                                                <td>2022</td>
-                                                                <td>Gunung Putri</td>
+                                                                <td><?= $good["year"] ?></td>
+                                                                <td><?= $good["branch"] ?></td>
                                                                 <td>
                                                                     <button class="btn btn-sm" data-bs-toggle="modal"
                                                                         data-bs-target="#modalUpload">
                                                                         <i class="fa-solid fa-paperclip"></i>
                                                                     </button>
                                                                 </td>
-                                                                <td class="fs-6">10.40 PM 11-11-2022</td>
                                                                 <td>
                                                                     <button class="btn btn-sm"
                                                                         onclick="confirm('Yakin ingin menghapus data ini?')">
@@ -303,6 +317,7 @@
                                                                     </button>
                                                                 </td>
                                                             </tr>
+                                                            <?php $numB++; endforeach ?>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -457,19 +472,29 @@
                                         <h5 class=" mb-4">Inventory Usage History</h5>
                                         <div class="scrollable">
                                             <ul class="timeline mb-5">
+                                                <?php foreach($getHistoryUsage as $history) :  ?>
+                                                <?php if(is_null($history['attach'])) : ?>
                                                 <li>
-                                                    <span class="fw-bold">Charger Rusak</span>
-                                                    <p class="fs-6">10.40 PM 23-03-2024</p>
-                                                    <p>Charger diganti dengan PWR 2023/JKT-0012
+                                                    <span class="fw-bold"><?= $history["tittle"] ?></span>
+                                                    <p class="fs-6"><?= $history["created_at"] ?></p>
+                                                    <p><?= $history["description"] ?>
                                                     </p>
                                                 </li>
+                                                <?php else : ?>
                                                 <li>
-                                                    <span class="fw-bold">Upgrade RAM to 16GB</span>
-                                                    <p class="fs-6">10.40 PM 11-03-2024</p>
-                                                    <p>Karena saat buka aplikasi bersamaan lemot, laptop di upgrade
-                                                        tambahan 8GB RAM bekas.
+                                                    <span class="fw-bold"><?= $history["tittle"] ?></span> <a
+                                                        href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                            height="16" fill="currentColor" class="bi bi-paperclip"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
+                                                        </svg></a>
+                                                    <p class="fs-6"><?= $history["created_at"] ?></p>
+                                                    <p><?= $history["description"] ?>
                                                     </p>
                                                 </li>
+                                                <?php endif ?>
+                                                <?php endforeach ?>
                                             </ul>
                                         </div>
                                     </div>
@@ -480,21 +505,26 @@
                                     <div class="card-body">
                                         <h5 class="mb-4">Commit History</h5>
                                         <div class="col">
-                                            <form action="POST">
+                                            <form action="POST" enctype="multipart/form-data">
                                                 <div class="mb-3">
                                                     <label for="tittle" class="form-label labeling-form">Tittle</label>
                                                     <input type="text" name="title" id="tittle" class="form-control"
                                                         placeholder="The keyboard is broken" required>
                                                 </div>
-                                                <div class=" mb-3">
+                                                <div class="mb-3">
                                                     <label for="description"
                                                         class="form-label labeling-form">Description</label>
                                                     <textarea type="text" class="form-control"
                                                         placeholder="Add an optional extended description"
                                                         name="description" id="description"></textarea>
                                                 </div>
+                                                <div class="mb-3">
+                                                    <label for="attach" class="form-label">Attachment</label>
+                                                    <input type="file" name="attach" id="attach" class="form-control"
+                                                        required>
+                                                </div>
                                                 <button name="commit" id="commit" class="btn btn-sm btn-success"
-                                                    type="submit">Commit</button>
+                                                    type="submit">Commit Changes</button>
                                             </form>
                                         </div>
                                     </div>
@@ -561,8 +591,7 @@
                                                 <td><?= $good["branch_name"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-success rounded-pill"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modalUpdateMutasiBarang">Choose</button>
+                                                        onclick="window.location.href = 'function.php?addGoodtoBAST=<?= $good['id'] ?>&goodDesc=<?= $good['description'] ?>&bast=<?= $getBAST['number'] ?>'">Choose</button>
                                                 </td>
                                             </tr>
                                             <?php $numA++; endforeach ?>
