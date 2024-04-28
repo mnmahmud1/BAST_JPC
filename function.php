@@ -450,3 +450,28 @@ if(isset($_GET["addGoodtoBAST"])){
         header("Location: ba-serah-terima-details.php?bast=$bast");
     }
 }
+
+if(isset($_POST["commitHistory"])){
+    $tittle = trim(htmlspecialchars($_POST['tittle']));
+    $description = trim(htmlspecialchars($_POST['description']));
+    $bast = trim(htmlspecialchars($_POST['bast']));
+    $photo = $_FILES['attach']['tmp_name'];
+    $photoName = $_FILES['attach']['name'];
+    $photoTarget = 'img/history-img/' . $photoName;
+    move_uploaded_file($photo, $photoTarget);
+
+    if(isset($photo)){
+        mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, attach, created_at, created_by) VALUES ('$bast', '$tittle', '$description', '$photoName', '$dateTime', $userCreated)");
+    } else {
+        mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, attach, created_at, created_by) VALUES ('$bast', '$tittle', '$description', NULL, '$dateTime', $userCreated)");
+    }
+    
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: ba-serah-terima-details.php?bast=$bast");
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: ba-serah-terima-details.php?bast=$bast");
+    }
+}

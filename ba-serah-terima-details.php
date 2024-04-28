@@ -472,8 +472,9 @@
                                         <h5 class=" mb-4">Inventory Usage History</h5>
                                         <div class="scrollable">
                                             <ul class="timeline mb-5">
+                                                <?php if(mysqli_num_rows($getHistoryUsage) > 0) : ?>
                                                 <?php foreach($getHistoryUsage as $history) :  ?>
-                                                <?php if(is_null($history['attach'])) : ?>
+                                                <?php if(is_null($history['attach']) OR $history['attach'] == '') : ?>
                                                 <li>
                                                     <span class="fw-bold"><?= $history["tittle"] ?></span>
                                                     <p class="fs-6"><?= $history["created_at"] ?></p>
@@ -482,19 +483,28 @@
                                                 </li>
                                                 <?php else : ?>
                                                 <li>
-                                                    <span class="fw-bold"><?= $history["tittle"] ?></span> <a
-                                                        href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                            height="16" fill="currentColor" class="bi bi-paperclip"
+                                                    <span class="fw-bold"><?= $history["tittle"] ?></span> <button
+                                                        onclick="showImageModal('<?= $history['attach'] ?>')">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            fill="currentColor" class="bi bi-paperclip"
                                                             viewBox="0 0 16 16">
                                                             <path
                                                                 d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
-                                                        </svg></a>
+                                                        </svg></button>
                                                     <p class="fs-6"><?= $history["created_at"] ?></p>
                                                     <p><?= $history["description"] ?>
                                                     </p>
                                                 </li>
                                                 <?php endif ?>
                                                 <?php endforeach ?>
+                                                <?php else : ?>
+                                                <li>
+                                                    <span class="fw-bold">No Data Available</span>
+                                                    <p class="fs-6">Now</p>
+                                                    <p>No History Available</p>
+                                                </li>
+                                                <?php endif ?>
+
                                             </ul>
                                         </div>
                                     </div>
@@ -505,10 +515,10 @@
                                     <div class="card-body">
                                         <h5 class="mb-4">Commit History</h5>
                                         <div class="col">
-                                            <form action="POST" enctype="multipart/form-data">
+                                            <form action="function.php" method="POST" enctype="multipart/form-data">
                                                 <div class="mb-3">
                                                     <label for="tittle" class="form-label labeling-form">Tittle</label>
-                                                    <input type="text" name="title" id="tittle" class="form-control"
+                                                    <input type="text" name="tittle" id="tittle" class="form-control"
                                                         placeholder="The keyboard is broken" required>
                                                 </div>
                                                 <div class="mb-3">
@@ -521,9 +531,11 @@
                                                 <div class="mb-3">
                                                     <label for="attach" class="form-label">Attachment</label>
                                                     <input type="file" name="attach" id="attach" class="form-control"
-                                                        required>
+                                                        accept="image/*">
+                                                    <input type="text" name="bast" value="<?= $bast_number ?>" hidden>
                                                 </div>
-                                                <button name="commit" id="commit" class="btn btn-sm btn-success"
+
+                                                <button name="commitHistory" id="commit" class="btn btn-sm btn-success"
                                                     type="submit">Commit Changes</button>
                                             </form>
                                         </div>
@@ -716,6 +728,24 @@
         </div>
     </div>
 
+    <!-- Modal for Image Preview -->
+    <div class="modal fade" id="imageModalTambah" tabindex="-1" role="dialog" aria-labelledby="imageModalTambahLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalTambahLabel">Image Preview</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImagePreview" src="#" alt="Image Preview" style="max-width: 100%; max-height: 400px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="dist/temp/js/scripts.js"></script>
@@ -766,6 +796,20 @@
         $("input[type=text]").keyup(function() {
             $(this).val($(this).val().toUpperCase());
         });
+    });
+
+    function showImageModal(imageName) {
+        var modalImage = document.getElementById('modalImage');
+        modalImage.src = 'dist/img/history-img/' + imageName;
+        $('#imageModal').modal('show');
+    }
+
+    document.getElementById('attach').addEventListener('change', function() {
+        const file = this.files[0];
+        if (file.size > 1048576) { // 1 MB in bytes
+            alert('File size exceeds the limit of 1 MB.');
+            this.value = ''; // Reset the input file
+        }
     });
     </script>
 </body>
