@@ -20,8 +20,8 @@
 	}
 
     $getAllGoods = mysqli_query($conn, "SELECT goods.id, goods.number, goods.description, goods.sn, goods.year, branch.name branch_name FROM goods INNER JOIN branch ON branch.id = goods.id_inv_branch WHERE goods.as_dump = 0 AND goods.as_bast = 0");
-    $getGoodsInBAST = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name branch, bast_report_details.attach FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good INNER JOIN branch ON branch.id = goods.id_inv_branch INNER JOIN inv_condition ON inv_condition.id = goods.id_inv_condition WHERE bast_report_details.bast_number = '$bast_number'");
-    $getHistoryUsage = mysqli_query($conn, "SELECT tittle, description, attach, created_at FROM bast_usage_history WHERE bast_number = '$bast_number'");
+    $getGoodsInBAST = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, bast_report_details.attach, bast_report_details.id_good FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good INNER JOIN branch ON branch.id = goods.id_inv_branch INNER JOIN inv_condition ON inv_condition.id = goods.id_inv_condition WHERE bast_report_details.bast_number = '$bast_number'");
+    $getHistoryUsage = mysqli_query($conn, "SELECT tittle, description, attach, created_at FROM bast_usage_history WHERE bast_number = '$bast_number' ORDER BY id DESC");
 ?>
 
 <!DOCTYPE html>
@@ -277,7 +277,10 @@
                                                             <?php foreach($getGoodsInBAST as $good) : ?>
                                                             <tr>
                                                                 <td><?= $numB ?></td>
-                                                                <td><?= $good["number"] ?></td>
+                                                                <td>
+                                                                    <a href="barang-details.php?inv=<?= $good["number"] ?>"
+                                                                        class="text-reset"><?= $good["number"] ?></a>
+                                                                </td>
                                                                 <td><?= $good["description"] ?></td>
                                                                 <td><?= $good["sn"] ?></td>
                                                                 <td>
@@ -300,9 +303,26 @@
                                                                 <td><?= $good["year"] ?></td>
                                                                 <td><?= $good["branch"] ?></td>
                                                                 <td>
-                                                                    <button class="btn btn-sm" data-bs-toggle="modal"
-                                                                        data-bs-target="#modalUpload">
-                                                                        <i class="fa-solid fa-paperclip"></i>
+                                                                    <?php if($good["attach"] != null OR $good["attach"] != "") : ?>
+                                                                    <button
+                                                                        onclick="window.location.href = 'dist/attach/<?= $good['attach'] ?>'"
+                                                                        class="btn btn-sm" target="_blank">
+                                                                        <i class="fa-solid fa-eye"></i>
+                                                                    </button>
+                                                                    <?php endif ?>
+                                                                    <button class="btn btn-sm uploadButton"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#modalUpload"
+                                                                        data-bs-barang="<?= $good["id_good"] ?>">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="16" height="16" fill="currentColor"
+                                                                            class="bi bi-cloud-arrow-up"
+                                                                            viewBox="0 0 16 16">
+                                                                            <path fill-rule="evenodd"
+                                                                                d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z" />
+                                                                            <path
+                                                                                d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z" />
+                                                                        </svg>
                                                                     </button>
                                                                 </td>
                                                                 <td>
@@ -381,7 +401,7 @@
                                                         <tr>
                                                             <td>1</td>
                                                             <td>IT-LIC-2023-05-15</td>
-                                                            <td>AEC Collection</td>
+                                                            <td>DUMMY</td>
                                                             <td>123-ASD23121</td>
                                                             <td>12/06/2022 -11/06/2023</td>
                                                             <td>5</td>
@@ -483,14 +503,12 @@
                                                 </li>
                                                 <?php else : ?>
                                                 <li>
-                                                    <span class="fw-bold"><?= $history["tittle"] ?></span> <button
-                                                        onclick="showImageModal('<?= $history['attach'] ?>')">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor" class="bi bi-paperclip"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
-                                                        </svg></button>
+                                                    <span class="fw-bold"><?= $history["tittle"] ?></span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
+                                                    </svg>
                                                     <p class="fs-6"><?= $history["created_at"] ?></p>
                                                     <p><?= $history["description"] ?>
                                                     </p>
@@ -530,8 +548,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="attach" class="form-label">Attachment</label>
-                                                    <input type="file" name="attach" id="attach" class="form-control"
-                                                        accept="image/*">
+                                                    <input type="file" name="attach" id="attach" class="form-control">
                                                     <input type="text" name="bast" value="<?= $bast_number ?>" hidden>
                                                 </div>
 
@@ -696,23 +713,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5 me-3" id="exampleModalLabel">Upload Serah Terima</h1>
-                    <a href="dist/source-pdf/source-1.pdf"
-                        class="text-decoration-none labeling-form text-decoration-underline" target="_blank">
-                        <i class="fa-solid fa-eye"></i>
-                        See Attachment
-                    </a>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <form action="" method="post" enctype="multipart/form-data">
+                        <form action="function.php" method="post" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-8">
                                     <input type="file" class="form-control" name="importFile" id="importFile"
                                         required />
+                                    <input type="text" name="bastUrl" id="bastInput" hidden>
                                 </div>
                                 <div class="col-4 d-grid gap-3">
-                                    <button type="submit" class="btn btn-sm btn-primary">
+                                    <button type="submit" name="UploadAttachInvBAST" class="btn btn-sm btn-primary">
                                         <i class="fa-solid fa-file-import"></i>
                                         Upload
                                     </button>
@@ -728,7 +741,7 @@
         </div>
     </div>
 
-    <!-- Modal for Image Preview -->
+    <!-- Modal for Image Preview
     <div class="modal fade" id="imageModalTambah" tabindex="-1" role="dialog" aria-labelledby="imageModalTambahLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -744,7 +757,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
@@ -792,17 +805,17 @@
         $("#datePicker").val(today);
     });
 
-    $(document).ready(function() {
-        $("input[type=text]").keyup(function() {
-            $(this).val($(this).val().toUpperCase());
-        });
-    });
+    // $(document).ready(function() {
+    //     $("input[type=text]").keyup(function() {
+    //         $(this).val($(this).val().toUpperCase());
+    //     });
+    // });
 
-    function showImageModal(imageName) {
-        var modalImage = document.getElementById('modalImage');
-        modalImage.src = 'dist/img/history-img/' + imageName;
-        $('#imageModal').modal('show');
-    }
+    // function showImageModal(imageName) {
+    //     var modalImage = document.getElementById('modalImage');
+    //     modalImage.src = 'dist/img/history-img/' + imageName;
+    //     $('#imageModal').modal('show');
+    // }
 
     document.getElementById('attach').addEventListener('change', function() {
         const file = this.files[0];
@@ -810,6 +823,45 @@
             alert('File size exceeds the limit of 1 MB.');
             this.value = ''; // Reset the input file
         }
+    });
+
+    // Function untuk memilih tombol attach agar ID barang yang dipilih masuk ke cookiie 
+    $(document).ready(function() {
+        $('.uploadButton').on('click', function() {
+            // Ambil nilai branch dari atribut data-bs-barang
+            var goodValue = $(this).attr('data-bs-barang');
+
+            // Fungsi untuk menambahkan cookie
+            function setCookie(name, value, days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+
+            // Tambahkan cookie dengan nama "branch" dan nilai dari atribut data-bs-barang
+            setCookie('goodSelected-list', goodValue, 1); // Cookie berlaku selama 1 hari
+        });
+    });
+
+    // Mengambil parameter url bast ke dalam form input
+    $(document).ready(function() {
+        // Fungsi untuk mendapatkan nilai parameter dari URL
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Ambil nilai parameter bast dari URL
+        var bastValue = getParameterByName('bast');
+
+        // Masukkan nilai parameter bast ke dalam input dengan name="bastUrl"
+        $('input[name="bastUrl"]').val(bastValue);
     });
     </script>
 </body>
