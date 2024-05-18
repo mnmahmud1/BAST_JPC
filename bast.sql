@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `bast_report` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table bast.bast_report: ~0 rows (approximately)
+-- Dumping data for table bast.bast_report: ~2 rows (approximately)
 INSERT INTO `bast_report` (`id`, `number`, `id_user_submitted`, `id_user_accepted`, `status`, `notes`, `as_dump`, `updated_at`, `created_at`, `created_by`) VALUES
 	(3, 'IT/BAST/2024/01/01', 1, 2, 1, 'TES', 0, '2024-01-27 03:55:01', '2024-01-27 10:54:05', 1),
 	(4, 'IT/BAST/2024/04/01', 1, 3, 1, 'PEMBERIAN LAPTOP BARU KARENA LAPTOP LAMA RUSAK', 0, '2024-04-08 09:18:25', '2024-04-06 15:40:01', 1);
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS `bast_report_details` (
 
 -- Dumping data for table bast.bast_report_details: ~2 rows (approximately)
 INSERT INTO `bast_report_details` (`id`, `bast_number`, `id_good`, `id_inv_type`, `attach`, `updated_at`, `created_at`, `created_by`) VALUES
-	(2, 'IT/BAST/2024/04/01', 3, 1, NULL, '2024-04-08 08:26:31', '2024-04-08 15:26:31', 1),
-	(3, 'IT/BAST/2024/04/01', 6, 1, NULL, '2024-04-08 09:04:35', '2024-04-08 16:04:35', 1);
+	(2, 'IT/BAST/2024/04/01', 3, 1, '03a2db22c09a707688cd41bd640b85feab61c0c5.pdf', '2024-05-18 17:21:38', '2024-04-08 15:26:31', 1),
+	(3, 'IT/BAST/2024/04/01', 6, 1, 'bf1958fb2f0d1300bec09349f504e85321a11e8e.pdf', '2024-05-18 17:37:21', '2024-04-08 16:04:35', 1);
 
 -- Dumping structure for table bast.bast_usage_history
 CREATE TABLE IF NOT EXISTS `bast_usage_history` (
@@ -68,14 +68,20 @@ CREATE TABLE IF NOT EXISTS `bast_usage_history` (
   `created_at` datetime NOT NULL,
   `created_by` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table bast.bast_usage_history: ~3 rows (approximately)
+-- Dumping data for table bast.bast_usage_history: ~9 rows (approximately)
 INSERT INTO `bast_usage_history` (`id`, `bast_number`, `tittle`, `description`, `attach`, `updated_at`, `created_at`, `created_by`) VALUES
 	(1, 'IT/BAST/2024/04/01', 'Add Inventory', 'Adding MOUSE WIRELESS LOGITECH M190', NULL, '2024-04-08 08:45:48', '2024-04-08 15:26:31', 1),
 	(2, 'IT/BAST/2024/04/01', 'Add Inventory', 'Adding LAPTOP ACER ASPIRE E14 E5-471', NULL, '2024-04-08 09:04:35', '2024-04-08 16:04:35', 1),
 	(6, 'IT/BAST/2024/01/01', 'KEYBOARD RUSAK', 'Rusak tombol space', '', '2024-04-08 13:38:55', '2024-04-08 20:38:55', 1),
-	(7, 'IT/BAST/2024/01/01', 'UPLOAD FOTO TERBARU', 'foto lengkap dengan tas', 'Picture1.jpg', '2024-04-08 13:49:58', '2024-04-08 20:49:58', 1);
+	(7, 'IT/BAST/2024/01/01', 'UPLOAD FOTO TERBARU', 'foto lengkap dengan tas', 'Picture1.jpg', '2024-04-08 13:49:58', '2024-04-08 20:49:58', 1),
+	(8, 'IT/BAST/2024/04/01', 'Add Attach', 'Adding Attachment for IT/REG/2024/01/02', NULL, '2024-05-18 17:03:52', '2024-05-19 00:03:52', 1),
+	(9, 'IT/BAST/2024/04/01', 'Add Attach', 'Adding Attachment for IT/REG/2024/01/05', NULL, '2024-05-18 17:04:10', '2024-05-19 00:04:10', 1),
+	(10, 'IT/BAST/2024/04/01', 'Add Attach', 'Adding Attachment for IT/REG/2024/01/02', NULL, '2024-05-18 17:21:38', '2024-05-19 00:21:38', 1),
+	(11, 'IT/BAST/2024/04/01', 'Add Attach', 'Adding Attachment for IT/REG/2024/01/05', NULL, '2024-05-18 17:21:47', '2024-05-19 00:21:47', 1),
+	(12, 'IT/BAST/2024/04/01', 'Add Attach', 'Adding Attachment for IT/REG/2024/01/05, <button onclick="window.location.href = \'dist/attach/bf1958fb2f0d1300bec09349f504e85321a11e8e.pdf\'" class="btn btn-sm btn-success">View</button>', NULL, '2024-05-18 17:37:21', '2024-05-19 00:37:21', 1),
+	(14, 'IT/BAST/2024/04/01', 'Tambah Foto', 'tambah testing <button onclick="window.location.href = \'dist/img/history-img/6d9ab08ceb07f8aced1180e90a37e449f57c3be8.JPG\'" class="btn btn-sm btn-success">View</button>', '6d9ab08ceb07f8aced1180e90a37e449f57c3be8.JPG', '2024-05-18 17:52:15', '2024-05-19 00:52:15', 1);
 
 -- Dumping structure for table bast.branch
 CREATE TABLE IF NOT EXISTS `branch` (
