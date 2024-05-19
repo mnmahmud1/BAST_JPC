@@ -451,37 +451,39 @@ if(isset($_GET["addGoodtoBAST"])){
     }
 }
 
-if(isset($_POST["commitHistory"])){
+if (isset($_POST["commitHistory"])) {
     $tittle = trim(htmlspecialchars($_POST['tittle']));
     $description = trim(htmlspecialchars($_POST['description']));
     $bast = trim(htmlspecialchars($_POST['bast']));
     $photo = $_FILES['attach']['tmp_name'];
     $photoName = $_FILES['attach']['name'];
     
-    // Fungsi untuk menghasilkan nama unik dengan 50 karakter
+    // Fungsi untuk menghasilkan nama unik dengan 40 karakter
     function generateUniqueFileName($length = 40) {
         return substr(bin2hex(random_bytes($length)), 0, $length);
     }
 
-    // Dapatkan ekstensi file
-    $fileExtension = pathinfo($photoName, PATHINFO_EXTENSION);
-    
-    // Buat nama file baru yang unik
-    $uniquePhotoName = generateUniqueFileName() . '.' . $fileExtension;
-    $photoTarget = 'dist/img/history-img/' . $uniquePhotoName;
-    
-    // Pindahkan file yang diunggah ke target yang baru
-    move_uploaded_file($photo, $photoTarget);
-
-    // Insert data ke database
-    if(isset($photo)){
-        mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, attach, created_at, created_by) VALUES ('$bast', '$tittle', '$description <button onclick=\"window.location.href = \'dist/img/history-img/$uniquePhotoName\'\" class=\"btn btn-sm btn-success\">View</button>', '$uniquePhotoName', '$dateTime', $userCreated)");
+    if (!empty($photoName) && is_uploaded_file($photo)) {
+        // Dapatkan ekstensi file
+        $fileExtension = pathinfo($photoName, PATHINFO_EXTENSION);
+        
+        // Buat nama file baru yang unik
+        $uniquePhotoName = generateUniqueFileName() . '.' . $fileExtension;
+        $photoTarget = 'dist/img/history-img/' . $uniquePhotoName;
+        
+        // Pindahkan file yang diunggah ke target yang baru
+        if (move_uploaded_file($photo, $photoTarget)) {
+            mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, attach, created_at, created_by) VALUES ('$bast', '$tittle', '$description <button class=\"btn btn-sm btn-success\" onclick=\"window.open(\'dist/img/history-img/$uniquePhotoName\', \'_blank\').focus()\">View</button>', '$uniquePhotoName', '$dateTime', $userCreated)");
+        } else {
+            // Handle error saat memindahkan file
+            mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, attach, created_at, created_by) VALUES ('$bast', '$tittle', '$description', NULL, '$dateTime', $userCreated)");
+        }
     } else {
         mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, attach, created_at, created_by) VALUES ('$bast', '$tittle', '$description', NULL, '$dateTime', $userCreated)");
     }
 
     // Periksa apakah ada baris yang terpengaruh oleh query
-    if(mysqli_affected_rows($conn)){
+    if (mysqli_affected_rows($conn)) {
         // Jika ada perubahan pada update
         header("Location: ba-serah-terima-details.php?bast=$bast");
     } else {
@@ -489,6 +491,7 @@ if(isset($_POST["commitHistory"])){
         header("Location: ba-serah-terima-details.php?bast=$bast");
     }
 }
+
 
 if(isset($_POST["UploadAttachInvBAST"])){
     $bastUrl = trim(htmlspecialchars($_POST['bastUrl']));

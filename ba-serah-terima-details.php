@@ -172,22 +172,36 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h3 class="mt-4">Berita Acara Serah Terima Inventaris</h3>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="berita-acara-serah-terima.php">Serah Terima
-                                    Inventaris</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Details</li>
-                        </ol>
-                    </nav>
+                    <div class="row justify-content-between">
+                        <div class="col-auto me-auto">
+                            <h3 class="mt-4">Berita Acara Serah Terima Inventaris</h3>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="berita-acara-serah-terima.php">Serah Terima
+                                            Inventaris</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Details</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-sm btn-outline-primary mt-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-printer" viewBox="0 0 16 16">
+                                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                    <path
+                                        d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-9">
                             <div class="row mb-3">
-                                <div class="col-sm">
+                                <div class="col-md">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="mb-4">Deskripsi Berita Acara</h5>
-
                                             <div class="row mb-3">
                                                 <div class="col-sm">
                                                     <label for="" class="form-label labeling-form">No Berita
@@ -253,7 +267,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-sm">
+                                <div class="col-md">
                                     <div class="card">
                                         <div class="card-body table-responsive">
                                             <h5 class="mb-4">Daftar Barang Inventaris</h5>
@@ -305,7 +319,7 @@
                                                                 <td>
                                                                     <?php if($good["attach"] != null OR $good["attach"] != "") : ?>
                                                                     <button
-                                                                        onclick="window.location.href = 'dist/attach/<?= $good['attach'] ?>'"
+                                                                        onclick="window.open('dist/attach/<?= $good['attach'] ?>', '_blank')"
                                                                         class="btn btn-sm" target="_blank">
                                                                         <i class="fa-solid fa-eye"></i>
                                                                     </button>
@@ -313,7 +327,8 @@
                                                                     <button class="btn btn-sm uploadButton"
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#modalUpload"
-                                                                        data-bs-barang="<?= $good["id_good"] ?>">
+                                                                        data-bs-barang="<?= $good["id_good"] ?>"
+                                                                        data-bs-number="<?= $good["number"] ?>">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             width="16" height="16" fill="currentColor"
                                                                             class="bi bi-cloud-arrow-up"
@@ -712,7 +727,8 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 me-3" id="exampleModalLabel">Upload Serah Terima</h1>
+                    <h1 class="modal-title fs-5 me-3" id="exampleModalLabel">Upload Serah Terima - <span
+                            id="numberSelected-list"></span></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -825,11 +841,23 @@
         }
     });
 
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(";");
+        for (let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("=");
+            if (name == cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+
     // Function untuk memilih tombol attach agar ID barang yang dipilih masuk ke cookiie 
     $(document).ready(function() {
         $('.uploadButton').on('click', function() {
             // Ambil nilai branch dari atribut data-bs-barang
             var goodValue = $(this).attr('data-bs-barang');
+            var numberValue = $(this).attr('data-bs-number');
 
             // Fungsi untuk menambahkan cookie
             function setCookie(name, value, days) {
@@ -844,6 +872,22 @@
 
             // Tambahkan cookie dengan nama "branch" dan nilai dari atribut data-bs-barang
             setCookie('goodSelected-list', goodValue, 1); // Cookie berlaku selama 1 hari
+            setCookie('numberSelected-list', numberValue, 1); // Cookie berlaku selama 1 hari
+
+            // Mengirimkan number selected list kedalam modal upload serah terima/attach
+            // Event handler untuk tombol trigger
+
+            // Reset teks di dalam span
+            $("#numberSelected-list").text('');
+
+            // Dapatkan nilai cookie
+            let numberSelected = getCookie("numberSelected-list");
+
+            // Jika nilai cookie ditemukan, masukkan ke dalam span
+            if (numberSelected) {
+                $("#numberSelected-list").text(numberSelected);
+            }
+
         });
     });
 
