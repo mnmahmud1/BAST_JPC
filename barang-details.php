@@ -130,6 +130,15 @@
                         </a>
                     </div>
                 </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    <?= $nameUser ?>
+                    <br>
+                    <button type="button" class="btn btn-sm text-white"
+                        onclick="return window.location.href='function.php?logout=1'">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                    </button>
+                </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
