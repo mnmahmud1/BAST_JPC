@@ -418,7 +418,11 @@ if(isset($_POST["updateDescBAST"])){
     
     mysqli_query($conn, "UPDATE bast_report SET notes = '$description' WHERE number = '$bast'");
 
+    
     if(mysqli_affected_rows($conn)){
+        // tambahkan row di bast_usage_history
+        mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, created_at, created_by) VALUES ('$bast', 'Update Description', '$description', '$dateTime', $userCreated)");
+        
         // Jika ada perubahan pada update
         header("Location: ba-serah-terima-details.php?bast=$bast");
     } else {
@@ -432,6 +436,7 @@ if(isset($_GET["addGoodtoBAST"])){
     $id = $_GET['addGoodtoBAST'];
     $bast = $_GET['bast'];
     $goodDesc = $_GET['goodDesc'];
+    $goodNumber = $_GET['goodNumber'];
     
     // menambahkan row di tabel bast_report_detail
     mysqli_query($conn, "INSERT INTO bast_report_details (bast_number, id_good, id_inv_type, created_at, created_by) VALUES ('$bast', $id, 1, '$dateTime', $userCreated)");
@@ -440,7 +445,7 @@ if(isset($_GET["addGoodtoBAST"])){
     mysqli_query($conn, "UPDATE goods SET as_bast = 1 WHERE id = $id");
 
     // tambahkan row di bast_usage_history
-    mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, created_at, created_by) VALUES ('$bast', 'Add Inventory', 'Adding $goodDesc', '$dateTime', $userCreated)");
+    mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, created_at, created_by) VALUES ('$bast', 'Add Inventory', 'Adding $goodNumber - $goodDesc', '$dateTime', $userCreated)");
 
     if(mysqli_affected_rows($conn)){
         // Jika ada perubahan pada update
@@ -531,4 +536,28 @@ if(isset($_POST["UploadAttachInvBAST"])){
         // Jika tidak ada perubahan pada update
         header("Location: ba-serah-terima-details.php?bast=$bastUrl");
     }
+}
+
+if(isset($_GET["deleteInvBAST"])){
+    $goodForDelete = trim(htmlspecialchars($_GET['deleteInvBAST']));
+    $bast = trim(htmlspecialchars($_GET['bast']));
+    $goodNumber = trim(htmlspecialchars($_GET['number']));
+    $goodDesc = trim(htmlspecialchars($_GET['desc']));
+    
+    mysqli_query($conn, "DELETE FROM bast_report_details WHERE bast_number='$bast' AND id_good = $goodForDelete");
+    
+    // ubah status di tabel goods berdasar $id menjadi as_bast = 0
+    mysqli_query($conn, "UPDATE goods SET as_bast = 0 WHERE id = $goodForDelete");
+
+    // tambahkan row di bast_usage_history
+    mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, created_at, created_by) VALUES ('$bast', 'Delete Inventory', 'Deleted $goodNumber - $goodDesc', '$dateTime', $userCreated)");
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: ba-serah-terima-details.php?bast=$bast");
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: ba-serah-terima-details.php?bast=$bast");
+    }
+    
 }

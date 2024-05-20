@@ -42,6 +42,9 @@
     <!-- Jquery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
+    <!-- SweetAlert CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Datatables Jquery -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 
@@ -254,8 +257,6 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-white"
-                                                        data-bs-dismiss="modal">Cancel</button>
                                                     <button type="submit" name="updateDescBAST"
                                                         class="btn btn-outline-primary" tabindex="-1">Update
                                                         Description</button>
@@ -293,6 +294,7 @@
                                                                 <td><?= $numB ?></td>
                                                                 <td>
                                                                     <a href="barang-details.php?inv=<?= $good["number"] ?>"
+                                                                        target="_blank"
                                                                         class="text-reset"><?= $good["number"] ?></a>
                                                                 </td>
                                                                 <td><?= $good["description"] ?></td>
@@ -341,8 +343,8 @@
                                                                     </button>
                                                                 </td>
                                                                 <td>
-                                                                    <button class="btn btn-sm"
-                                                                        onclick="confirm('Yakin ingin menghapus data ini?')">
+                                                                    <button class="btn btn-sm" id="delete-button"
+                                                                        onclick="confirmDeletion('function.php?deleteInvBAST=<?= $good['id_good'] ?>&bast=<?= $bast_number ?>&number=<?= $good['number'] ?>&desc=<?= $good['description'] ?>', 'Inventaris')">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             width="16" height="16" fill="currentColor"
                                                                             class="bi bi-trash3" viewBox="0 0 16 16">
@@ -635,7 +637,7 @@
                                                 <td><?= $good["branch_name"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-success rounded-pill"
-                                                        onclick="window.location.href = 'function.php?addGoodtoBAST=<?= $good['id'] ?>&goodDesc=<?= $good['description'] ?>&bast=<?= $getBAST['number'] ?>'">Choose</button>
+                                                        onclick="window.location.href = 'function.php?addGoodtoBAST=<?= $good['id'] ?>&goodDesc=<?= $good['description'] ?>&goodNumber=<?= $good['number'] ?>&bast=<?= $getBAST['number'] ?>'">Choose</button>
                                                 </td>
                                             </tr>
                                             <?php $numA++; endforeach ?>
@@ -821,11 +823,11 @@
         $("#datePicker").val(today);
     });
 
-    // $(document).ready(function() {
-    //     $("input[type=text]").keyup(function() {
-    //         $(this).val($(this).val().toUpperCase());
-    //     });
-    // });
+    $(document).ready(function() {
+        $("#description").keyup(function() {
+            $(this).val($(this).val().toUpperCase());
+        });
+    });
 
     // function showImageModal(imageName) {
     //     var modalImage = document.getElementById('modalImage');
@@ -907,6 +909,33 @@
         // Masukkan nilai parameter bast ke dalam input dengan name="bastUrl"
         $('input[name="bastUrl"]').val(bastValue);
     });
+
+    // Delete Confirm dengan sweetAlert
+    function confirmDeletion(url, item) {
+        Swal.fire({
+            title: 'Yakin ingin menghapus ' + item + ' ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#F2404C',
+            confirmButtonText: 'Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Display success message
+                Swal.fire(
+                    'Terhapus!',
+                    item + ' berhasil dihapus.',
+                    'success'
+                )
+                setTimeout(function() {
+                    // Redirect to the URL
+                    window.location.href = url;
+                }, 800); // Delay for 800 milliseconds
+
+            }
+        });
+    }
     </script>
 </body>
 
