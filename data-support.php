@@ -21,7 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>Data Supports - SB Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="dist/temp/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -54,7 +54,7 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link active" href="index.php">
+                        <a class="nav-link" href="index.php">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-tachometer-alt"></i>
                             </div>
@@ -106,11 +106,11 @@
                                 <i class="fas fa-angle-down"></i>
                             </div>
                         </a>
-                        <div class="collapse" id="collapseLayoutsMaster" aria-labelledby="headingOne"
+                        <div class="collapse show" id="collapseLayoutsMaster" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="user.php">Pengguna</a>
-                                <a class="nav-link" href="data-support.php">Data Support</a>
+                                <a class="nav-link active" href="data-support.php">Data Support</a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsReport"
@@ -153,9 +153,10 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h3 class="mt-4">Dashboard</h3>
+                    <h3 class="mt-4">Data Supports</h3>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Dashboard</li>
+                        <li class="breadcrumb-item">Master Data</li>
+                        <li class="breadcrumb-item active">Data Supports</li>
                     </ol>
 
                     <div class="row">

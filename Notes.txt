@@ -24,7 +24,7 @@ WHERE
 PR
 
 1. menghilangkan kode RR Cookie saat keluar dari halaman barang masuk
-2. Menambahkan rekomendasi deskripsi barang dari nama barang yang sudah ada di database di tambah data barang masuk
+2. Menambahkan rekomendasi deskripsi barang dari nama barang yang sudah ada di database di tambah data barang masuk (Sesuai Sync/ Ambil data dari tipe barang)
 3. tambahkan notif berhasil disetiap update/input/dump data semua halaman
 4. tambahkan tombol generate SN di tambah data barang-masum / tambah barang (untuk barang yang tidak punya SN ; labeling ditambah SN ; biasanya untuk PC)
 5. Menambahkan form user sperti kode anydesk dsb, kemudian daftar akun dari user. sehingga jika ada user yang resign dapat langsung diidentifikasi akun yang dimilikinya.
@@ -36,3 +36,16 @@ PR
 11. tambahkan periode waktu di setting agar daftar barang masuk tidak bisa diubah (bisa dirubah apabila periode waktu diubah ke backdate).
 12. tambah menu ttd custom untuk serah terima bast
 13. buat sebuah halaman dimana semua as_dump ditampilkan dan dapat dipulihkan
+
+
+Master Data = 
+- Barang Masuk 
+Tipe Barang = (Goods, Lisences, Consumables)
+
+- Daftar Barang
+Tipe Inventaris = (Hak Milik Perusahaan, Sewaan)
+Grup Inventaris = id, Kode Barang, Jenis Barang, Nama Barang (Laptop, PC, Mouse, ...)
+Peruntukan Inventaris = Infrastruktur, Inventaris user
+Lokasi = id, Kode Lokasi, Nama Lokasi (HO JKT = HOLT1-HOLT2, WS = WS1LT1-WS1LT2-WS2LT1-WS2LT2, PKU, SBY, BPN)
+Departemen = V
+Kondisi = V
