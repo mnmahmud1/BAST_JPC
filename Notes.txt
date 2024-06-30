@@ -49,3 +49,7 @@ Peruntukan Inventaris = Infrastruktur, Inventaris user
 Lokasi = id, Kode Lokasi, Nama Lokasi (HO JKT = HOLT1-HOLT2, WS = WS1LT1-WS1LT2-WS2LT1-WS2LT2, PKU, SBY, BPN)
 Departemen = V
 Kondisi = V
+
+- Daftar Lisensi
+type Lisensi = (Perpetual Lisencesi, Subscription Lisences) V
+Asal Usul = PWR, HIBAH, Lain-lain
