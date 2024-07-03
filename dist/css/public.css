@@ -79,3 +79,20 @@ body {
 	text-transform: uppercase !important;
 	font-weight: 500;
 }
+
+.callout {
+	background-color: #fff3cd; /* Background kuning muda */
+	border-left: 4px solid #ffecb5; /* Border kiri kuning */
+	padding: 1rem;
+	margin-bottom: 1rem;
+	/* border-radius: 0.25rem; */
+}
+.callout h5 {
+	margin-top: 0;
+	color: #0c5460;
+}
+
+.callout-gray {
+	background-color: #f8f9fa !important; /* Background abu-abu muda */
+	border-left: 4px solid #dee2e6 !important; /* Border kiri abu-abu */
+}
