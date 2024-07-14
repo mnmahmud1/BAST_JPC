@@ -352,7 +352,7 @@
                         </div>
                     </div>
                     <div class="callout">
-                        Master data for <b>Daftar Barang</b>
+                        Master data for <b>Daftar Barang / Lisensi</b>
                     </div>
                     <div class="row mb-3">
                         <div class="col">

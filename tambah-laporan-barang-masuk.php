@@ -38,6 +38,10 @@
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="dist/css/public.css" />
 
+    <!-- jQuery Typeahead CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.11.0/jquery.typeahead.min.css"
+        rel="stylesheet" />
+
     <!-- Jquery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
@@ -45,6 +49,17 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
 
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+
+    <style>
+    .typeahead__container {
+        position: relative;
+    }
+
+    .typeahead__query {
+        z-index: 1060;
+        /* Z-index lebih tinggi dari Bootstrap modal */
+    }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -184,8 +199,22 @@
                                                 <tbody>
                                                     <?php foreach($getDetailGoodIncoming as $getDetail) : ?>
                                                     <tr>
+                                                        <?php
+                                                            $desc = $getDetail["description"];
+                                                            $validateDescGroup = mysqli_query($conn, "SELECT id FROM inv_group WHERE description = '$desc'");
+                                                        ?>
                                                         <td><?= $urutBarang ?></td>
-                                                        <td><?= $getDetail["description"] ?></td>
+                                                        <td>
+                                                            <?= $getDetail["description"] ?> <br>
+                                                            <?php  if(mysqli_num_rows($validateDescGroup) < 1) : ?>
+                                                            <span class="badge rounded-pill bg-success">
+                                                                <a href="#" class="text-decoration-none text-white"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#modalTambahGroup">Daftarkan
+                                                                    Sekarang</a></span>
+                                                            <?php endif ?>
+                                                        </td>
+
                                                         <td><?= $getDetail["sn"] ?></td>
                                                         <td><?= $getDetail["pwr"] ?></td>
                                                         <td><?= $getDetail["po"] ?></td>
@@ -285,8 +314,14 @@
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="" class="form-label labeling-form">Deskripsi</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="desc"
-                                    id="desc" autofocus required />
+                                <div class="typeahead__container">
+                                    <div class="typeahead__field">
+                                        <div class="typeahead__query">
+                                            <input type="text" id="desc" class="form-control" name="desc"
+                                                placeholder="Your text here" autocomplete="off" autofocus required />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -370,13 +405,54 @@
         </div>
     </div>
 
+    <!-- Modal Tambah Data -->
+    <div class="modal fade" id="modalTambahGroup" tabindex="-1" aria-labelledby="modalTambahGroupLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalTambahGroupLabel">Daftarkan Inventaris Group</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="function.php" method="post">
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-sm">
+                                <label for="group" class="form-label labeling-form">Group Inventaris</label>
+                                <input type="text" name="group" id="group" class="form-control"
+                                    placeholder="Your text here" maxlength="50" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm">
+                                <label for="code" class="form-label labeling-form">Code</label>
+                                <input type="text" name="code" id="code" class="form-control"
+                                    placeholder="Your text here" maxlength="4" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm">
+                                <label for="description" class="form-label labeling-form">Description</label>
+                                <input type="text" name="description" id="description" class="form-control"
+                                    placeholder="Your text here" maxlength="100" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" tabindex="-1" name="tambahGroup" id="tambahGroup"
+                            disabled>Tambah</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
     <script src="dist/temp/js/scripts.js"></script>
     <script src="dist/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="dist/temp/assets/demo/chart-area-demo.js"></script>
-    <script src="dist/temp/assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="dist/temp/js/datatables-simple-demo.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" />
@@ -388,6 +464,9 @@
     <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.5.0/js/dataTables.select.min.js"></script>
+
+    <!-- jQuery Typeahead JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.11.0/jquery.typeahead.min.js"></script>
 
     <script>
     $(document).ready(function() {
@@ -493,6 +572,34 @@
         modalImage.src = 'dist/img/' + imageName;
         $('#imageModal').modal('show');
     }
+
+    $(document).ready(function() {
+        // Mengambil data dari server menggunakan AJAX
+        $.ajax({
+            url: 'dist/php-js/autocomplete-desc.php',
+            dataType: 'json',
+            success: function(data) {
+                $('#desc').typeahead({
+                    source: data,
+                    callback: {
+                        onInit: function($el) {
+                            console.log(
+                                `Typeahead initiated on: ${$el.prop('tagName')}#${$el.attr('id')}`
+                            );
+                        },
+                        // Handler saat item dipilih
+                        onClickAfter: function(node, a, item, event) {
+                            // Mengubah nilai input desc
+                            $('#desc').val(item.display);
+                        }
+                    }
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error fetching data:', textStatus, errorThrown);
+            }
+        });
+    });
     </script>
 </body>
 
