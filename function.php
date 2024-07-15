@@ -561,3 +561,19 @@ if(isset($_GET["deleteInvBAST"])){
     }
     
 }
+
+if(isset($_POST['tambahGroup'])){
+    $group = trim(htmlspecialchars($_POST['group']));
+    $code = trim(htmlspecialchars($_POST['code']));
+    $description = trim(htmlspecialchars($_POST['description']));
+    
+    mysqli_query($conn, "INSERT INTO inv_group (code, name, description, created_at, created_by) VALUES ('$code', '$group', '$description', '$dateTime', $userCreated)");
+    
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: tambah-laporan-barang-masuk.php");
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: tambah-laporan-barang-masuk.php");
+    }
+}

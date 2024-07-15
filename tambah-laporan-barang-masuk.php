@@ -7,6 +7,7 @@
 	}
 
     $urutBarang = 1;
+    $urutGroup = 1;
 
     $nameUser = $_COOKIE["_name_log"];
     $rrNumber = $_COOKIE["_rr_number_log"];
@@ -21,6 +22,9 @@
 
     // ambil data select tipe invenaris
     $getInvType = mysqli_query($conn, "SELECT id, name FROM inv_type");
+
+    // Ambil data inv_group
+    $getInvGroup = mysqli_query($conn, "SELECT code, name, description FROM inv_group");
 ?>
 
 <!DOCTYPE html>
@@ -210,11 +214,12 @@
                                                             <span class="badge rounded-pill bg-success">
                                                                 <a href="#" class="text-decoration-none text-white"
                                                                     data-bs-toggle="modal"
-                                                                    data-bs-target="#modalTambahGroup">Daftarkan
-                                                                    Sekarang</a></span>
+                                                                    data-bs-target="#modalTambahGroup"
+                                                                    data-description="<?= htmlspecialchars($getDetail["description"], ENT_QUOTES, 'UTF-8') ?>">Daftarkan
+                                                                    Sekarang</a>
+                                                            </span>
                                                             <?php endif ?>
                                                         </td>
-
                                                         <td><?= $getDetail["sn"] ?></td>
                                                         <td><?= $getDetail["pwr"] ?></td>
                                                         <td><?= $getDetail["po"] ?></td>
@@ -405,10 +410,10 @@
         </div>
     </div>
 
-    <!-- Modal Tambah Data -->
+    <!-- Modal Tambah Data Group -->
     <div class="modal fade" id="modalTambahGroup" tabindex="-1" aria-labelledby="modalTambahGroupLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modalTambahGroupLabel">Daftarkan Inventaris Group</h1>
@@ -417,31 +422,78 @@
                 <form action="function.php" method="post">
                     <div class="modal-body">
                         <div class="row mb-3">
-                            <div class="col-sm">
-                                <label for="group" class="form-label labeling-form">Group Inventaris</label>
-                                <input type="text" name="group" id="group" class="form-control"
-                                    placeholder="Your text here" maxlength="50" required>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table class="display" id="tableGroupInv">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Kode Inv</th>
+                                                    <th>Jenis Inv</th>
+                                                    <th>Nama Inv</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach($getInvGroup as $getInv) : ?>
+                                                <tr>
+                                                    <td><?= $urutGroup ?></td>
+                                                    <td><?= $getInv['code'] ?></td>
+                                                    <td><?= $getInv['name'] ?></td>
+                                                    <td><?= $getInv['description'] ?></td>
+                                                </tr>
+                                                <?php $urutGroup++; endforeach ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-sm">
-                                <label for="code" class="form-label labeling-form">Code</label>
-                                <input type="text" name="code" id="code" class="form-control"
-                                    placeholder="Your text here" maxlength="4" required>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm">
-                                <label for="description" class="form-label labeling-form">Description</label>
-                                <input type="text" name="description" id="description" class="form-control"
-                                    placeholder="Your text here" maxlength="100" required>
+                        <div class="row">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="mb-3">Tambahkan Group</h5>
+                                        <div class="row mb-3">
+                                            <div class="col-sm">
+                                                <label for="group" class="form-label labeling-form">Group
+                                                    Inventaris</label>
+                                                <div class="typeahead__container">
+                                                    <div class="typeahead__field">
+                                                        <div class="typeahead__query">
+                                                            <input type="text" name="group" id="group"
+                                                                class="form-control" placeholder="E.g LAPTOP, PC, ..."
+                                                                maxlength="50" autofocus required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm">
+                                                <label for="code" class="form-label labeling-form">Code</label>
+                                                <input type="text" name="code" id="code" class="form-control"
+                                                    placeholder="E.g LT01, PC01, ..." maxlength="4" required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm">
+                                                <label for="description"
+                                                    class="form-label labeling-form">Description</label>
+                                                <input type="text" name="description" id="description"
+                                                    class="form-control" placeholder="E.g LAPTOP ASUS ..."
+                                                    maxlength="100" readonly required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-white" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" tabindex="-1" name="tambahGroup" id="tambahGroup"
-                            disabled>Tambah</button>
+                        <button type="submit" class="btn btn-primary" tabindex="-1" name="tambahGroup"
+                            id="tambahGroup">Tambah</button>
                     </div>
                 </form>
             </div>
@@ -471,6 +523,7 @@
     <script>
     $(document).ready(function() {
         $("#tableBarang").DataTable();
+        $("#tableGroupInv").DataTable();
     });
 
     $(document).ready(function() {
@@ -574,7 +627,7 @@
     }
 
     $(document).ready(function() {
-        // Mengambil data dari server menggunakan AJAX
+        // Mengambil data dari server menggunakan AJAX Description Group
         $.ajax({
             url: 'dist/php-js/autocomplete-desc.php',
             dataType: 'json',
@@ -598,6 +651,44 @@
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('Error fetching data:', textStatus, errorThrown);
             }
+        });
+    });
+
+    $(document).ready(function() {
+        // Mengambil data dari server menggunakan AJAX Description Group
+        $.ajax({
+            url: 'dist/php-js/autocomplete-group.php',
+            dataType: 'json',
+            success: function(data) {
+                $('#group').typeahead({
+                    source: data,
+                    callback: {
+                        onInit: function($el) {
+                            console.log(
+                                `Typeahead initiated on: ${$el.prop('tagName')}#${$el.attr('id')}`
+                            );
+                        },
+                        // Handler saat item dipilih
+                        onClickAfter: function(node, a, item, event) {
+                            // Mengubah nilai input desc
+                            $('#group').val(item.display);
+                        }
+                    }
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error fetching data:', textStatus, errorThrown);
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#modalTambahGroup').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // Tombol yang memicu modal
+            var description = button.data('description'); // Ambil nilai dari atribut data-description
+            var modal = $(this);
+            modal.find('#description').val(
+                description); // Isi input description dengan nilai yang diambil
         });
     });
     </script>
