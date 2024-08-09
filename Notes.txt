@@ -44,7 +44,7 @@ Tipe Barang = (Goods, Lisences, Consumables)
 
 - Daftar Barang
 Tipe Inventaris = (Hak Milik Perusahaan, Sewaan)
-Grup Inventaris = id, Kode Barang, Jenis Barang, Nama Barang (Laptop, PC, Mouse, ...)
+Grup Inventaris = id, Kode Barang, Jenis Barang, Nama Barang (Laptop, PC, Mouse, ...) ##(OKE)
 Peruntukan Inventaris = Infrastruktur, Inventaris user
 Lokasi = id, Kode Lokasi, Nama Lokasi (HO JKT = HOLT1-HOLT2, WS = WS1LT1-WS1LT2-WS2LT1-WS2LT2, PKU, SBY, BPN)
 Departemen = V
@@ -53,3 +53,45 @@ Kondisi = V
 - Daftar Lisensi
 type Lisensi = (Perpetual Lisencesi, Subscription Lisences) V
 Asal Usul = PWR, HIBAH, Lain-lain
+
+
+----------------------
+## XXXXXXXXXXXXXXXXXXXXXXXXXXXX ##
+LARANGAN
+- TIDAK BOLEH INPUT BARANG MANUAL (BARANG & LISENSI)
+- INPUT BARANG HANYA BOLEH DARI INPUT DAFTAR BARANG MASUK
+
+
+----------------------
+PROGRESS PENGERJAAN APLIKASI
+- OVERVIEW (BELUM)
+- INVENTARIS
+-- DAFTAR BARANG
+--> IMPORT BARANG (BELUM)
+--> TAMBAH BARANG DARI BARANG MASUK (OK)
+--> TAMBAH BARANG MANUAL (DISABLED)
+--- DETAILS
+---> DETAILS BARANG (OK)
+---> HISTORY BARANG DARI BAST (BELUM)
+-- DAFTAR LISENSI
+--> TAMBAH LISENSI DARI BARANG MASUK (OK)
+--> TAMBAH LISENSI MANUAL (DISABLED)
+--- DETAILS
+---> DETAILS LISENSI (OK)
+---> HISTORY LISENSI DARI BAST (BELUM)
+-- BARANG MASUK
+--> TAMBAH LAPORAN MASUK (OK)
+--- DETAILS
+-- PERBAIKAN BARANG (BELUM)
+- PENGGUNA (BELUM)
+- BERITA ACARA
+-- SERAH TERIMA INVENTARIS
+--> TAMBAH BERITA ACARA PEMBERIAN
+--- TAMBAH DAFTAR BARANG INVENTARIS (OK)
+--- TAMBAH DAFTAR SOFTWARE INVENTARIS (OK)
+--- UPLOAD BAST PDF (OK)
+--- PRINT BAST (BELUM)
+--- COMMIT HISTORY BAST (OK)
+--> TAMBAH BERITA ACARA PENGEMBALIAN (BELUM)
+-- SCRAPT INVENTARIS (BELUM)
+- PROFILES (BELUM)

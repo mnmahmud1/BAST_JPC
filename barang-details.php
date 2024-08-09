@@ -180,7 +180,7 @@
                                                     <label for="description"
                                                         class="form-label labeling-form">Deskripsi</label>
                                                     <input type="text" class="form-control" placeholder="Your text here"
-                                                        name="description" id="description" required autofocus
+                                                        name="description" id="description" required readonly
                                                         value="<?= $getDaftarBarangInv['description'] ?>" />
                                                 </div>
                                             </div>

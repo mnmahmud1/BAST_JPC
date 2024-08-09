@@ -177,7 +177,8 @@
                                                         Lisensi</label>
                                                     <input type="text" class="form-control" placeholder="Your text here"
                                                         name="description" id="description"
-                                                        value="<?= $getDaftarLisensiInv["description"] ?>" required />
+                                                        value="<?= $getDaftarLisensiInv["description"] ?>" required
+                                                        readonly />
                                                 </div>
                                                 <div class="col-sm-4">
                                                     <label for="type_lic" class="form-label labeling-form">Type

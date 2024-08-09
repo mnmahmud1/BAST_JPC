@@ -11,6 +11,8 @@
     $numA = 1;
     $numB = 1;
     $numC = 1;
+    $numD = 1;
+    $numE = 1;
 
     $bast_number = $_GET["bast"];
     $queryGetBAST = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_user_name, dept_submitted.name AS submitted_dept_name, users_accepted.name AS accepted_user_name, dept_accepted.name AS accepted_dept_name, bast_report.notes FROM bast_report INNER JOIN users AS users_submitted ON users_submitted.id = bast_report.id_user_submitted INNER JOIN users AS users_accepted ON users_accepted.id = bast_report.id_user_accepted INNER JOIN dept AS dept_submitted ON dept_submitted.id = users_submitted.id_dept INNER JOIN dept AS dept_accepted ON dept_accepted.id = users_accepted.id_dept WHERE bast_report.number = '$bast_number'");
@@ -20,8 +22,11 @@
 	}
 
     $getAllGoods = mysqli_query($conn, "SELECT goods.id, goods.number, goods.description, goods.sn, goods.year, branch.name branch_name FROM goods INNER JOIN branch ON branch.id = goods.id_inv_branch WHERE goods.as_dump = 0 AND goods.as_bast = 0");
-    $getGoodsInBAST = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, bast_report_details.attach, bast_report_details.id_good FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good INNER JOIN branch ON branch.id = goods.id_inv_branch INNER JOIN inv_condition ON inv_condition.id = goods.id_inv_condition WHERE bast_report_details.bast_number = '$bast_number'");
+    $getGoodsInBAST = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, bast_report_details.attach, bast_report_details.id_good FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good INNER JOIN branch ON branch.id = goods.id_inv_branch INNER JOIN inv_condition ON inv_condition.id = goods.id_inv_condition WHERE bast_report_details.id_inv_type = 1 AND bast_report_details.bast_number = '$bast_number'");
     $getHistoryUsage = mysqli_query($conn, "SELECT tittle, description, attach, created_at FROM bast_usage_history WHERE bast_number = '$bast_number' ORDER BY id DESC");
+    $getAllLisences = mysqli_query($conn, "SELECT id, number, sn, description, date_start, date_end, seats, as_bast FROM lisences WHERE as_dump = 0 AND as_bast < seats");
+    $getLisencesInBAST = mysqli_query($conn, "SELECT lisences.number, lisences.sn, lisences.description, lisences.date_start, lisences.date_end, lisences.as_bast, lisences.seats, bast_report_details.id FROM bast_report_details INNER JOIN lisences ON lisences.id = bast_report_details.id_good WHERE bast_report_details.id_inv_type = 2 AND bast_report_details.bast_number = '$bast_number'");
+    $getBASTSigned = mysqli_fetch_assoc(mysqli_query($conn, "SELECT attach FROM bast_report WHERE number = '$bast_number'"));
 ?>
 
 <!DOCTYPE html>
@@ -419,22 +424,38 @@
                                                                 End Date
                                                             </th>
                                                             <th>Seats</th>
-                                                            <th>Date</th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        <?php foreach($getLisencesInBAST as $lisence) : ?>
                                                         <tr>
-                                                            <td>1</td>
-                                                            <td>IT-LIC-2023-05-15</td>
-                                                            <td>DUMMY</td>
-                                                            <td>123-ASD23121</td>
-                                                            <td>12/06/2022 -11/06/2023</td>
-                                                            <td>5</td>
-                                                            <td class="fs-6">10.40 PM 11-11-2022</td>
+                                                            <td><?= $numE ?></td>
                                                             <td>
-                                                                <button class="btn btn-sm"
-                                                                    onclick="confirm('Yakin ingin menghapus data ini?')">
+                                                                <a href="lisensi-details.php?inv=<?= $lisence["number"] ?>"
+                                                                    target="_blank"
+                                                                    class="text-reset"><?= $lisence["number"] ?></a>
+                                                            </td>
+                                                            <td><?= $lisence["description"] ?></td>
+                                                            <td><?= $lisence["sn"] ?></td>
+                                                            <td><?= date("d/m/Y", strtotime($lisence['date_start'])) ?>
+                                                                -
+                                                                <?php if($lisence["date_end"] == "0000-00-00 00:00:00") : ?>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor"
+                                                                    class="bi bi-infinity" viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916z" />
+                                                                </svg>
+                                                                <?php else : ?>
+                                                                <?= date("d/m/Y", strtotime($lisence['date_end'])) ?>
+                                                                <?php endif ?>
+                                                            </td>
+                                                            <td><?= $lisence["as_bast"] ?> of <?= $lisence["seats"] ?>
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn btn-sm" id="delete-button"
+                                                                    onclick="confirmDeletion('function.php?deleteLicBAST=<?= $lisence['id'] ?>&bast=<?= $bast_number ?>&number=<?= $lisence['number'] ?>&desc=<?= $lisence['description'] ?>', 'Lisensi')">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                         height="16" fill="currentColor"
                                                                         class="bi bi-trash3" viewBox="0 0 16 16">
@@ -444,26 +465,7 @@
                                                                 </button>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>2</td>
-                                                            <td>IT-LIC-2023-05-15</td>
-                                                            <td>AEC Collection</td>
-                                                            <td>123-ASD23121</td>
-                                                            <td>12/06/2022 -11/06/2023</td>
-                                                            <td>5</td>
-                                                            <td class="fs-6">10.40 PM 11-11-2022</td>
-                                                            <td>
-                                                                <button class="btn btn-sm"
-                                                                    onclick="confirm('Yakin ingin menghapus data ini?')">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                        height="16" fill="currentColor"
-                                                                        class="bi bi-trash3" viewBox="0 0 16 16">
-                                                                        <path
-                                                                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                                                    </svg>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
+                                                        <?php $numE++; endforeach ?>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -498,17 +500,31 @@
                             </div>
 
                             <div class="row my-4">
-                                <form action="" method="post" enctype="multipart/form-data">
-                                    <div class="col">
-                                        <label for="bast-signed" class="form-label labeling-form">UPLOAD BAST
-                                            SIGNED</label>
-                                        <a href="#"
-                                            class="text-decoration-none labeling-form text-decoration-underline">SEE
-                                            PDF</a>
-                                        <input type="file" name="bast-signed" id="bast-signed" class="form-control"
-                                            required />
-                                    </div>
-                                </form>
+
+                                <div class="col">
+                                    <label for="bastSigned" class="form-label labeling-form">UPLOAD BAST
+                                        SIGNED</label>
+                                    <?php if(is_null($getBASTSigned['attach'])) : ?>
+                                    <?php else : ?>
+                                    <a href="javascript:void(0);"
+                                        onclick="window.open('dist/attach/<?= $getBASTSigned['attach'] ?>', '_blank')"
+                                        class="text-reset">SEE PDF</a>
+                                    <?php endif ?>
+                                    <form action="function.php" method="post" enctype="multipart/form-data">
+                                        <input type="text" name="bastUrl" value="<?= $bast_number ?>" hidden>
+                                        <div class="row">
+                                            <div class="col-sm-11">
+                                                <input type="file" name="bastSigned" id="bastSigned"
+                                                    class="form-control" required />
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <button type="submit" name="uploadSigned"
+                                                    class="btn btn-sm btn-primary">Upload</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
                         </div>
                         <div class="col-md">
@@ -670,7 +686,6 @@
                     <h1 class="modal-title fs-5" id="modalTambahLisensiLabel">Pilih Lisensi Dari Daftar Lisensi</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body px-4">
                     <div class="row">
                         <div class="col-sm">
@@ -696,32 +711,30 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php foreach($getAllLisences as $lisence): ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>IT-LIC-2023-05-15</td>
-                                                <td>AEC Collection</td>
-                                                <td>123-ASD23121</td>
-                                                <td>12/06/2022 -11/06/2023</td>
-                                                <td>5</td>
+                                                <td><?= $numD ?></td>
+                                                <td><?= $lisence["number"] ?></td>
+                                                <td><?= $lisence["description"] ?></td>
+                                                <td><?= $lisence["sn"] ?></td>
+                                                <td><?= date("d/m/Y", strtotime($lisence['date_start'])) ?> -
+                                                    <?php if($lisence["date_end"] == "0000-00-00 00:00:00") : ?>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-infinity" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916z" />
+                                                    </svg>
+                                                    <?php else : ?>
+                                                    <?= date("d/m/Y", strtotime($lisence['date_end'])) ?>
+                                                    <?php endif ?>
+                                                </td>
+                                                <td><?= $lisence["as_bast"] ?> of <?= $lisence["seats"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-success rounded-pill"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modalUpdateMutasiBarang">Choose</button>
+                                                        onclick="window.location.href = 'function.php?addLicencetoBAST=<?= $lisence['id'] ?>&lisenceDesc=<?= $lisence['description'] ?>&lisenceNumber=<?= $lisence['number'] ?>&bast=<?= $getBAST['number'] ?>'">Choose</button>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>IT-LIC-2023-05-15</td>
-                                                <td>AEC Collection</td>
-                                                <td>123-ASD23121</td>
-                                                <td>12/06/2022 -11/06/2023</td>
-                                                <td>5</td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-success rounded-pill"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modalUpdateMutasiBarang">Choose</button>
-                                                </td>
-                                            </tr>
+                                            <?php $numD++; endforeach ?>
                                         </tbody>
                                     </table>
                                 </div>
