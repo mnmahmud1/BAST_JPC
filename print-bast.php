@@ -1,3 +1,60 @@
+<?php
+    require "koneksi.php";
+
+	//periksa apakah ada cookie user_log
+	if(!isset($_COOKIE["_beta_log"])){
+		header("Location: login.php");
+	}
+
+    $nameUser = $_COOKIE["_name_log"];
+    $idUser = $_COOKIE["_beta_log"];
+
+	$bast_number = $_GET["bast"];
+	$queryGetBAST = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_user_name, dept_submitted.name AS submitted_dept_name, users_accepted.name AS accepted_user_name, dept_accepted.name AS accepted_dept_name, users_submitted.nik AS submitted_user_nik, users_accepted.nik AS accepted_user_nik, bast_report.notes FROM bast_report INNER JOIN users AS users_submitted ON users_submitted.id = bast_report.id_user_submitted INNER JOIN users AS users_accepted ON users_accepted.id = bast_report.id_user_accepted INNER JOIN dept AS dept_submitted ON dept_submitted.id = users_submitted.id_dept INNER JOIN dept AS dept_accepted ON dept_accepted.id = users_accepted.id_dept WHERE bast_report.number = '$bast_number'");
+	$getBAST = mysqli_fetch_assoc($queryGetBAST);
+	if($bast_number == '' OR mysqli_num_rows($queryGetBAST) == 0){
+		header("Location: berita-acara-serah-terima.php");
+	}
+
+	$getAllGoods = mysqli_query($conn, "SELECT goods.id, goods.number, goods.description, goods.sn, goods.year, branch.name branch_name FROM goods INNER JOIN branch ON branch.id = goods.id_inv_branch WHERE goods.as_dump = 0 AND goods.as_bast = 0");
+	$getGoodsInBAST = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, bast_report_details.attach, bast_report_details.id_good FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good INNER JOIN branch ON branch.id = goods.id_inv_branch INNER JOIN inv_condition ON inv_condition.id = goods.id_inv_condition WHERE bast_report_details.id_inv_type = 1 AND bast_report_details.bast_number = '$bast_number'");
+	$getHistoryUsage = mysqli_query($conn, "SELECT tittle, description, attach, created_at FROM bast_usage_history WHERE bast_number = '$bast_number' ORDER BY id DESC");
+	$getAllLisences = mysqli_query($conn, "SELECT id, number, sn, description, date_start, date_end, seats, as_bast FROM lisences WHERE as_dump = 0 AND as_bast < seats");
+	$getLisencesInBAST = mysqli_query($conn, "SELECT lisences.number, lisences.sn, lisences.description, lisences.date_start, lisences.date_end, lisences.as_bast, lisences.seats, bast_report_details.id FROM bast_report_details INNER JOIN lisences ON lisences.id = bast_report_details.id_good WHERE bast_report_details.id_inv_type = 2 AND bast_report_details.bast_number = '$bast_number'");
+	$getBASTSigned = mysqli_fetch_assoc(mysqli_query($conn, "SELECT attach FROM bast_report WHERE number = '$bast_number'"));
+
+	// Membuat objek IntlDateFormatter untuk bahasa Indonesia
+	$formatter = new IntlDateFormatter('id_ID', IntlDateFormatter::FULL, IntlDateFormatter::NONE, 'Asia/Jakarta', IntlDateFormatter::GREGORIAN, 'EEEE');
+
+	// Mengambil tanggal saat ini
+	$now = new DateTime();
+
+	// Mengambil bagian-bagian dari tanggal
+	$day = $formatter->format($now);
+	$date = $now->format('d');
+	$month = $now->format('F');
+	$year = $now->format('Y');
+
+	// Mengganti nama bulan ke bahasa Indonesia (jika diperlukan)
+	$months = array(
+		'January' => 'Januari',
+		'February' => 'Februari',
+		'March' => 'Maret',
+		'April' => 'April',
+		'May' => 'Mei',
+		'June' => 'Juni',
+		'July' => 'Juli',
+		'August' => 'Agustus',
+		'September' => 'September',
+		'October' => 'Oktober',
+		'November' => 'November',
+		'December' => 'Desember'
+	);
+
+	$month = $months[$month];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,7 +150,7 @@
                 <td class="no-border">
                     <div style="text-align: center; font-weight: bold">BERITA ACARA SERAH TERIMA INVENTARIS</div>
                     <div style="text-align: center; font-weight: bold">PT. JAKARTA PRIMA CRANES</div>
-                    <div style="text-align: center">Nomor : IT/BAST/2023/05/02</div>
+                    <div style="text-align: center">Nomor : <?= $bast_number ?></div>
                 </td>
                 <td class="no-border" style="text-align: center"><img src="dist/img/bast/k3.png" alt="Logo k3"
                         style="width: 45px" /></td>
@@ -103,8 +160,10 @@
         <!-- Information Section -->
         <table>
             <tr style="text-align: justify">
-                <td colspan="4">Pada hari ini <b>Senin</b>, tanggal <b>12</b>, bulan <b>Agustus</b>, Tahun <b>2024</b>
-                    akan dilakukan serah terima inventaris dengan rincian sebagai berikut.</td>
+                <td colspan="4">Pada hari ini <b><?= $day ?></b>, tanggal <b><?= $date ?></b>, bulan
+                    <b><?= $month ?></b>, Tahun <b><?= $year ?></b>
+                    akan dilakukan serah terima inventaris dengan rincian sebagai berikut.
+                </td>
             </tr>
         </table>
 
@@ -120,15 +179,15 @@
                 <th>Status</th>
             </tr>
             <tr>
-                <td>M Nurhasan Mahmud</td>
-                <td>HR & GA / IT</td>
-                <td>JPC-JKT-825</td>
+                <td><?= $getBAST['accepted_user_name'] ?></td>
+                <td><?= $getBAST['accepted_dept_name'] ?></td>
+                <td><?= $getBAST['accepted_user_nik'] ?></td>
                 <td>PIHAK PENERIMA</td>
             </tr>
             <tr>
-                <td>Rudi Ibrahim</td>
-                <td>HR & GA / IT</td>
-                <td>JPC-JKT-276</td>
+                <td><?= $getBAST['submitted_user_name'] ?></td>
+                <td><?= $getBAST['submitted_dept_name'] ?></td>
+                <td><?= $getBAST['submitted_user_nik'] ?></td>
                 <td>PIHAK PEMBERI</td>
             </tr>
         </table>
