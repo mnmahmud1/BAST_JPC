@@ -12,8 +12,8 @@
     $urutDaftar = 1;
 
 	$getBranch = mysqli_query($conn, "SELECT id, name FROM branch");
-	$getUsersAdmin = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_admin = 1 AND as_dump = 0");
-	$getUsersAll = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_dump = 0");
+	$getUsersAdmin = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name, users.nik FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_admin = 1 AND as_dump = 0");
+	$getUsersAll = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name, users.nik FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_dump = 0");
 
 	$getBast = mysqli_query($conn, "SELECT bast_report.number, bast_report.status, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, dept_accepted.name AS accepted_dept, bast_report.notes, bast_report.created_at FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.as_dump = 0 ORDER BY bast_report.created_at DESC");
 ?>
@@ -264,7 +264,8 @@
                                 <select name="submitted" id="submitted" class="form-select" autofocus required>
                                     <option value="">Choose</option>
                                     <?php foreach($getUsersAdmin as $admin) : ?>
-                                    <option value="<?= $admin['id'] ?>" data-dept="<?= $admin['dept_name'] ?>">
+                                    <option value="<?= $admin['id'] ?>" data-dept="<?= $admin['dept_name'] ?>"
+                                        data-nip="<?= $admin['nik'] ?>">
                                         <?= $admin['name'] ?></option>
                                     <?php endforeach ?>
                                 </select>
@@ -275,6 +276,12 @@
                                 <input type="text" name="dept-submitted" id="dept-submitted" class="form-control"
                                     value="Choose" readonly />
                             </div>
+                            <div class="col-sm">
+                                <label for="nip-submitted" class="form-label labeling-form">NIP
+                                    Penyerah</label>
+                                <input type="text" name="nip-submitted" id="nip-submitted" class="form-control"
+                                    value="Choose" readonly />
+                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
@@ -282,7 +289,8 @@
                                 <select name="accepted" id="accepted" class="form-select" required>
                                     <option value="">Choose</option>
                                     <?php foreach($getUsersAll as $user) : ?>
-                                    <option value="<?= $user['id'] ?>" data-dept="<?= $user['dept_name'] ?>">
+                                    <option value="<?= $user['id'] ?>" data-dept="<?= $user['dept_name'] ?>"
+                                        data-nip="<?= $user['nik'] ?>">
                                         <?= $user['name'] ?></option>
                                     <?php endforeach ?>
                                 </select>
@@ -290,6 +298,11 @@
                             <div class="col-sm">
                                 <label for="dept-accepted" class="form-label labeling-form">Departement Penerima</label>
                                 <input type="text" name="dept-accepted" id="dept-accepted" class="form-control"
+                                    value="Choose" readonly />
+                            </div>
+                            <div class="col-sm">
+                                <label for="nip-accepted" class="form-label labeling-form">Departement Penerima</label>
+                                <input type="text" name="nip-accepted" id="nip-accepted" class="form-control"
                                     value="Choose" readonly />
                             </div>
                         </div>
@@ -316,10 +329,7 @@
     <script src="dist/temp/js/scripts.js"></script>
     <script src="dist/js/main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="dist/temp/assets/demo/chart-area-demo.js"></script>
-    <script src="dist/temp/assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-    <script src="dist/temp/js/datatables-simple-demo.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.5.0/css/select.bootstrap5.min.css" />
     <script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"></script>
@@ -394,15 +404,18 @@
         // Ambil elemen select dan input
         var selectSubmited = document.getElementById("submitted");
         var inputDept = document.getElementById("dept-submitted");
+        var inputNip = document.getElementById("nip-submitted");
 
         // Tambahkan event listener pada perubahan nilai select
         selectSubmited.addEventListener("change", function() {
             // Ambil nilai dan data-dept dari opsi terpilih
             var selectedOption = selectSubmited.options[selectSubmited.selectedIndex];
             var selectedDept = selectedOption.getAttribute("data-dept");
+            var selectedNip = selectedOption.getAttribute("data-nip");
 
             // Set nilai input dengan data-dept terpilih
             inputDept.value = selectedDept;
+            inputNip.value = selectedNip;
         });
     });
 
@@ -410,15 +423,18 @@
         // Ambil elemen select dan input
         var selectSubmited = document.getElementById("accepted");
         var inputDept = document.getElementById("dept-accepted");
+        var inputNip = document.getElementById("nip-accepted");
 
         // Tambahkan event listener pada perubahan nilai select
         selectSubmited.addEventListener("change", function() {
             // Ambil nilai dan data-dept dari opsi terpilih
             var selectedOption = selectSubmited.options[selectSubmited.selectedIndex];
             var selectedDept = selectedOption.getAttribute("data-dept");
+            var selectedNip = selectedOption.getAttribute("data-nip");
 
             // Set nilai input dengan data-dept terpilih
             inputDept.value = selectedDept;
+            inputNip.value = selectedNip;
         });
     });
 

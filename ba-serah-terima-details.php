@@ -15,7 +15,7 @@
     $numE = 1;
 
     $bast_number = $_GET["bast"];
-    $queryGetBAST = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_user_name, dept_submitted.name AS submitted_dept_name, users_accepted.name AS accepted_user_name, dept_accepted.name AS accepted_dept_name, bast_report.notes FROM bast_report INNER JOIN users AS users_submitted ON users_submitted.id = bast_report.id_user_submitted INNER JOIN users AS users_accepted ON users_accepted.id = bast_report.id_user_accepted INNER JOIN dept AS dept_submitted ON dept_submitted.id = users_submitted.id_dept INNER JOIN dept AS dept_accepted ON dept_accepted.id = users_accepted.id_dept WHERE bast_report.number = '$bast_number'");
+    $queryGetBAST = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_user_name, dept_submitted.name AS submitted_dept_name, users_accepted.name AS accepted_user_name, dept_accepted.name AS accepted_dept_name, users_submitted.nik AS submitted_user_nik, users_accepted.nik AS accepted_user_nik, bast_report.notes FROM bast_report INNER JOIN users AS users_submitted ON users_submitted.id = bast_report.id_user_submitted INNER JOIN users AS users_accepted ON users_accepted.id = bast_report.id_user_accepted INNER JOIN dept AS dept_submitted ON dept_submitted.id = users_submitted.id_dept INNER JOIN dept AS dept_accepted ON dept_accepted.id = users_accepted.id_dept WHERE bast_report.number = '$bast_number'");
     $getBAST = mysqli_fetch_assoc($queryGetBAST);
     if($bast_number == '' OR mysqli_num_rows($queryGetBAST) == 0){
 		header("Location: berita-acara-serah-terima.php");
@@ -201,7 +201,8 @@
                             </nav>
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-sm btn-outline-primary mt-4">
+                            <button class="btn btn-sm btn-outline-primary mt-4"
+                                onclick="window.location.href = 'print-bast.html'">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-printer" viewBox="0 0 16 16">
                                     <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
@@ -242,6 +243,11 @@
                                                     <input type="text" name="" id="" class="form-control"
                                                         placeholder="<?= $getBAST['submitted_dept_name'] ?>" readonly />
                                                 </div>
+                                                <div class="col-sm">
+                                                    <label for="" class="form-label labeling-form">NIP</label>
+                                                    <input type="text" name="" id="" class="form-control"
+                                                        placeholder="<?= $getBAST['submitted_user_nik'] ?>" readonly />
+                                                </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <div class="col-sm">
@@ -256,6 +262,11 @@
                                                     <label for="" class="form-label labeling-form">Departement</label>
                                                     <input type="text" name="" id="" class="form-control"
                                                         placeholder="<?= $getBAST['accepted_dept_name'] ?>" readonly />
+                                                </div>
+                                                <div class="col-sm">
+                                                    <label for="" class="form-label labeling-form">NIP</label>
+                                                    <input type="text" name="" id="" class="form-control"
+                                                        placeholder="<?= $getBAST['accepted_user_nik'] ?>" readonly />
                                                 </div>
                                             </div>
                                             <form action="function.php" method="post">
