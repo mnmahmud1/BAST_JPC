@@ -11,7 +11,7 @@
 
     $urutDaftar = 1;
     $urutDaftarI = 1;
-	$getDaftarBarangMasuk = mysqli_query($conn, "SELECT good_incoming.number, good_incoming_details.description, good_incoming_details.sn, good_incoming_details.pwr, good_incoming_details.po, good_incoming_details.notes FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.type = 1 AND good_incoming_details.as_inv = 0");
+	$getDaftarBarangMasuk = mysqli_query($conn, "SELECT good_incoming.number, good_incoming_details.description, good_incoming_details.sn, good_incoming_details.pwr, good_incoming_details.po, good_incoming_details.notes, inv_group.name AS name_inv_group, inv_group.id AS id_inv_group FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id INNER JOIN inv_group ON good_incoming_details.description = inv_group.description WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.type = 1 AND good_incoming_details.as_inv = 0");
 
 	$getInvGroup = mysqli_query($conn, "SELECT id, name FROM inv_group");
 	$getBranch = mysqli_query($conn, "SELECT id, name FROM branch");
@@ -474,6 +474,8 @@
                                                 <th>No. PO</th>
                                                 <th>No. RR IT</th>
                                                 <th>Notes</th>
+                                                <th hidden>id_inv_group</th>
+                                                <th hidden>name_inv_group</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -487,6 +489,8 @@
                                                 <td><?= $barangMasuk["po"] ?></td>
                                                 <td><?= $barangMasuk["number"] ?></td>
                                                 <td><?= $barangMasuk["notes"] ?></td>
+                                                <td hidden><?= $barangMasuk["id_inv_group"] ?></td>
+                                                <td hidden><?= $barangMasuk["name_inv_group"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-success send-modal"
                                                         data-bs-toggle="modal">
@@ -561,10 +565,6 @@
                             <div class="col-sm">
                                 <label for="group_inv" class="form-label labeling-form">Grup Inventaris</label>
                                 <select name="group_inv" id="group_inv" class="form-select">
-                                    <option value="">Choose</option>
-                                    <?php foreach($getInvGroup as $invGroup) : ?>
-                                    <option value="<?= $invGroup['id'] ?>"><?= $invGroup['name'] ?></option>
-                                    <?php endforeach ?>
                                 </select>
                             </div>
                             <div class="col-sm">
@@ -743,11 +743,17 @@
             let data5 = row.find('td:eq(4)').text(); //po
             let data6 = row.find('td:eq(5)').text(); //rr
             let data7 = row.find('td:eq(6)').text(); //notes
+            let data8 = row.find('td:eq(7)').text(); //id_inv_group
+            let data9 = row.find('td:eq(8)').text(); //name_inv_group
             // ...
 
             $('#description').val(data2);
             $('#sn').val(data3);
             $('#notes').val(`REFF PWR ${data4}; REFF PO ${data5}; RR IT ${data6}; ${data7}`);
+            // Kosongkan/clear append select sebelumnya
+            $('#group_inv').empty();
+            // Menambahkan opsi ke <select>
+            $('#group_inv').append(new Option(data9, data8, true, true));
 
             $('#modalUpdateMutasiBarang').modal('show');
         });

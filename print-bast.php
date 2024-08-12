@@ -465,7 +465,6 @@
         $(".preloader").fadeOut("slow");
     });
 
-
     // Function penamaan pada tanda tangan
     function capitalizeText(text) {
         return text.toLowerCase().split(' ').map(function(word, index) {

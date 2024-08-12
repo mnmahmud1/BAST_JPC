@@ -24,7 +24,7 @@
     $getInvType = mysqli_query($conn, "SELECT id, name FROM inv_type");
 
     // Ambil data inv_group
-    $getInvGroup = mysqli_query($conn, "SELECT code, name, description FROM inv_group");
+    $getInvGroup = mysqli_query($conn, "SELECT code, name, description FROM inv_group ORDER BY code ASC");
 ?>
 
 <!DOCTYPE html>

@@ -3,7 +3,7 @@
 include "../../koneksi.php";
 
 // Query untuk mengambil data Desc dari tabel inv_group
-$sql = "SELECT `name` FROM inv_group";
+$sql = "SELECT DISTINCT `name` FROM inv_group";
 $result = $conn->query($sql);
 
 $data = [];
