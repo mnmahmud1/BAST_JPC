@@ -214,7 +214,10 @@
                                                             <li><a class="dropdown-item"
                                                                     href="ba-serah-terima-details.php?bast=<?= $bast['number'] ?>">Details</a>
                                                             </li>
-                                                            <li><a class="dropdown-item" href="#">See Pdf</a></li>
+                                                            <li><a class="dropdown-item"
+                                                                    href="print-bast.php?bast=<?= $bast['number'] ?>"
+                                                                    target="_blank">See
+                                                                    Pdf</a></li>
                                                             <li><a class="dropdown-item" href="#">Print</a></li>
                                                         </ul>
                                                     </div>

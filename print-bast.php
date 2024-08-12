@@ -16,13 +16,10 @@
 		header("Location: berita-acara-serah-terima.php");
 	}
 
-	$getAllGoods = mysqli_query($conn, "SELECT goods.id, goods.number, goods.description, goods.sn, goods.year, branch.name branch_name FROM goods INNER JOIN branch ON branch.id = goods.id_inv_branch WHERE goods.as_dump = 0 AND goods.as_bast = 0");
-	$getGoodsInBAST = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, bast_report_details.attach, bast_report_details.id_good FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good INNER JOIN branch ON branch.id = goods.id_inv_branch INNER JOIN inv_condition ON inv_condition.id = goods.id_inv_condition WHERE bast_report_details.id_inv_type = 1 AND bast_report_details.bast_number = '$bast_number'");
-	$getHistoryUsage = mysqli_query($conn, "SELECT tittle, description, attach, created_at FROM bast_usage_history WHERE bast_number = '$bast_number' ORDER BY id DESC");
-	$getAllLisences = mysqli_query($conn, "SELECT id, number, sn, description, date_start, date_end, seats, as_bast FROM lisences WHERE as_dump = 0 AND as_bast < seats");
-	$getLisencesInBAST = mysqli_query($conn, "SELECT lisences.number, lisences.sn, lisences.description, lisences.date_start, lisences.date_end, lisences.as_bast, lisences.seats, bast_report_details.id FROM bast_report_details INNER JOIN lisences ON lisences.id = bast_report_details.id_good WHERE bast_report_details.id_inv_type = 2 AND bast_report_details.bast_number = '$bast_number'");
-	$getBASTSigned = mysqli_fetch_assoc(mysqli_query($conn, "SELECT attach FROM bast_report WHERE number = '$bast_number'"));
-
+	$getOneGoodsInBAST = mysqli_query($conn, "SELECT * FROM (SELECT goods.number, goods.description, goods.specification, goods.sn, goods.img, ROW_NUMBER() OVER (ORDER BY goods.number DESC) AS row_num FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good WHERE bast_report_details.id_inv_type = 1 AND bast_report_details.bast_number = '$bast_number') AS subquery WHERE row_num < 2");
+	$getGoodsInBASTAfter = mysqli_query($conn, "SELECT * FROM (SELECT goods.number, goods.description, goods.specification, goods.sn, goods.img, ROW_NUMBER() OVER (ORDER BY goods.number DESC) AS row_num FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good WHERE bast_report_details.id_inv_type = 1 AND bast_report_details.bast_number = '$bast_number') AS subquery WHERE row_num > 1");
+	$getOneLisenceInBAST = mysqli_query($conn, "SELECT * FROM (SELECT lisences.number, lisences.description, lisences.date_start, lisences.date_end, ROW_NUMBER() OVER (ORDER BY lisences.number DESC) AS row_num FROM bast_report_details INNER JOIN lisences ON lisences.id = bast_report_details.id_good WHERE bast_report_details.id_inv_type = 2 AND bast_report_details.bast_number = '$bast_number') AS subquery WHERE row_num < 2");
+	$getLisenceInBASTAfter = mysqli_query($conn, "SELECT * FROM (SELECT lisences.number, lisences.description, lisences.date_start, lisences.date_end, ROW_NUMBER() OVER (ORDER BY lisences.number DESC) AS row_num FROM bast_report_details INNER JOIN lisences ON lisences.id = bast_report_details.id_good WHERE bast_report_details.id_inv_type = 2 AND bast_report_details.bast_number = '$bast_number') AS subquery WHERE row_num > 1");
 	// Membuat objek IntlDateFormatter untuk bahasa Indonesia
 	$formatter = new IntlDateFormatter('id_ID', IntlDateFormatter::FULL, IntlDateFormatter::NONE, 'Asia/Jakarta', IntlDateFormatter::GREGORIAN, 'EEEE');
 
@@ -50,8 +47,10 @@
 		'November' => 'November',
 		'December' => 'Desember'
 	);
-
 	$month = $months[$month];
+
+    $numA = 1;
+    $numB = 1;
 
 ?>
 
@@ -91,6 +90,25 @@
             padding: 8px;
             text-align: left;
             font-size: 12pt;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            text-align: right;
+            font-size: 12pt;
+            display: block;
+            position: fixed;
+            /* Tetap di bagian bawah halaman */
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+            /* Sesuaikan sesuai kebutuhan */
+        }
+
+        footer:after {
+            content: "Page "counter(page) " of "counter(pages);
         }
     }
 
@@ -137,23 +155,41 @@
         /* Memastikan footer tabel muncul di setiap halaman, jika ada */
     }
     </style>
+
+    <!-- Jquery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="dist/css/public.css" />
     <link href="https://fonts.googleapis.com/css2?family=Carlito&display=swap" rel="stylesheet" />
 </head>
 
 <body>
+
+    <div class="preloader">
+        <div class="loading">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Start of First Page -->
     <div class="container">
         <!-- Header Section -->
         <table class="header-table">
             <tr>
-                <td class="no-border" style="text-align: center"><img src="dist/img/bast/jpc.png" alt="Logo JPC" /></td>
+                <td class="no-border" style="text-align: center" rowspan="2"><img src="dist/img/bast/jpc.png"
+                        alt="Logo JPC" /></td>
                 <td class="no-border">
                     <div style="text-align: center; font-weight: bold">BERITA ACARA SERAH TERIMA INVENTARIS</div>
                     <div style="text-align: center; font-weight: bold">PT. JAKARTA PRIMA CRANES</div>
+                </td>
+                <td class="no-border" style="text-align: center" rowspan="2"><img src="dist/img/bast/k3.png"
+                        alt="Logo k3" style="width: 45px" /></td>
+            </tr>
+            <tr>
+                <td>
                     <div style="text-align: center">Nomor : <?= $bast_number ?></div>
                 </td>
-                <td class="no-border" style="text-align: center"><img src="dist/img/bast/k3.png" alt="Logo k3"
-                        style="width: 45px" /></td>
             </tr>
         </table>
 
@@ -176,26 +212,26 @@
                 <th>Nama</th>
                 <th>Departemen</th>
                 <th>NIP</th>
-                <th>Status</th>
+                <th>Pihak</th>
             </tr>
             <tr>
                 <td><?= $getBAST['accepted_user_name'] ?></td>
                 <td><?= $getBAST['accepted_dept_name'] ?></td>
                 <td><?= $getBAST['accepted_user_nik'] ?></td>
-                <td>PIHAK PENERIMA</td>
+                <td>PENERIMA</td>
             </tr>
             <tr>
                 <td><?= $getBAST['submitted_user_name'] ?></td>
                 <td><?= $getBAST['submitted_dept_name'] ?></td>
                 <td><?= $getBAST['submitted_user_nik'] ?></td>
-                <td>PIHAK PEMBERI</td>
+                <td>PEMBERI</td>
             </tr>
         </table>
 
         <!-- Rincian Inventaris Diserahkan Section -->
         <table>
             <tr>
-                <th colspan="5">Daftar Inventaris Diserahkan</th>
+                <th colspan="5">Inventaris Diserahkan</th>
             </tr>
             <tr>
                 <th>No.</th>
@@ -204,29 +240,27 @@
                 <th>Spesifikasi & Kelengkapan</th>
                 <th>Gambar</th>
             </tr>
+            <?php if(mysqli_num_rows($getOneGoodsInBAST) == 0) : ?>
+            <tr>
+                <td colspan="5" style="text-align: center">Tidak ada data inventaris</td>
+            </tr>
+            <?php else : ?>
+            <?php foreach($getOneGoodsInBAST as $one) : ?>
             <tr>
                 <td>1</td>
-                <td>RFK-2023-001</td>
-                <td>Laptop LENOVO Ideapad Gaming 3-15ACH6 Laptop - Type 82K2 (1 Unit)</td>
-                <td>
-                    <ul>
-                        <li>Processor: AMD Ryzen™ 5 5600H</li>
-                        <li>Display: 15.6" FHD NVIDIA® GeForce RTX™ 3050 4GB</li>
-                        <li>RAM: 1x 8 GB DDR4-3200</li>
-                        <li>Storage: 1x 512 GB SSD PCIe SN : MP8VXBV5P</li>
-                        <li>Warna: Shadow Black</li>
-                        <li>Charger Laptop (1 Unit)</li>
-                        <li>Tas Laptop Lenovo (1 Unit)</li>
-                    </ul>
-                </td>
-                <td><img src="gambar_laptop.png" alt="Gambar Laptop" width="100" /></td>
+                <td><?= $one["number"] ?></td>
+                <td><?= $one["description"] ?></td>
+                <td><?= $one["specification"] ?></td>
+                <td><img src="dist/img/<?= $one["img"] ?>" alt="Gambar Laptop" width="100" /></td>
             </tr>
+            <?php endforeach ?>
+            <?php endif ?>
         </table>
 
         <!-- Lisences Details Section -->
         <table>
             <tr>
-                <th colspan="4">Daftar Lisensi Software Digunakan</th>
+                <th colspan="4">Lisensi Software Digunakan</th>
             </tr>
             <tr>
                 <th>No.</th>
@@ -234,12 +268,31 @@
                 <th>Deskripsi</th>
                 <th>Start Date / End Date</th>
             </tr>
+            <?php if(mysqli_num_rows($getOneLisenceInBAST) == 0) : ?>
+            <tr>
+                <td colspan="4" style="text-align: center">Tidak ada data lisensi software</td>
+            </tr>
+            <?php else : ?>
+            <?php foreach( $getOneLisenceInBAST as $one ) : ?>
             <tr>
                 <td>1</td>
-                <td>IT/LIC/2024/01/01</td>
-                <td>LISENSI AEC 2024</td>
-                <td>27/01/2024 - 27/01/2025</td>
+                <td><?= $one["number"] ?></td>
+                <td><?= $one["description"] ?></td>
+                <td><?= date("d/m/Y", strtotime($one['date_start'])) ?>
+                    -
+                    <?php if($one["date_end"] == "0000-00-00 00:00:00") : ?>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-infinity" viewBox="0 0 16 16">
+                        <path
+                            d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916z" />
+                    </svg>
+                    <?php else : ?>
+                    <?= date("d/m/Y", strtotime($one['date_end'])) ?>
+                    <?php endif ?>
+                </td>
             </tr>
+            <?php endforeach ?>
+            <?php endif ?>
         </table>
 
         <!-- Keterangan Tambahan Section -->
@@ -248,7 +301,7 @@
                 <th>Keterangan Tambahan</th>
             </tr>
             <tr>
-                <td>Laptop inventaris untuk Karyawan baru</td>
+                <td><?= $getBAST["notes"] ?></td>
             </tr>
         </table>
 
@@ -268,12 +321,12 @@
                 <th style="text-align: center">Menyetujui</th>
             </tr>
             <tr style="height: 100px; font-weight: bold">
-                <td
+                <td id="submitted"
                     style="text-align: center; vertical-align: bottom; padding-bottom: 0; display: table-cell; width: 25%">
-                    Rudi Ibrahim</td>
-                <td
+                    <?= $getBAST['submitted_user_name'] ?></td>
+                <td id="accepted"
                     style="text-align: center; vertical-align: bottom; padding-bottom: 0; display: table-cell; width: 25%">
-                    M Nurhasan Mahmud</td>
+                    <?= $getBAST['accepted_user_name'] ?></td>
                 <td
                     style="text-align: center; vertical-align: bottom; padding-bottom: 0; display: table-cell; width: 25%">
                     Ali Rakhman</td>
@@ -282,10 +335,33 @@
                     Bramantya Zain</td>
             </tr>
         </table>
+
+        <footer>
+            <div class="page-number" style="text-align: right; padding-top: 5px"></div>
+        </footer>
     </div>
 
+
     <!-- Start of Second Page -->
-    <div class="container">
+    <div class="container" style="page-break-before: always;">
+        <!-- Header Section -->
+        <table class="header-table">
+            <tr>
+                <td class="no-border" style="text-align: center" rowspan="2"><img src="dist/img/bast/jpc.png"
+                        alt="Logo JPC" /></td>
+                <td class="no-border">
+                    <div style="text-align: center; font-weight: bold">BERITA ACARA SERAH TERIMA INVENTARIS</div>
+                    <div style="text-align: center; font-weight: bold">PT. JAKARTA PRIMA CRANES</div>
+                </td>
+                <td class="no-border" style="text-align: center" rowspan="2"><img src="dist/img/bast/k3.png"
+                        alt="Logo k3" style="width: 45px" /></td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="text-align: center">Nomor : <?= $bast_number ?></div>
+                </td>
+            </tr>
+        </table>
         <!-- Rincian Inventaris Diserahkan Section -->
         <table>
             <tr>
@@ -298,13 +374,21 @@
                 <th>Spesifikasi & Kelengkapan</th>
                 <th>Gambar</th>
             </tr>
+            <?php if(mysqli_num_rows($getGoodsInBASTAfter) == 0) : ?>
             <tr>
-                <td>1</td>
-                <td>IT/REG/2024/01/03</td>
-                <td>MOUSE WIRELESS LOGITECH M190</td>
-                <td>N/A</td>
-                <td><img src="gambar_laptop.png" alt="Gambar Laptop" width="100" /></td>
+                <td colspan="5" style="text-align: center">Tidak ada data inventaris tambahan</td>
             </tr>
+            <?php else : ?>
+            <?php foreach($getGoodsInBASTAfter as $after) : ?>
+            <tr>
+                <td><?= $numA ?></td>
+                <td><?= $after["number"] ?></td>
+                <td><?= $after["description"] ?></td>
+                <td><?= $after["specification"] ?></td>
+                <td><img src="dist/img/<?= $after["img"] ?>" alt="Gambar Laptop" width="100" /></td>
+            </tr>
+            <?php $numA++; endforeach ?>
+            <?php endif ?>
         </table>
 
         <!-- Lisences Details Section -->
@@ -318,64 +402,32 @@
                 <th>Deskripsi</th>
                 <th>Start Date / End Date</th>
             </tr>
+            <?php if(mysqli_num_rows($getLisenceInBASTAfter) == 0) : ?>
             <tr>
-                <td>1</td>
-                <td>IT/LIC/2024/01/01</td>
-                <td>LISENSI AEC 2024</td>
-                <td>27/01/2024 - 27/01/2025</td>
+                <td colspan="4" style="text-align: center">Tidak ada data lisensi software tambahan</td>
             </tr>
+            <?php else : ?>
+            <?php foreach( $getLisenceInBASTAfter as $one ) : ?>
             <tr>
-                <td>2</td>
-                <td>IT/LIC/2024/02/01</td>
-                <td>MICROSOFT OFFICE PRO PLUS 2021</td>
-                <td>26/02/2024 - ∞</td>
+                <td><?= $numB ?></td>
+                <td><?= $one["number"] ?></td>
+                <td><?= $one["description"] ?></td>
+                <td><?= date("d/m/Y", strtotime($one['date_start'])) ?>
+                    -
+                    <?php if($one["date_end"] == "0000-00-00 00:00:00") : ?>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-infinity" viewBox="0 0 16 16">
+                        <path
+                            d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916z" />
+                    </svg>
+                    <?php else : ?>
+                    <?= date("d/m/Y", strtotime($one['date_end'])) ?>
+                    <?php endif ?>
+                </td>
             </tr>
+            <?php $numB++; endforeach ?>
+            <?php endif ?>
         </table>
-
-        <!-- System Info Section -->
-        <!-- <table>
-				<tr>
-					<th colspan="1">VI. System Info</th>
-				</tr>
-				<tr>
-					<td>
-                        ------------------
-                            System Information
-                            ------------------
-                                Time of this report: 6/23/2023, 16:54:38
-                                        Machine name: JPC_IT
-                                        Machine Id: {DC6BA44A-FCBD-4EA5-96F5-D6AF7CC1BC44}
-                                    Operating System: Windows 11 Home Single Language 64-bit (10.0, Build 22000) (22000.co_release.210604-1628)
-                                            Language: English (Regional Setting: English)
-                                System Manufacturer: LENOVO
-                                        System Model: 82K2
-                                                BIOS: H3CN34WW(V2.04) (type: UEFI)
-                                            Processor: AMD Ryzen 5 5600H with Radeon Graphics          (12 CPUs), ~3.3GHz
-                                            Memory: 8192MB RAM
-                            ---------------
-                            Display Devices
-                            ---------------
-                                    Card name: NVIDIA GeForce RTX 3050 Laptop GPU
-                                    Manufacturer: NVIDIA
-                                    Chip type: NVIDIA GeForce RTX 3050 Laptop GPU
-                                        DAC type: Integrated RAMDAC
-                                    Device Type: Render-Only Device
-                                    Device Key: Enum\PCI\VEN_10DE&DEV_25A2&SUBSYS_3A5D17AA&REV_A1
-                                Device Status: 0180200A [DN_DRIVER_LOADED|DN_STARTED|DN_DISABLEABLE|DN_NT_ENUMERATOR|DN_NT_DRIVER] 
-                            Device Problem Code: No Problem
-                            Driver Problem Code: Unknown
-                                Display Memory: 6991 MB
-                            ------------------------
-                            Disk & DVD/CD-ROM Drives
-                            ------------------------
-                                Drive: C:
-                            Free Space: 414.1 GB
-                            Total Space: 486.1 GB
-                            File System: NTFS
-                                Model: INTEL SSDPEKNW512GZL
-                    </td>
-				</tr>
-			</table> -->
 
         <!-- Additional Signature Section -->
         <table class="signature-table">
@@ -403,7 +455,52 @@
                 </td>
             </tr>
         </table>
+        <footer>
+            <div class="page-number" style="text-align: right; padding-top: 5px"></div>
+        </footer>
     </div>
+
+    <script>
+    $(document).ready(function() {
+        $(".preloader").fadeOut("slow");
+    });
+
+
+    // Function penamaan pada tanda tangan
+    function capitalizeText(text) {
+        return text.toLowerCase().split(' ').map(function(word, index) {
+            // Keep the first letter of the first word uppercase, and capitalize other words
+            return index === 0 ? word.toUpperCase() : word.charAt(0).toUpperCase() + word.slice(1);
+        }).join(' ');
+    }
+
+    // Select the td element by id
+    const submittedElement = document.getElementById("submitted");
+    const acceptedElement = document.getElementById("accepted");
+
+    // Get the current text content
+    const submittedText = submittedElement.textContent;
+    const acceptedText = acceptedElement.textContent;
+
+    // Apply the transformation
+    const transformedTextSubmitted = capitalizeText(submittedText);
+    const transformedTextAccepted = capitalizeText(acceptedText);
+
+    // Update the td element's content with the transformed text
+    submittedElement.textContent = transformedTextSubmitted;
+    acceptedElement.textContent = transformedTextAccepted;
+
+
+    // Script untuk menghitung halaman
+    window.onload = function() {
+        const totalPages = Math.ceil(document.body.scrollHeight / window.innerHeight);
+        const footers = document.querySelectorAll('footer .page-number');
+
+        footers.forEach(function(footer, index) {
+            footer.textContent = `Page ${index + 1} of ${totalPages}`;
+        });
+    };
+    </script>
 </body>
 
 </html>
