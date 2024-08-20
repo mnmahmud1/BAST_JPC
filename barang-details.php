@@ -15,8 +15,8 @@
 	if($number == '' OR mysqli_num_rows($queryGetDaftarBarang) == 0){
 		header("Location: barang.php");
 	}
+    $getGoodImg = mysqli_fetch_assoc(mysqli_query($conn, "SELECT img FROM goods WHERE NUMBER = '$number'"));
 
-	$getInvGroup = mysqli_query($conn, "SELECT id, name FROM inv_group");
 	$getBranch = mysqli_query($conn, "SELECT id, name FROM branch");
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
@@ -216,10 +216,6 @@
                                                         <option value="<?= $getDaftarBarangInv['id_inv_group'] ?>"
                                                             selected><?= $getDaftarBarangInv['name_group'] ?> - DEFAULT
                                                         </option>
-                                                        <?php foreach($getInvGroup as $invGroup) : ?>
-                                                        <option value="<?= $invGroup['id'] ?>"><?= $invGroup['name'] ?>
-                                                        </option>
-                                                        <?php endforeach ?>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm">
@@ -327,22 +323,50 @@
                                                         required><?= $getDaftarBarangInv['notes'] ?></textarea>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-white"
-                                                onclick="return window.location.href = 'barang.php'"
-                                                tabindex="-1">Back</button>
-                                            <button type="submit" class="btn btn-primary"
-                                                name="updateDetailBarang">Update</button>
-                                        </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-white"
+                                                    onclick="return window.location.href = 'barang.php'"
+                                                    tabindex="-1">Back</button>
+                                                <button type="submit" class="btn btn-primary"
+                                                    name="updateDetailBarang">Update</button>
+                                            </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <div class="row mt-3 mb-3">
+                        <div class="col">
+                            <label for="bastSigned" class="form-label labeling-form">UPLOAD IMAGE</label>
+                            <?php if(is_null($getGoodImg['img'])) : ?>
+                            <?php else : ?>
+                            <button class="btn btn-sm" onclick="showImageModal('<?= $getDaftarBarangInv['img'] ?>')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                    <path
+                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                                </svg>
+                            </button>
+                            <?php endif ?>
+                            <form action="function.php" method="post" enctype="multipart/form-data">
+                                <input type="text" name="inv_number" value="<?= $number ?>" hidden>
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                        <input type="file" name="imgGood" id="imgGood" class="form-control" required />
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <button type="submit" name="uploadImgGood"
+                                            class="btn btn-sm btn-primary">Upload</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
-                        <div class="col-sm">
+                        <div class="col">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="mb-4">History BAST - Nama Barang</h5>
@@ -458,6 +482,27 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal for Image -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImage" src="#" alt="Image Preview"
+                        style="max-width: 100%; max-height: 300px; margin: auto; display: block;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
@@ -591,6 +636,12 @@
         $('#snDelete').val(sn) // hapus berdasarkan SN = hanya masuk dump category
         $('#goodInvDelete').text(inv)
     });
+
+    function showImageModal(imageName) {
+        var modalImage = document.getElementById('modalImage');
+        modalImage.src = 'dist/img/' + imageName;
+        $('#imageModal').modal('show');
+    }
     </script>
 </body>
 

@@ -665,3 +665,43 @@ if(isset($_POST["uploadSigned"])){
         header("Location: ba-serah-terima-details.php?bast=$bastUrl");
     }
 }
+
+if(isset($_POST["uploadImgGood"])){
+    $invNumber = trim(htmlspecialchars($_POST['inv_number']));
+    // $goodSelected = trim(htmlspecialchars($_COOKIE["goodSelected-list"]));
+
+    $photo = $_FILES['imgGood']['tmp_name'];
+    $photoName = $_FILES['imgGood']['name'];
+    
+    // Fungsi untuk menghasilkan nama unik dengan 50 karakter
+    function generateUniqueFileName($length = 40) {
+        return substr(bin2hex(random_bytes($length)), 0, $length);
+    }
+
+    // Dapatkan ekstensi file
+    $fileExtension = pathinfo($photoName, PATHINFO_EXTENSION);
+    
+    // Buat nama file baru yang unik
+    $uniquePhotoName = generateUniqueFileName() . '.' . $fileExtension;
+    $photoTarget = 'dist/img/' . $uniquePhotoName;
+    
+    // Pindahkan file yang diunggah ke target yang baru
+    move_uploaded_file($photo, $photoTarget);
+
+    // Update database dengan nama file yang baru
+    mysqli_query($conn, "UPDATE goods SET img = '$uniquePhotoName' WHERE number = '$invNumber'");
+
+    // // tambahkan row di bast_usage_history
+    // // $getInvGood = mysqli_fetch_assoc(mysqli_query($conn, "SELECT number FROM goods WHERE id = $goodSelected"));
+    // // $getInv = $getInvGood["number"];
+    // mysqli_query($conn, "INSERT INTO bast_usage_history (bast_number, tittle, description, created_at, created_by) VALUES ('$invNumber', 'Add BAST Signed', 'Adding BAST Signed for $invNumber <button onclick=\"window.open(\'dist/attach/$uniquePhotoName\', \'_blank\').focus()\" class=\"btn btn-sm btn-success\">View</button>', '$dateTime', $userCreated)");
+
+    // Periksa apakah ada baris yang terpengaruh oleh query
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: barang-details.php?inv=$invNumber");
+    } else {
+        // Jika tidak ada perubahan pada update
+        header("Location: barang-details.php?inv=$invNumber");
+    }
+}
