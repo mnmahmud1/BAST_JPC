@@ -66,7 +66,7 @@
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-tachometer-alt"></i>
                             </div>
-                            Overview
+                            Dashboard
                         </a>
                         <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
                             aria-expanded="true" aria-controls="collapseLayouts">
@@ -81,10 +81,11 @@
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="barang-masuk.php">Daftar Barang Masuk</a>
                                 <a class="nav-link" href="barang.php">Daftar Barang</a>
                                 <a class="nav-link" href="lisensi.php">Daftar Lisensi</a>
-                                <a class="nav-link" href="barang-masuk.php">Barang Masuk</a>
-                                <a class="nav-link" href="perbaikan.html">Perbaikan Barang</a>
+                                <a class="nav-link" href="perbaikan.html">Perbaikan Barang <span
+                                        class="badge text-bg-info">WIP</span></a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsBAST"
@@ -101,7 +102,8 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="berita-acara-serah-terima.php">Serah Terima Inventaris</a>
-                                <a class="nav-link" href="barang-acara-scrapt.php">Scrapt Inventaris</a>
+                                <a class="nav-link" href="barang-acara-scrapt.php">Scrapt Inventaris <span
+                                        class="badge text-bg-info">WIP</span></a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsMaster"
@@ -118,7 +120,8 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="user.php">Pengguna</a>
-                                <a class="nav-link active" href="data-support.php">Data Support</a>
+                                <a class="nav-link active" href="data-support.php">Data Support <span
+                                        class="badge text-bg-info">WIP</span></a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsReport"
@@ -136,14 +139,15 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="#">Daftar Barang</a>
                                 <a class="nav-link" href="#">Daftar Lisensi</a>
-                                <a class="nav-link" href="#">Daftar BAST (Users)</a>
+                                <a class="nav-link" href="#">Daftar BAST (Users) <span
+                                        class="badge text-bg-info">WIP</span></a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon">
                                 <i class="fa-solid fa-user"></i>
                             </div>
-                            Profiles
+                            Profiles <span class="badge text-bg-info">WIP</span>
                         </a>
                     </div>
                 </div>

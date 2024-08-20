@@ -76,7 +76,7 @@
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-tachometer-alt"></i>
                             </div>
-                            Overview
+                            Dashboard
                         </a>
                         <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
                             aria-expanded="true" aria-controls="collapseLayouts">
@@ -91,18 +91,13 @@
                         <div class="collapse show" id="collapseLayouts" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="barang-masuk.php">Daftar Barang Masuk</a>
                                 <a class="nav-link active" href="barang.php">Daftar Barang</a>
                                 <a class="nav-link" href="lisensi.php">Daftar Lisensi</a>
-                                <a class="nav-link" href="barang-masuk.php">Barang Masuk</a>
-                                <a class="nav-link" href="perbaikan.php">Perbaikan Barang</a>
+                                <a class="nav-link" href="perbaikan.html">Perbaikan Barang <span
+                                        class="badge text-bg-info">WIP</span></a>
                             </nav>
                         </div>
-                        <a class="nav-link" href="user.php">
-                            <div class="sb-nav-link-icon">
-                                <i class="fa-solid fa-users"></i>
-                            </div>
-                            Pengguna
-                        </a>
                         <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsBAST"
                             aria-expanded="true" aria-controls="collapseLayoutsBAST">
                             <div class="sb-nav-link-icon">
@@ -117,14 +112,52 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="berita-acara-serah-terima.php">Serah Terima Inventaris</a>
-                                <a class="nav-link" href="barang-acara-scrapt.php">Scrapt Inventaris</a>
+                                <a class="nav-link" href="barang-acara-scrapt.php">Scrapt Inventaris <span
+                                        class="badge text-bg-info">WIP</span></a>
+                            </nav>
+                        </div>
+                        <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsMaster"
+                            aria-expanded="true" aria-controls="collapseLayoutsMaster">
+                            <div class="sb-nav-link-icon">
+                                <i class="fa fa-database" aria-hidden="true"></i>
+                            </div>
+                            Master Data
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i>
+                            </div>
+                        </a>
+                        <div class="collapse" id="collapseLayoutsMaster" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="user.php">Pengguna</a>
+                                <a class="nav-link" href="data-support.php">Data Support <span
+                                        class="badge text-bg-info">WIP</span></a>
+                            </nav>
+                        </div>
+                        <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsReport"
+                            aria-expanded="true" aria-controls="collapseLayoutsReport">
+                            <div class="sb-nav-link-icon">
+                                <i class="fa fa-file-text" aria-hidden="true"></i>
+                            </div>
+                            Reports
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i>
+                            </div>
+                        </a>
+                        <div class="collapse" id="collapseLayoutsReport" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="#">Daftar Barang</a>
+                                <a class="nav-link" href="#">Daftar Lisensi</a>
+                                <a class="nav-link" href="#">Daftar BAST (Users) <span
+                                        class="badge text-bg-info">WIP</span></a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon">
                                 <i class="fa-solid fa-user"></i>
                             </div>
-                            Profiles
+                            Profiles <span class="badge text-bg-info">WIP</span>
                         </a>
                     </div>
                 </div>
@@ -405,7 +438,7 @@
                             <div class="col-sm">
                                 <label for="useful_invM" class="form-label labeling-form">Masa Manfaat (Tahun)</label>
                                 <input type="number" class="form-control" placeholder="Your text here"
-                                    name="useful_invM" id="useful_invM" required />
+                                    name="useful_invM" id="useful_invM" maxlength="2" required />
                             </div>
                             <div class="col-sm">
                                 <label for="condition_invM" class="form-label labeling-form">Kondisi</label>
@@ -613,7 +646,7 @@
                             <div class="col-sm">
                                 <label for="useful_inv" class="form-label labeling-form">Masa Manfaat (Tahun)</label>
                                 <input type="number" class="form-control" placeholder="Your text here" name="useful_inv"
-                                    id="useful_inv" required />
+                                    id="useful_inv" maxlength="2" oninput="enforceMaxLength(this)" required />
                             </div>
                             <div class="col-sm">
                                 <label for="condition_inv" class="form-label labeling-form">Kondisi</label>
@@ -922,6 +955,12 @@
             };
 
             reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function enforceMaxLength(el) {
+        if (el.value.length > el.maxLength) {
+            el.value = el.value.slice(0, el.maxLength);
         }
     }
     </script>

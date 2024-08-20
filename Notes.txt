@@ -23,16 +23,16 @@ WHERE
 =================================
 PR
 
-1. menghilangkan kode RR Cookie saat keluar dari halaman barang masuk
-2. Menambahkan rekomendasi deskripsi barang dari nama barang yang sudah ada di database di tambah data barang masuk (Sesuai Sync/ Ambil data dari tipe barang)
+(TIDAK PENTING)1. menghilangkan kode RR Cookie saat keluar dari halaman barang masuk
+(OK)2. Menambahkan rekomendasi deskripsi barang dari nama barang yang sudah ada di database di tambah data barang masuk (Sesuai Sync/ Ambil data dari tipe barang)
 3. tambahkan notif berhasil disetiap update/input/dump data semua halaman
-4. tambahkan tombol generate SN di tambah data barang-masum / tambah barang (untuk barang yang tidak punya SN ; labeling ditambah SN ; biasanya untuk PC)
+(TIDAK USAH)4. tambahkan tombol generate SN di tambah data barang-masum / tambah barang (untuk barang yang tidak punya SN ; labeling ditambah SN ; biasanya untuk PC)
 5. Menambahkan form user sperti kode anydesk dsb, kemudian daftar akun dari user. sehingga jika ada user yang resign dapat langsung diidentifikasi akun yang dimilikinya.
 6. Membuat Form Rekapitulasi Penggunaan Iventaris per user JPC
 7. Buat konfirmasi (pada semua tableel) dengan modal dengan menuliskan barangnya, seperti menghapus github.
-8. Tammbahkan batasan input form sesuai di database
-9. tambahkan form upload lampiran pada setiap input yang membutuhkan pemberkasan boleh gambar/dokumen Auto Detect untuk ditampilkan langsung pdf/img
-10. menyesuaikan max length form input sesuai dengan database
+(OK)8. Tammbahkan batasan input form sesuai di database
+(OK)9. tambahkan form upload lampiran pada setiap input yang membutuhkan pemberkasan boleh gambar/dokumen Auto Detect untuk ditampilkan langsung pdf/img
+(OK)10. menyesuaikan max length form input sesuai dengan database
 11. tambahkan periode waktu di setting agar daftar barang masuk tidak bisa diubah (bisa dirubah apabila periode waktu diubah ke backdate).
 12. tambah menu ttd custom untuk serah terima bast
 13. buat sebuah halaman dimana semua as_dump ditampilkan dan dapat dipulihkan
@@ -81,7 +81,7 @@ PROGRESS PENGERJAAN APLIKASI
 ---> HISTORY LISENSI DARI BAST (BELUM)
 -- BARANG MASUK
 --> TAMBAH LAPORAN MASUK (OK)
---- DETAILS
+--- DETAILS (OK)
 -- PERBAIKAN BARANG (BELUM)
 - PENGGUNA (BELUM)
 - BERITA ACARA
@@ -90,7 +90,7 @@ PROGRESS PENGERJAAN APLIKASI
 --- TAMBAH DAFTAR BARANG INVENTARIS (OK)
 --- TAMBAH DAFTAR SOFTWARE INVENTARIS (OK)
 --- UPLOAD BAST PDF (OK)
---- PRINT BAST (BELUM)
+--- PRINT BAST (OK)
 --- COMMIT HISTORY BAST (OK)
 --> TAMBAH BERITA ACARA PENGEMBALIAN (BELUM)
 -- SCRAPT INVENTARIS (BELUM)

@@ -64,7 +64,7 @@
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-tachometer-alt"></i>
                             </div>
-                            Overview
+                            Dashboard
                         </a>
                         <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
                             aria-expanded="true" aria-controls="collapseLayouts">
@@ -79,10 +79,11 @@
                         <div class="collapse show" id="collapseLayouts" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link active" href="barang-masuk.php">Daftar Barang Masuk</a>
                                 <a class="nav-link" href="barang.php">Daftar Barang</a>
-                                <a class="nav-link" href="lisensi.html">Daftar Lisensi</a>
-                                <a class="nav-link active" href="barang-masuk.html">Barang Masuk</a>
-                                <a class="nav-link" href="perbaikan.html">Perbaikan Barang</a>
+                                <a class="nav-link" href="lisensi.php">Daftar Lisensi</a>
+                                <a class="nav-link" href="perbaikan.html">Perbaikan Barang <span
+                                        class="badge text-bg-info">WIP</span></a>
                             </nav>
                         </div>
                         <a class="nav-link" href="user.html">
@@ -104,15 +105,53 @@
                         <div class="collapse" id="collapseLayoutsBAST" aria-labelledby="headingOne"
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="berita-acara-serah-terima.html">Serah Terima Inventaris</a>
-                                <a class="nav-link" href="barang-acara-scrapt.html">Scrapt Inventaris</a>
+                                <a class="nav-link" href="berita-acara-serah-terima.php">Serah Terima Inventaris</a>
+                                <a class="nav-link" href="barang-acara-scrapt.php">Scrapt Inventaris <span
+                                        class="badge text-bg-info">WIP</span></a>
+                            </nav>
+                        </div>
+                        <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsMaster"
+                            aria-expanded="true" aria-controls="collapseLayoutsMaster">
+                            <div class="sb-nav-link-icon">
+                                <i class="fa fa-database" aria-hidden="true"></i>
+                            </div>
+                            Master Data
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i>
+                            </div>
+                        </a>
+                        <div class="collapse" id="collapseLayoutsMaster" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="user.php">Pengguna</a>
+                                <a class="nav-link" href="data-support.php">Data Support <span
+                                        class="badge text-bg-info">WIP</span></a>
+                            </nav>
+                        </div>
+                        <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsReport"
+                            aria-expanded="true" aria-controls="collapseLayoutsReport">
+                            <div class="sb-nav-link-icon">
+                                <i class="fa fa-file-text" aria-hidden="true"></i>
+                            </div>
+                            Reports
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i>
+                            </div>
+                        </a>
+                        <div class="collapse" id="collapseLayoutsReport" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="#">Daftar Barang</a>
+                                <a class="nav-link" href="#">Daftar Lisensi</a>
+                                <a class="nav-link" href="#">Daftar BAST (Users) <span
+                                        class="badge text-bg-info">WIP</span></a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon">
                                 <i class="fa-solid fa-user"></i>
                             </div>
-                            Profiles
+                            Profiles <span class="badge text-bg-info">WIP</span>
                         </a>
                     </div>
                 </div>
@@ -185,8 +224,10 @@
                                                                     onclick="window.location.href='function.php?viewBarangMasuk=<?= $barangMasuk['number'] ?>'">View
                                                                     Details</button>
                                                             </li>
-                                                            <li><a class=" dropdown-item" href="#">Print</a></li>
-                                                            <li><button class="dropdown-item" href="#"
+                                                            <li><button class="dropdown-item disabled"
+                                                                    href="#">Print</button>
+                                                            </li>
+                                                            <li><button class="dropdown-item disabled" href="#"
                                                                     onclick="hapusDaftarBarang(<?= $barangMasuk['id'] ?>)">Delete</button>
                                                             </li>
                                                         </ul>
