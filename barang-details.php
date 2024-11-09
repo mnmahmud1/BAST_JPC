@@ -10,7 +10,7 @@
     $idUser = $_COOKIE["_beta_log"];
 
 	$number = $_GET["inv"];
-	$queryGetDaftarBarang = mysqli_query($conn, "SELECT goods.number, goods.description, goods.specification, goods.sn, inv_condition.name AS kondisi, goods.year, goods.useful_period, goods.notes, branch.name AS branch, goods.img, goods.id_inv_type, goods.id_inv_group, inv_group.name AS name_group, goods.id_inv_allotment, goods.id_inv_branch, goods.id_inv_source, goods.id_inv_dept, dept.name AS name_dept, goods.id_inv_condition FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.id INNER JOIN inv_group ON goods.id_inv_group = inv_group.id INNER JOIN dept ON goods.id_inv_dept = dept.id WHERE goods.number = '$number'");
+	$queryGetDaftarBarang = mysqli_query($conn, "SELECT goods.number, goods.description, goods.specification, goods.sn, inv_condition.name AS kondisi, goods.year, goods.useful_period, goods.notes, branch.name AS branch, goods.img, goods.id_inv_type, goods.id_inv_group, inv_group.name AS name_group, goods.id_inv_allotment, goods.id_inv_branch, goods.id_inv_source, goods.id_inv_dept, dept.name AS name_dept, goods.id_inv_condition FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.initial INNER JOIN inv_group ON goods.id_inv_group = inv_group.code INNER JOIN dept ON goods.id_inv_dept = dept.id WHERE goods.number = '$number'");
     $getDaftarBarangInv = mysqli_fetch_assoc($queryGetDaftarBarang);
 	if($number == '' OR mysqli_num_rows($queryGetDaftarBarang) == 0){
 		header("Location: barang.php");

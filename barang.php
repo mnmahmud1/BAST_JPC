@@ -11,14 +11,14 @@
 
     $urutDaftar = 1;
     $urutDaftarI = 1;
-	$getDaftarBarangMasuk = mysqli_query($conn, "SELECT good_incoming.number, good_incoming_details.description, good_incoming_details.sn, good_incoming_details.pwr, good_incoming_details.po, good_incoming_details.notes, inv_group.name AS name_inv_group, inv_group.id AS id_inv_group FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id INNER JOIN inv_group ON good_incoming_details.description = inv_group.description WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.type = 1 AND good_incoming_details.as_inv = 0");
+	$getDaftarBarangMasuk = mysqli_query($conn, "SELECT good_incoming.number, good_incoming_details.description, good_incoming_details.sn, good_incoming_details.pwr, good_incoming_details.po, good_incoming_details.notes, inv_group.name AS name_inv_group, inv_group.code AS code_inv_group FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id INNER JOIN inv_group ON good_incoming_details.description = inv_group.description WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.type = 1 AND good_incoming_details.as_inv = 0");
 
-	$getInvGroup = mysqli_query($conn, "SELECT id, name FROM inv_group");
-	$getBranch = mysqli_query($conn, "SELECT id, name FROM branch");
+	$getInvGroup = mysqli_query($conn, "SELECT code, name FROM inv_group");
+	$getBranch = mysqli_query($conn, "SELECT initial, name FROM branch");
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
 
-    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, goods.img FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.id WHERE goods.as_dump = 0");
+    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, goods.img FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.initial WHERE goods.as_dump = 0");
 
 ?>
 
@@ -384,7 +384,7 @@
                                 <select name="group_invM" id="group_invM" class="form-select">
                                     <option value="">Choose</option>
                                     <?php foreach($getInvGroup as $invGroup) : ?>
-                                    <option value="<?= $invGroup['id'] ?>"><?= $invGroup['name'] ?></option>
+                                    <option value="<?= $invGroup['code'] ?>"><?= $invGroup['name'] ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -404,7 +404,7 @@
                                 <select name="branchM" id="branchM" class="form-select" required>
                                     <option value="">Choose</option>
                                     <?php foreach($getBranch as $branch) : ?>
-                                    <option value="<?= $branch['id'] ?>"><?= $branch['name'] ?></option>
+                                    <option value="<?= $branch['initial'] ?>"><?= $branch['name'] ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -507,7 +507,7 @@
                                                 <th>No. PO</th>
                                                 <th>No. RR IT</th>
                                                 <th>Notes</th>
-                                                <th hidden>id_inv_group</th>
+                                                <th hidden>code_inv_group</th>
                                                 <th hidden>name_inv_group</th>
                                                 <th></th>
                                             </tr>
@@ -522,7 +522,7 @@
                                                 <td><?= $barangMasuk["po"] ?></td>
                                                 <td><?= $barangMasuk["number"] ?></td>
                                                 <td><?= $barangMasuk["notes"] ?></td>
-                                                <td hidden><?= $barangMasuk["id_inv_group"] ?></td>
+                                                <td hidden><?= $barangMasuk["code_inv_group"] ?></td>
                                                 <td hidden><?= $barangMasuk["name_inv_group"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-success send-modal"
@@ -560,22 +560,22 @@
                 <form action="function.php" method="post">
                     <div class="modal-body px-4">
                         <div class="row mb-3">
-                            <div class="col-sm">
+                            <!-- <div class="col-sm">
                                 <label for="inv" class="form-label labeling-form">No Inventaris</label>
                                 <input type="text" class="form-control" placeholder="You Text Here" name="inv" id="inv"
                                     required readonly />
-                            </div>
-                            <div class="col-sm">
-                                <label for="sn" class="form-label labeling-form">Serial Number</label>
-                                <input type="text" class="form-control" placeholder="Your text here" name="sn" id="sn"
-                                    value="" required readonly />
-                            </div>
+                            </div> -->
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="description" class="form-label labeling-form">Deskripsi</label>
                                 <input type="text" class="form-control" placeholder="Your text here" name="description"
                                     id="description" value="" required readonly />
+                            </div>
+                            <div class="col-sm">
+                                <label for="sn" class="form-label labeling-form">Serial Number</label>
+                                <input type="text" class="form-control" placeholder="Your text here" name="sn" id="sn"
+                                    value="" required readonly />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -616,7 +616,7 @@
                                 <select name="branch" id="branch" class="form-select" required>
                                     <option value="">Choose</option>
                                     <?php foreach($getBranch as $branch) : ?>
-                                    <option value="<?= $branch['id'] ?>"><?= $branch['name'] ?></option>
+                                    <option value="<?= $branch['initial'] ?>"><?= $branch['name'] ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -776,7 +776,7 @@
             let data5 = row.find('td:eq(4)').text(); //po
             let data6 = row.find('td:eq(5)').text(); //rr
             let data7 = row.find('td:eq(6)').text(); //notes
-            let data8 = row.find('td:eq(7)').text(); //id_inv_group
+            let data8 = row.find('td:eq(7)').text(); //code_inv_group
             let data9 = row.find('td:eq(8)').text(); //name_inv_group
             // ...
 
@@ -793,45 +793,45 @@
     });
 
     // fungsi penomoran inventaris langsung
-    $(document).ready(function() {
-        // Dapatkan tanggal saat ini
-        var currentDate = new Date();
+    // $(document).ready(function() {
+    //     // Dapatkan tanggal saat ini
+    //     var currentDate = new Date();
 
-        // Dapatkan tahun dari tanggal saat ini
-        var year = currentDate.getFullYear();
+    //     // Dapatkan tahun dari tanggal saat ini
+    //     var year = currentDate.getFullYear();
 
-        // Dapatkan bulan dari tanggal saat ini (tambah 1 karena bulan dimulai dari 0)
-        var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    //     // Dapatkan bulan dari tanggal saat ini (tambah 1 karena bulan dimulai dari 0)
+    //     var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
 
-        // Bangun nomor invoice tanpa urutan terlebih dahulu
-        var invWithoutOrder = 'IT/REG/' + year + '/' + month + '/';
+    //     // Bangun nomor invoice tanpa urutan terlebih dahulu
+    //     var invWithoutOrder = 'IT/REG/' + year + '/' + month + '/';
 
-        // Lakukan AJAX request ke server untuk memeriksa urutan terakhir di database
-        $.ajax({
-            url: 'automatic-add-no-inv.php',
-            method: 'POST',
-            data: {
-                invWithoutOrder: invWithoutOrder
-            },
-            success: function(response) {
-                // Tanggapan dari server berisi urutan terakhir dari database
-                var lastOrder = parseInt(response);
+    //     // Lakukan AJAX request ke server untuk memeriksa urutan terakhir di database
+    //     $.ajax({
+    //         url: 'automatic-add-no-inv.php',
+    //         method: 'POST',
+    //         data: {
+    //             invWithoutOrder: invWithoutOrder
+    //         },
+    //         success: function(response) {
+    //             // Tanggapan dari server berisi urutan terakhir dari database
+    //             var lastOrder = parseInt(response);
 
-                // Tambahkan 1 ke urutan terakhir
-                var newOrder = (lastOrder).toString().padStart(2, '0');
+    //             // Tambahkan 1 ke urutan terakhir
+    //             var newOrder = (lastOrder).toString().padStart(2, '0');
 
-                // Bangun nomor invoice lengkap
-                var invoiceNumber = invWithoutOrder + newOrder;
+    //             // Bangun nomor invoice lengkap
+    //             var invoiceNumber = invWithoutOrder + newOrder;
 
-                // Set nilai nomor invoice ke input dengan id #inv
-                $('#inv, #invM').val(invoiceNumber);
-            },
-            error: function() {
-                // Penanganan kesalahan jika terjadi
-                console.error('Error checking database for order number.');
-            }
-        });
-    });
+    //             // Set nilai nomor invoice ke input dengan id #inv
+    //             $('#inv, #invM').val(invoiceNumber);
+    //         },
+    //         error: function() {
+    //             // Penanganan kesalahan jika terjadi
+    //             console.error('Error checking database for order number.');
+    //         }
+    //     });
+    // });
 
     // <!-- Place the following <script> and <textarea> tags your HTML's <body> -->
     tinymce.init({

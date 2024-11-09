@@ -146,7 +146,6 @@ if(isset($_GET["dumpDaftarBarang"])){
 }
 
 if(isset($_POST["mutasiBarangMasukKeBarang"])){
-    $inv = trim(htmlspecialchars($_POST['inv']));
     $sn = trim(htmlspecialchars($_POST['sn']));
     $description = trim(htmlspecialchars($_POST['description']));
     $spek = $_POST["spek"];
@@ -161,11 +160,29 @@ if(isset($_POST["mutasiBarangMasukKeBarang"])){
     $condition_inv = trim(htmlspecialchars($_POST['condition_inv']));
     $notes = trim(htmlspecialchars($_POST['notes']));
 
+    // Ambil gambar terkait SN
     $getImage = mysqli_fetch_assoc(mysqli_query($conn, "SELECT img FROM good_incoming_details WHERE sn = '$sn' "));
     $img = $getImage["img"];
     
+    // Cek nomor urut terakhir berdasarkan group_inv
+    $query = "SELECT number FROM goods WHERE number LIKE '6.$year/$group_inv.%/$branch' ORDER BY number DESC LIMIT 1";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
     
-    mysqli_query($conn, "INSERT INTO goods (number, sn, description, specification, id_inv_type, id_inv_group, id_inv_allotment, id_inv_branch, id_inv_source, id_inv_dept, year, useful_period, id_inv_condition, notes, img, created_at, created_by) VALUES('$inv', '$sn', '$description', '$spek', $type_inv, $group_inv, $allotment_inv, $branch, $source, $dept, '$year', $useful_inv, $condition_inv, '$notes', '$img', '$dateTime', $userCreated)");
+    if ($row) {
+        // Ambil urutan terakhir dari kolom number, contoh: "6.2024/LT03.01/WS1LT2"
+        $lastNumber = $row['number'];
+        preg_match('/' . $group_inv . '\.(\d+)\//', $lastNumber, $matches);
+        $urut = isset($matches[1]) ? str_pad($matches[1] + 1, 2, '0', STR_PAD_LEFT) : "01";
+    } else {
+        $urut = "01"; // Jika tidak ada nomor sebelumnya, mulai dari 01
+    }
+    
+    // Buat nomor inventaris baru
+    $createInv = "6." . $year . "/" . $group_inv . "." . $urut . "/" . $branch;
+
+    // Masukkan data ke tabel goods
+    mysqli_query($conn, "INSERT INTO goods (number, sn, description, specification, id_inv_type, id_inv_group, id_inv_allotment, id_inv_branch, id_inv_source, id_inv_dept, year, useful_period, id_inv_condition, notes, img, created_at, created_by) VALUES('$createInv', '$sn', '$description', '$spek', $type_inv, '$group_inv', $allotment_inv, '$branch', $source, $dept, '$year', $useful_inv, $condition_inv, '$notes', '$img', '$dateTime', $userCreated)");
 
     if(mysqli_affected_rows($conn)){
         // update good_incoming_details as_inv = 1
@@ -175,6 +192,7 @@ if(isset($_POST["mutasiBarangMasukKeBarang"])){
         }    
     }
 }
+
 
 if(isset($_POST["tambahBarangInvManual"])){
     $inv = trim(htmlspecialchars($_POST['invM']));

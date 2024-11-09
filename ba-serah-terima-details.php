@@ -21,8 +21,8 @@
 		header("Location: berita-acara-serah-terima.php");
 	}
 
-    $getAllGoods = mysqli_query($conn, "SELECT goods.id, goods.number, goods.description, goods.sn, goods.year, branch.name branch_name FROM goods INNER JOIN branch ON branch.id = goods.id_inv_branch WHERE goods.as_dump = 0 AND goods.as_bast = 0");
-    $getGoodsInBAST = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, bast_report_details.attach, bast_report_details.id_good FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good INNER JOIN branch ON branch.id = goods.id_inv_branch INNER JOIN inv_condition ON inv_condition.id = goods.id_inv_condition WHERE bast_report_details.id_inv_type = 1 AND bast_report_details.bast_number = '$bast_number'");
+    $getAllGoods = mysqli_query($conn, "SELECT goods.id, goods.number, goods.description, goods.sn, goods.year, branch.name branch_name FROM goods INNER JOIN branch ON branch.initial = goods.id_inv_branch WHERE goods.as_dump = 0 AND goods.as_bast = 0");
+    $getGoodsInBAST = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.name AS branch, bast_report_details.attach, bast_report_details.id_good FROM bast_report_details INNER JOIN goods ON goods.id = bast_report_details.id_good INNER JOIN branch ON branch.initial = goods.id_inv_branch INNER JOIN inv_condition ON inv_condition.id = goods.id_inv_condition WHERE bast_report_details.id_inv_type = 1 AND bast_report_details.bast_number = '$bast_number'");
     $getHistoryUsage = mysqli_query($conn, "SELECT tittle, description, attach, created_at FROM bast_usage_history WHERE bast_number = '$bast_number' ORDER BY id DESC");
     $getAllLisences = mysqli_query($conn, "SELECT id, number, sn, description, date_start, date_end, seats, as_bast FROM lisences WHERE as_dump = 0 AND as_bast < seats");
     $getLisencesInBAST = mysqli_query($conn, "SELECT lisences.number, lisences.sn, lisences.description, lisences.date_start, lisences.date_end, lisences.as_bast, lisences.seats, bast_report_details.id FROM bast_report_details INNER JOIN lisences ON lisences.id = bast_report_details.id_good WHERE bast_report_details.id_inv_type = 2 AND bast_report_details.bast_number = '$bast_number'");
@@ -668,7 +668,7 @@
     <!-- Modal Tambah Barang -->
     <div class="modal fade" id="modalTambahBarang" tabindex="-1" aria-labelledby="modalTambahBarangLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modalTambahBarangLabel">Pilih Barang Inventaris</h1>
@@ -679,7 +679,7 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body table-responsive">
                                     <h5 class="mb-4">Daftar Barang Inventaris</h5>
                                     <table class="display" name="tableTambahDariBarangMasuk"
                                         id="tableTambahDariBarangMasuk">
