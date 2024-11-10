@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 09, 2024 at 02:52 PM
+-- Generation Time: Nov 10, 2024 at 06:46 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -46,8 +46,7 @@ CREATE TABLE `bast_report` (
 --
 
 INSERT INTO `bast_report` (`id`, `number`, `id_user_submitted`, `id_user_accepted`, `status`, `notes`, `as_dump`, `attach`, `updated_at`, `created_at`, `created_by`) VALUES
-(3, 'IT/BAST/2024/01/01', 1, 2, 1, 'TES', 0, '', '2024-01-27 03:55:01', '2024-01-27 10:54:05', 1),
-(4, 'IT/BAST/2024/04/01', 1, 3, 1, 'PEMBERIAN LAPTOP BARU KARENA LAPTOP LAMA RUSAK', 0, '', '2024-04-08 09:18:25', '2024-04-06 15:40:01', 1);
+(5, 'IT/BAST/2024/11/01', 1, 2, 1, 'KARYAWAN BARU', 0, '', '2024-11-09 15:21:52', '2024-11-09 22:21:52', 1);
 
 -- --------------------------------------------------------
 
@@ -71,9 +70,8 @@ CREATE TABLE `bast_report_details` (
 --
 
 INSERT INTO `bast_report_details` (`id`, `bast_number`, `id_good`, `id_inv_type`, `attach`, `updated_at`, `created_at`, `created_by`) VALUES
-(2, 'IT/BAST/2024/04/01', 3, 1, '03a2db22c09a707688cd41bd640b85feab61c0c5.pdf', '2024-05-18 17:21:38', '2024-04-08 15:26:31', 1),
-(3, 'IT/BAST/2024/04/01', 6, 1, 'bf1958fb2f0d1300bec09349f504e85321a11e8e.pdf', '2024-05-18 17:37:21', '2024-04-08 16:04:35', 1),
-(4, 'IT/BAST/2024/04/01', 2, 2, NULL, '2024-11-09 13:47:05', '2024-11-09 20:47:05', 1);
+(6, 'IT/BAST/2024/11/01', 8, 1, NULL, '2024-11-09 15:29:07', '2024-11-09 22:29:07', 1),
+(8, 'IT/BAST/2024/11/01', 2, 2, NULL, '2024-11-10 13:17:07', '2024-11-10 20:17:07', 1);
 
 -- --------------------------------------------------------
 
@@ -109,7 +107,11 @@ INSERT INTO `bast_usage_history` (`id`, `bast_number`, `tittle`, `description`, 
 (14, 'IT/BAST/2024/04/01', 'Tambah Foto', 'tambah testing <button onclick=\"window.location.href = \'dist/img/history-img/6d9ab08ceb07f8aced1180e90a37e449f57c3be8.JPG\'\" class=\"btn btn-sm btn-success\">View</button>', '6d9ab08ceb07f8aced1180e90a37e449f57c3be8.JPG', '2024-05-18 17:52:15', '2024-05-19 00:52:15', 1),
 (15, 'IT/BAST/2024/04/01', 'Add Lisence', 'Adding IT/LIC/2024/01/01 - LISENSI AEC 2024', NULL, '2024-11-09 13:47:06', '2024-11-09 20:47:05', 1),
 (16, 'IT/BAST/2024/04/01', 'Add Lisence', 'Adding IT/LIC/2024/01/01 - LISENSI AEC 2024', NULL, '2024-11-09 13:47:16', '2024-11-09 20:47:16', 1),
-(17, 'IT/BAST/2024/04/01', 'Delete Lisence', 'Deleted IT/LIC/2024/01/01 - LISENSI AEC 2024', NULL, '2024-11-09 13:47:23', '2024-11-09 20:47:23', 1);
+(17, 'IT/BAST/2024/04/01', 'Delete Lisence', 'Deleted IT/LIC/2024/01/01 - LISENSI AEC 2024', NULL, '2024-11-09 13:47:23', '2024-11-09 20:47:23', 1),
+(18, 'IT/BAST/2024/11/01', 'Add Inventory', 'Adding 6.2024/LT03.01/WS1LT2 - LAPTOP ACER E5 471', NULL, '2024-11-09 15:29:07', '2024-11-09 22:29:07', 1),
+(19, 'IT/BAST/2024/11/01', 'Add Inventory', 'Adding 6.2024/LT03.02/WS1LT2 - LAPTOP ACER E5 471', NULL, '2024-11-09 15:31:41', '2024-11-09 22:31:41', 1),
+(20, 'IT/BAST/2024/11/01', 'Delete Inventory', 'Deleted 6.2024/LT03.02/WS1LT2 - LAPTOP ACER E5 471', NULL, '2024-11-09 15:32:29', '2024-11-09 22:32:28', 1),
+(21, 'IT/BAST/2024/11/01', 'Add Lisence', 'Adding IT/LIC/2024/01/01 - LISENSI AEC 2024', NULL, '2024-11-10 13:17:08', '2024-11-10 20:17:07', 1);
 
 -- --------------------------------------------------------
 
@@ -131,11 +133,16 @@ CREATE TABLE `branch` (
 --
 
 INSERT INTO `branch` (`id`, `initial`, `name`, `updated_at`, `created_at`, `created_by`) VALUES
-(1, 'HOJKT', 'HEAD OFFICE JAKARTA', '2024-01-12 16:06:42', '2024-01-12 17:05:33', 1),
-(2, 'WSGNP', 'WORKSHOP GUNUNG PUTRI', '2024-01-12 16:06:42', '2024-01-12 17:05:33', 1),
-(5, 'REPPKU', 'REP OFFICE PEKANBARU', '2024-01-12 16:07:49', '2024-01-12 17:07:35', 1),
-(6, 'REPSBY', 'REP OFFICE SURABAYA', '2024-01-12 16:07:49', '2024-01-12 17:07:35', 1),
-(7, 'BOBPN', 'BRANCH OFFICE BALIKPAPAN', '2024-01-12 16:08:35', '2024-01-12 17:08:17', 1);
+(1, 'HOLT1', 'HEAD OFFICE JAKARTA L1', '2024-11-09 14:00:01', '2024-01-12 17:05:33', 1),
+(2, 'HOLT2', 'HEAD OFFICE JAKARTA L2', '2024-11-10 12:52:09', '2024-01-12 17:05:33', 1),
+(5, 'WS1LT1', 'WORKSHOP GUNUNG PUTRI GEDUNG 1 LT 1', '2024-11-09 14:00:36', '2024-01-12 17:07:35', 1),
+(6, 'WS1LT2', 'WORKSHOP GUNUNG PUTRI GEDUNG 1 LT 2', '2024-11-09 14:00:40', '2024-01-12 17:07:35', 1),
+(7, 'WS2LT1', 'WORKSHOP GUNUNG PUTRI GEDUNG 2 LT 1', '2024-11-09 14:00:49', '2024-01-12 17:08:17', 1),
+(8, 'WS2LT2', 'WORKSHOP GUNUNG PUTRI GEDUNG 2 LT 2', '2024-11-09 14:00:49', '2024-01-12 17:08:17', 1),
+(9, 'PKULT1', 'BRACH OFFICE PEKANBARU LT 1', '2024-11-09 14:00:36', '2024-01-12 17:07:35', 1),
+(10, 'PKULT1', 'BRACH OFFICE PEKANBARU LT 2', '2024-11-09 14:00:40', '2024-01-12 17:07:35', 1),
+(11, 'SBYLT1', 'BRACH OFFICE SURABAYA LT 1', '2024-11-09 14:00:49', '2024-01-12 17:08:17', 1),
+(12, 'SBYLT2', 'BRACH OFFICE SURABAYA LT 2', '2024-11-09 14:00:49', '2024-01-12 17:08:17', 1);
 
 -- --------------------------------------------------------
 
@@ -176,9 +183,9 @@ CREATE TABLE `goods` (
   `description` varchar(100) NOT NULL,
   `specification` text NOT NULL,
   `id_inv_type` int(11) NOT NULL,
-  `id_inv_group` int(11) NOT NULL,
+  `id_inv_group` varchar(4) NOT NULL,
   `id_inv_allotment` int(11) NOT NULL,
-  `id_inv_branch` int(11) NOT NULL,
+  `id_inv_branch` varchar(10) NOT NULL,
   `id_inv_source` int(11) NOT NULL,
   `id_inv_dept` int(11) NOT NULL,
   `year` varchar(4) NOT NULL,
@@ -198,11 +205,10 @@ CREATE TABLE `goods` (
 --
 
 INSERT INTO `goods` (`id`, `number`, `sn`, `description`, `specification`, `id_inv_type`, `id_inv_group`, `id_inv_allotment`, `id_inv_branch`, `id_inv_source`, `id_inv_dept`, `year`, `useful_period`, `id_inv_condition`, `notes`, `img`, `updated_at`, `created_at`, `as_dump`, `as_bast`, `created_by`) VALUES
-(2, 'IT/REG/2024/01/01', 'ABP-1232-AWD3-23FS-234F', 'SOUND SYSTEM MIFA K12', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 4, 1, 2, 1, 1, '2024', 3, 1, 'REFF PWR 2023/JKT-0142; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; TES', NULL, '2024-03-29 16:58:08', '2024-01-13 12:14:11', 1, 0, 1),
-(3, 'IT/REG/2024/01/02', 'ASDASDSF', 'MOUSE WIRELESS LOGITECH M190', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 1, 2, 2, 1, 3, '2024', 2, 1, 'REFF PWR ; REFF PO ;', NULL, '2024-04-08 08:26:31', '2024-01-15 22:03:04', 0, 1, 1),
-(4, 'IT/REG/2024/01/03', '2223LZ917BZ8', 'MOUSE WIRELESS LOGITECH M190', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 1, 2, 2, 1, 2, '2024', 2, 1, 'REFF PWR 2023/JKT-0241; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/4; UNTUK MAHMUD', '72ff743b4caff43a37b2aa7c764a514b.jpg', '2024-01-16 13:40:45', '2024-01-16 20:40:45', 0, 0, 1),
-(5, 'IT/REG/2024/01/04', '132234-ASDASD-23423DA', 'LISENSI AEC 2024', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 2, 3, 2, 1, 1, 1, '2023', 1, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/6; TES', '', '2024-01-16 15:07:43', '2024-01-16 22:07:43', 0, 0, 1),
-(6, 'IT/REG/2024/01/05', 'APASAJABOLEH', 'LAPTOP ACER ASPIRE E14 E5-471', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 2, 1, 2, 1, 3, 1, '2024', 10, 2, 'REFF LAIN-LAIN;', '25dc0b54a56cccef1051cbf493397b22.png', '2024-04-08 09:04:35', '2024-01-16 22:10:48', 0, 1, 1);
+(8, '6.2024/LT03.01/WS1LT2', 'SCAD3R23RF23', 'LAPTOP ACER E5 471', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 'LT03', 2, 'WS1LT2', 1, 1, '2024', 5, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/11/1; TES', '5000c6c3d576f3840ad8d43129876048.jpeg', '2024-11-10 12:55:08', '2024-11-09 21:43:22', 0, 1, 1),
+(9, '6.2024/LT03.02/WS1LT2', 'ADAASDASDWAS', 'LAPTOP ACER E5 471', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 'LT03', 2, 'WS1LT2', 1, 3, '2024', 5, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/11/1; TES', 'f6498590178af9baef7f6cda7593cb4c.jpeg', '2024-11-09 15:32:28', '2024-11-09 22:05:35', 0, 0, 1),
+(10, '6.2024/LT03.03/SBYLT2', 'ADAASDASDWASQW', 'LAPTOP ACER E5 471', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 'LT03', 2, 'SBYLT2', 1, 1, '2024', 5, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/11/1; TES', '8bdeacb88b0f2809d806ab5887fab075.jpeg', '2024-11-10 13:12:18', '2024-11-09 22:18:57', 0, 0, 1),
+(11, '6.2023/SS02.01/WS2LT1', '12312BHJB1JH23B', 'SOUND SYSTEM MIFA K12', '<p>PROSESOR : <br>MEMORI :<br>HARD DRIVE :</p>', 1, 'SS02', 1, 'WS2LT1', 1, 1, '2023', 5, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/6; TES', '', '2024-11-09 15:21:25', '2024-11-09 22:21:25', 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -265,15 +271,21 @@ CREATE TABLE `good_incoming_details` (
 --
 
 INSERT INTO `good_incoming_details` (`id`, `id_incoming`, `description`, `sn`, `pwr`, `po`, `type`, `notes`, `img`, `updated_at`, `created_at`, `as_inv`, `as_dump`, `created_by`) VALUES
-(1, 5, 'SOUND SYSTEM MIFA K12', 'ABP-1232-AWD3-23FS-234F', '2023/JKT-0142', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-01-13 05:14:11', '2024-01-09 21:14:42', 1, 0, 1),
 (2, 5, 'LISENSI AEC 2024', 'ABP-1232-AWD3-23FS-234F1', '2024/JKT-0023', 'MEMO/JKT-0011', 2, 'AEC 2024 UNTUK ENG', NULL, '2024-01-27 16:17:21', '2024-01-09 21:28:04', 1, 0, 1),
-(6, 7, 'SOUND SYSTEM MIFA K12', '12312BHJB1JH23B', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-01-27 15:18:23', '2024-01-10 20:45:10', 0, 0, 1),
-(7, 7, 'LISENSI AEC 2024', '132234-ASDASD-23423DA', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-01-16 15:07:43', '2024-01-10 21:02:57', 1, 0, 1),
+(6, 7, 'SOUND SYSTEM MIFA K12', '12312BHJB1JH23B', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', NULL, '2024-11-09 15:21:25', '2024-01-10 20:45:10', 1, 0, 1),
 (8, 7, 'LISENSI SOLIDWORKS 2024', 'ASDADA-2342Q34A-SDDASD', '2024/JKT-0023', '2023/JKT-L-0123', 2, 'TES', NULL, '2024-01-27 16:18:15', '2024-01-10 21:03:34', 1, 0, 1),
-(9, 5, 'MOUSE WIRELESS LOGITECH M190', '2223LZ917BZ8', '2023/JKT-0241', '2023/JKT-L-0123', 1, 'UNTUK MAHMUD', '72ff743b4caff43a37b2aa7c764a514b.jpg', '2024-01-16 13:40:45', '2024-01-16 19:37:07', 1, 0, 1),
 (10, 5, 'MOUSE WIRELESS LOGITECH M170', '12712BJHDJSAD', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'UNTUK EKA', 'a75c0c76c7237831e9003115b0396070.jpg', '2024-01-20 15:42:44', '2024-01-20 22:42:44', 0, 0, 1),
 (11, 5, 'LISENSI SOLIDWORKS 2024', '121NNDF-23423R2-23423F', '2024/JKT-0056', '2024/JKT-L-0023', 2, 'UNTUK ENGINERING', 'c4e786da9f59f9f0b5adb0b59d098355.jpg', '2024-02-26 13:27:07', '2024-02-26 20:27:07', 0, 0, 1),
-(12, 12, 'LAPTOP ASUS A456U', 'ADAASDASD', '2024/JKT-0023', '2023/JKT-L-0123', 1, '', '1b81edcdaec72d5a61dd7f538f6015b4.jpeg', '2024-11-09 13:39:59', '2024-11-09 20:39:59', 0, 0, 1);
+(13, 12, 'LAPTOP ACER E5 471', 'SCAD3R23RF23', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', '5000c6c3d576f3840ad8d43129876048.jpeg', '2024-11-09 14:43:22', '2024-11-09 21:40:05', 1, 0, 1),
+(14, 12, 'LAPTOP ACER E5 471', 'ADAASDASDWAS', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', 'f6498590178af9baef7f6cda7593cb4c.jpeg', '2024-11-09 15:05:35', '2024-11-09 22:03:22', 1, 0, 1),
+(15, 12, 'LAPTOP ACER E5 471', 'ADAASDASDWASQW', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', '8bdeacb88b0f2809d806ab5887fab075.jpeg', '2024-11-09 15:18:57', '2024-11-09 22:18:26', 1, 0, 1),
+(16, 12, 'DISPLAY MONITOR 55\"', 'ADAASDASDWASQWASD', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', 'a67124cdf8ab79cbd69f212bb13d50e6.png', '2024-11-10 14:43:11', '2024-11-10 21:35:20', 0, 0, 1),
+(17, 12, 'DISPLAY MONITOR 43\"', 'AASDASD', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', '9aa75a6f2a73da495e23c472e90ed035.jpg', '2024-11-10 14:37:49', '2024-11-10 21:37:49', 0, 0, 1),
+(18, 12, 'TINTA HP 955XL BLACK', '', '2024/JKT-0023', '2023/JKT-L-0123', 3, 'TES', '06450bd01f152b77248ea409c34b4655.jpeg', '2024-11-10 14:53:31', '2024-11-10 21:53:31', 0, 0, 1),
+(19, 12, 'TINTA HP 955XL CYAN', '', '2024/JKT-0023', '2023/JKT-L-0123', 3, 'TES', '1c7681ca99dce501aeee7a3931b85527.jpeg', '2024-11-10 15:09:03', '2024-11-10 22:09:03', 0, 0, 1),
+(20, 12, 'MOUSE WIRELESS LOGITECH M190', 'ASDASD24', '2024/JKT-0023', '2023/JKT-L-0123', 1, 'TES', '355b9e4317c58734bf6d1fce78fac4c1.jpg', '2024-11-10 15:10:00', '2024-11-10 22:10:00', 0, 0, 1),
+(22, 12, 'TINTA HP 955XL CYAN', '', '2024/JKT-0023', '2023/JKT-L-0123', 3, 'TES', '1c7681ca99dce501aeee7a3931b85527.jpeg', '2024-11-10 15:49:02', '2024-11-10 22:09:03', 0, 0, 1),
+(23, 12, 'TINTA HP 955XL CYAN', '', '2024/JKT-0023', '2023/JKT-L-0123', 3, 'TES', '1c7681ca99dce501aeee7a3931b85527.jpeg', '2024-11-10 16:31:59', '2024-11-10 22:09:03', 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -334,12 +346,17 @@ CREATE TABLE `inv_group` (
 --
 
 INSERT INTO `inv_group` (`id`, `code`, `name`, `description`, `updated_at`, `created_at`, `created_by`) VALUES
-(1, '', 'LAPTOP', '', '2024-01-12 16:11:15', '2024-01-12 17:09:22', 1),
-(2, '', 'PC', '', '2024-01-12 16:11:15', '2024-01-12 17:09:22', 1),
-(3, '', 'PRINTER', '', '2024-01-12 16:11:45', '2024-01-12 17:11:18', 1),
-(4, '', 'MIKROTIK', '', '2024-01-12 16:11:45', '2024-01-12 17:11:18', 1),
-(5, '', 'SOUND SYSTEM', '', '2024-01-12 16:11:57', '2024-01-12 17:11:48', 1),
-(6, 'LT01', 'LAPTOP', 'LAPTOP ASUS A456U', '2024-11-09 13:40:20', '2024-11-09 20:40:20', 1);
+(1, 'LT02', 'LAPTOP', '', '2024-11-09 14:08:52', '2024-01-12 17:09:22', 1),
+(2, 'PC01', 'PC', '', '2024-11-09 14:08:55', '2024-01-12 17:09:22', 1),
+(3, 'PR01', 'PRINTER', '', '2024-11-09 14:08:59', '2024-01-12 17:11:18', 1),
+(4, 'RT01', 'MIKROTIK', '', '2024-11-09 14:09:03', '2024-01-12 17:11:18', 1),
+(5, 'SS01', 'SOUND SYSTEM', '', '2024-11-09 14:09:06', '2024-01-12 17:11:48', 1),
+(6, 'LT01', 'LAPTOP', 'LAPTOP ASUS A456U', '2024-11-09 13:40:20', '2024-11-09 20:40:20', 1),
+(7, 'LT03', 'LAPTOP', 'LAPTOP ACER E5 471', '2024-11-09 14:40:27', '2024-11-09 21:40:27', 1),
+(8, 'SS02', 'SOUND SYSTEM', 'SOUND SYSTEM MIFA K12', '2024-11-09 15:20:59', '2024-11-09 22:20:59', 1),
+(9, 'DP01', 'DISPLAY MONITOR', 'DISPLAY MONITOR 43\"', '2024-11-10 14:42:41', '2024-11-10 21:38:39', 1),
+(10, 'DP02', 'DISPLAY MONITOR', 'DISPLAY MONITOR 55\"', '2024-11-10 14:43:32', '2024-11-10 21:43:32', 1),
+(11, 'MO01', 'MOUSE', 'MOUSE WIRELESS LOGITECH M190', '2024-11-10 16:32:23', '2024-11-10 23:32:23', 1);
 
 -- --------------------------------------------------------
 
@@ -409,7 +426,7 @@ CREATE TABLE `lisences` (
 --
 
 INSERT INTO `lisences` (`id`, `number`, `sn`, `description`, `id_lic_type`, `seats`, `date_start`, `date_end`, `id_lic_dept`, `id_lic_branch`, `id_lic_source`, `notes`, `as_dump`, `as_bast`, `updated_at`, `created_at`, `created_by`) VALUES
-(2, 'IT/LIC/2024/01/01', 'ABP-1232-AWD3-23FS-234F1', 'LISENSI AEC 2024', 2, 5, '2024-01-27 00:00:00', '2025-01-27 00:00:00', 1, 2, 1, 'REFF PWR 2024/JKT-0023; REFF PO MEMO/JKT-0011; RR IT IT/RR/2024/01/4; AEC 2024 UNTUK ENG', 0, 1, '2024-11-09 13:47:23', '2024-01-27 23:17:21', 1),
+(2, 'IT/LIC/2024/01/01', 'ABP-1232-AWD3-23FS-234F1', 'LISENSI AEC 2024', 2, 5, '2024-01-27 00:00:00', '2025-01-27 00:00:00', 1, 2, 1, 'REFF PWR 2024/JKT-0023; REFF PO MEMO/JKT-0011; RR IT IT/RR/2024/01/4; AEC 2024 UNTUK ENG', 0, 2, '2024-11-10 13:17:07', '2024-01-27 23:17:21', 1),
 (3, 'IT/LIC/2024/01/02', 'ASDADA-2342Q34A-SDDASD', 'LISENSI SOLIDWORKS 2024', 1, 1, '2024-01-24 00:00:00', '0000-00-00 00:00:00', 5, 7, 1, 'REFF PWR 2024/JKT-0023; REFF PO 2023/JKT-L-0123; RR IT IT/RR/2024/01/6; TES', 0, 0, '2024-03-02 17:37:27', '2024-01-27 23:18:15', 1),
 (4, 'IT/LIC/2024/02/01', 'AREA1-123DD-87WF3-14C5G-23MKL', 'MICROSOFT OFFICE PRO PLUS 2021', 1, 3, '2024-02-26 00:00:00', '0000-00-00 00:00:00', 3, 2, 1, 'REFF PWR 2023/JKT-0014 ; REFF PO 2023/JKT-L-0002;', 0, 0, '2024-03-02 17:36:36', '2024-02-26 21:33:22', 1);
 
@@ -604,25 +621,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bast_report`
 --
 ALTER TABLE `bast_report`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `bast_report_details`
 --
 ALTER TABLE `bast_report_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `bast_usage_history`
 --
 ALTER TABLE `bast_usage_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `branch`
 --
 ALTER TABLE `branch`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `dept`
@@ -634,7 +651,7 @@ ALTER TABLE `dept`
 -- AUTO_INCREMENT for table `goods`
 --
 ALTER TABLE `goods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `good_incoming`
@@ -646,7 +663,7 @@ ALTER TABLE `good_incoming`
 -- AUTO_INCREMENT for table `good_incoming_details`
 --
 ALTER TABLE `good_incoming_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `inv_allotment`
@@ -664,7 +681,7 @@ ALTER TABLE `inv_condition`
 -- AUTO_INCREMENT for table `inv_group`
 --
 ALTER TABLE `inv_group`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `inv_type`
