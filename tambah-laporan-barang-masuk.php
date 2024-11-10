@@ -18,7 +18,7 @@
     
     // ambil data incoming detail berdasar id good_incoming
     $idIncoming = $getDetailRR["id"];
-    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, type, notes, img FROM good_incoming_details WHERE id_incoming = $idIncoming");
+    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, type, notes, img, as_inv FROM good_incoming_details WHERE id_incoming = $idIncoming");
 
     // ambil data select tipe invenaris
     $getInvType = mysqli_query($conn, "SELECT id, name FROM inv_type");
@@ -245,30 +245,59 @@
                                                         <?php
                                                             $desc = $getDetail["description"];
                                                             $validateDescGroup = mysqli_query($conn, "SELECT id FROM inv_group WHERE description = '$desc'");
-                                                        ?>
+                                                            $thisSN = $getDetail["sn"];
+                                                            ?>
                                                         <td><?= $urutBarang ?></td>
                                                         <td>
-                                                            <?= $getDetail["description"] ?> <br>
-                                                            <?php  if(mysqli_num_rows($validateDescGroup) < 1 AND $getDetail["type"] != 3) : ?>
-                                                            <span class="badge rounded-pill bg-success">
-                                                                <a href="#" class="text-decoration-none text-white"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#modalTambahGroup"
-                                                                    data-description="<?= htmlspecialchars($getDetail["description"], ENT_QUOTES, 'UTF-8') ?>">Daftarkan
-                                                                    Sekarang</a>
-                                                            </span>
-                                                            <?php endif ?>
+                                                            <?php
+                                                            if($getDetail["type"] == 1  AND $getDetail["as_inv"] == 1) : 
+                                                                $getNumberIfGoods = mysqli_fetch_assoc(mysqli_query($conn, "SELECT goods.number FROM goods INNER JOIN good_incoming_details ON goods.sn = good_incoming_details.sn WHERE good_incoming_details.sn = '$thisSN'"));
+                                                            ?>
+                                                            <?= $getDetail["description"] ?> <span
+                                                                class="badge rounded-pill bg-light"><a
+                                                                    href="barang-details.php?inv=<?= $getNumberIfGoods['number'] ?>"
+                                                                    class="text-decoration-none text-black">INV</a></span>
+                                                            <?php
+                                                            elseif($getDetail["type"] == 2 AND $getDetail["as_inv"] == 1) :
+                                                                $getNumberIfLisences = mysqli_fetch_assoc(mysqli_query($conn, "SELECT lisences.number FROM lisences INNER JOIN good_incoming_details ON lisences.sn = good_incoming_details.sn WHERE good_incoming_details.sn = '$thisSN'"));
+                                                            ?>
+                                                            <?= $getDetail["description"] ?> <span
+                                                                class="badge rounded-pill bg-light"><a
+                                                                    href="lisensi-details.php?inv=<?= $getNumberIfLisences['number'] ?>"
+                                                                    class="text-decoration-none text-black">INV</a>
+                                                                <?php else : ?>
+                                                                <?= $getDetail["description"] ?>
+                                                                <?php endif ?>
+                                                                <br>
+                                                                <?php  if(mysqli_num_rows($validateDescGroup) < 1 AND $getDetail["type"] != 2 AND $getDetail["type"] != 3) : ?>
+                                                                <span class="badge rounded-pill bg-success">
+                                                                    <a href="#" class="text-decoration-none text-white"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#modalTambahGroup"
+                                                                        data-description="<?= htmlspecialchars($getDetail["description"], ENT_QUOTES, 'UTF-8') ?>">Daftarkan
+                                                                        Sekarang!</a>
+                                                                </span>
+                                                                <?php endif ?>
                                                         </td>
                                                         <td><?= $getDetail["sn"] ?></td>
                                                         <td><?= $getDetail["pwr"] ?></td>
                                                         <td><?= $getDetail["po"] ?></td>
                                                         <td>
                                                             <?php if($getDetail["type"] == 1) : ?>
-                                                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                                                            <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-title="Goods">
+                                                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                                            </span>
                                                             <?php elseif($getDetail["type"] == 2) : ?>
-                                                            <i class="fa-regular fa-newspaper"></i>
+                                                            <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-title="Lisences">
+                                                                <i class="fa-regular fa-newspaper"></i>
+                                                            </span>
                                                             <?php elseif($getDetail["type"] == 3) : ?>
-                                                            <i class="fa-solid fa-layer-group"></i>
+                                                            <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-title="Consumables">
+                                                                <i class="fa-solid fa-layer-group"></i>
+                                                            </span>
                                                             <?php endif ?>
                                                         </td>
                                                         <td><?= $getDetail["notes"] ?></td>
@@ -286,6 +315,29 @@
                                                             </button>
                                                         </td>
                                                         <td>
+                                                            <?php if($getDetail["type"] == 3) : ?>
+                                                            <button class="btn btn-sm"
+                                                                onclick="window.location.href = 'function.php?copyRowDataBarangMasuk=<?= $getDetail['id'] ?>'">
+                                                                <!-- Icon Copy -->
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor" class="bi bi-copy"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
+                                                                </svg>
+                                                            </button>
+                                                            <?php elseif(($getDetail["type"] == 1 AND mysqli_num_rows($validateDescGroup) > 0) OR $getDetail["type"] == 2) :  ?>
+                                                            <button class="btn btn-sm" id="copyRow">
+                                                                <!-- Icon Copy -->
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor" class="bi bi-copy"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
+                                                                </svg>
+                                                            </button>
+                                                            <?php endif ?>
+                                                            <?php if($getDetail["as_inv"] != 1) : ?>
                                                             <button class="btn btn-sm"
                                                                 onclick="hapusDetailBarang(' <?= $getDetail['id'] ?> ')">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16"
@@ -295,6 +347,8 @@
                                                                         d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
                                                                 </svg>
                                                             </button>
+                                                            <?php endif ?>
+
                                                         </td>
                                                     </tr>
                                                     <?php $urutBarang++; endforeach ?>
@@ -406,7 +460,7 @@
                             <div class="col-sm">
                                 <label for="" class="form-label labeling-form">Notes</label>
                                 <input type="text" class="form-control" placeholder="Your text here" name="notes"
-                                    id="notes" />
+                                    id="note" />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -745,6 +799,37 @@
             snInput.setAttribute('required', 'required'); // Set required
         }
     }
+
+    // Fungsi untuk copy Row jika type barang 1 & 2, untuk mempermudah input
+    // Ambil semua tombol "Edit" di tabel
+    const editButtons = document.querySelectorAll('#copyRow');
+
+    // Event listener untuk setiap tombol "Edit"
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Ambil row yang berisi tombol "Edit" yang diklik
+            const row = button.closest('tr');
+
+            // Ambil data dari setiap cell di row
+            const desc = row.cells[1].textContent.trim();
+            const pwr = row.cells[3].textContent.trim();
+            const po = row.cells[4].textContent.trim();
+            const notes = row.cells[6].textContent.trim();
+
+            // Masukkan data ke dalam modal form
+            document.getElementById('desc').value = desc;
+            document.getElementById('pwr').value = pwr;
+            document.getElementById('po').value = po;
+            document.getElementById('note').value = notes;
+
+            // Tampilkan modal
+            $('#modalTambahBarang').modal('show');
+        });
+    }); // END Fungsi untuk copy Row jika type barang 1 & 2, untuk mempermudah input
+
+    // enable tooltip 
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
 </body>
 

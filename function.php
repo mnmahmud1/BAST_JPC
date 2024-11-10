@@ -734,3 +734,17 @@ if(isset($_POST["uploadImgGood"])){
         header("Location: barang-details.php?inv=$invNumber");
     }
 }
+
+if(isset($_GET["copyRowDataBarangMasuk"])){
+    $row = trim(htmlspecialchars($_GET['copyRowDataBarangMasuk']));
+    
+    mysqli_query($conn, "INSERT INTO good_incoming_details (id_incoming, description, sn, pwr, po, type, notes, img, created_at, as_inv, as_dump, created_by) SELECT id_incoming, description, sn, pwr, po, type, notes, img, created_at, as_inv, as_dump, created_by FROM good_incoming_details WHERE id = $row");
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: tambah-laporan-barang-masuk.php");
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: tambah-laporan-barang-masuk.php");
+    }
+}
