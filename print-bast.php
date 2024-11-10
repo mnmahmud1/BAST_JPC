@@ -310,8 +310,9 @@
             <tr>
                 <th colspan="4">
                     Tanda Tangan <br />
-                    <span style="font-size: small; font-weight: lighter">Dengan menandatangani dokumen ini maka karyawan
-                        setuju dengan ketentuan-ketentuan yang sudah di tetapkan perusahaan.</span>
+                    <span style="font-size: small; font-weight: lighter">(Dengan menandatangani dokumen ini maka
+                        karyawan
+                        setuju dengan ketentuan-ketentuan yang sudah di tetapkan perusahaan.)</span>
                 </th>
             </tr>
             <tr>
@@ -448,8 +449,10 @@
                             kelalaian karyawan tersebut dan tidak terjamin oleh garansi, maka biaya perbaikan dibebankan
                             kepada karyawan sesuai dengan kebijakan perusahaan.</li>
                         <li>Karyawan harus memahami bahwa pelanggaran terhadap ketentuan penggunaan barang inventaris
-                            kantor dapat mengakibatkan sanksi sesuai dengan kebijakan perusahaan. 6. Jika karyawan
-                            berhenti atau mengakhiri kerjasama dengan perusahaan, karyawan wajib mengembalikan barang
+                            kantor dapat mengakibatkan sanksi sesuai dengan kebijakan perusahaan.</li>
+                        <li>Jika karyawan
+                            berhenti atau mengakhiri masa kerja dengan perusahaan, karyawan wajib mengembalikan semua
+                            barang
                             inventaris kantor sesuai dengan prosedur yang ditetapkan.</li>
                     </ol>
                 </td>

@@ -17,10 +17,12 @@
 	}
     $getGoodImg = mysqli_fetch_assoc(mysqli_query($conn, "SELECT img FROM goods WHERE NUMBER = '$number'"));
 
-	$getBranch = mysqli_query($conn, "SELECT id, name FROM branch");
+	$getBranch = mysqli_query($conn, "SELECT id, initial, name FROM branch");
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
-
+    $getBastgoodUsed = mysqli_query($conn, "SELECT bast_report_details.bast_number FROM bast_report_details INNER JOIN goods ON bast_report_details.id_good = goods.id WHERE bast_report_details.id_inv_type = 1 AND goods.number = '$number'");
+    
+    $urutDaftarA = 1;
 
 ?>
 
@@ -277,7 +279,7 @@
                                                             selected><?= $getDaftarBarangInv['branch'] ?> - DEFAULT
                                                         </option>
                                                         <?php foreach($getBranch as $branch) : ?>
-                                                        <option value="<?= $branch['id'] ?>"><?= $branch['name'] ?>
+                                                        <option value="<?= $branch['initial'] ?>"><?= $branch['name'] ?>
                                                         </option>
                                                         <?php endforeach ?>
                                                     </select>
@@ -409,59 +411,18 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>NO BAST</th>
-                                                <th>Deskripsi Inventaris</th>
-                                                <th>Kondisi</th>
-                                                <th>Diserahkan Oleh</th>
-                                                <th>Diterima Oleh</th>
-                                                <th>Keterangan</th>
-                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php foreach($getBastgoodUsed as $bast) : ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>GA/2022/08/005</td>
-                                                <td>MHN-2022-001</td>
-                                                <td>BAIK</td>
-                                                <td>M N MAHMUDI (HR & GA)</td>
-                                                <td>KEVIN ALNIAGARA (FA)</td>
-                                                <td>DIPINJAM KE SITE SGT</td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-white"
-                                                        onclick="window.location.href = '#'">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor" class="bi bi-info-circle"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                            <path
-                                                                d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                                                        </svg>
-                                                    </button>
+                                                <td><?= $urutDaftarA ?></td>
+                                                <td><a href="ba-serah-terima-details.php?bast=<?= $bast["bast_number"] ?>"
+                                                        target="_blank"
+                                                        class="text-reset"><?= $bast["bast_number"] ?></a>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>GA/2022/08/005</td>
-                                                <td>MHN-2022-001</td>
-                                                <td>BAIK</td>
-                                                <td>M N MAHMUDI (HR & GA)</td>
-                                                <td>KEVIN ALNIAGARA (FA)</td>
-                                                <td>DIPINJAM KE SITE SGT</td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-white"
-                                                        onclick="window.location.href = '#'">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor" class="bi bi-info-circle"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                                            <path
-                                                                d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                                                        </svg>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                            <?php $urutDaftarA++; endforeach ?>
                                         </tbody>
                                     </table>
                                 </div>
