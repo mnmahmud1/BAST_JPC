@@ -196,7 +196,7 @@
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" data-bs-toggle="modal"
                                                 data-bs-target="#modalTambahDariBarangMasuk">Dari Barang Masuk</a></li>
-                                        <li><a class="dropdown-item" data-bs-toggle="modal"
+                                        <li><a class="dropdown-item disabled" data-bs-toggle="modal"
                                                 data-bs-target="#modalTambah">Manual</a></li>
                                     </ul>
                                 </div>
