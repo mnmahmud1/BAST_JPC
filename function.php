@@ -55,7 +55,7 @@ if(isset($_GET["addIncomingGood"])){
 }
 
 if(isset($_POST['tambahBarangMasuk'])){
-    $desc = trim(htmlspecialchars($_POST['desc']));
+    $desc = ($_POST['desc']);
     $sn = trim(htmlspecialchars($_POST['sn']));
     $pwr = trim(htmlspecialchars($_POST['pwr']));
     $po = trim(htmlspecialchars($_POST['po']));
@@ -594,7 +594,7 @@ if(isset($_GET["deleteInvBAST"])){
 if(isset($_POST['tambahGroup'])){
     $group = trim(htmlspecialchars($_POST['group']));
     $code = trim(htmlspecialchars($_POST['code']));
-    $description = trim(htmlspecialchars($_POST['description']));
+    $description = $_POST['description'];
     
     mysqli_query($conn, "INSERT INTO inv_group (code, name, description, created_at, created_by) VALUES ('$code', '$group', '$description', '$dateTime', $userCreated)");
     

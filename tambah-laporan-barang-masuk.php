@@ -236,7 +236,7 @@
                                                         <th>Type</th>
                                                         <th>Notes</th>
                                                         <th>Img</th>
-                                                        <th></th>
+                                                        <th>Act</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -249,7 +249,7 @@
                                                         <td><?= $urutBarang ?></td>
                                                         <td>
                                                             <?= $getDetail["description"] ?> <br>
-                                                            <?php  if(mysqli_num_rows($validateDescGroup) < 1) : ?>
+                                                            <?php  if(mysqli_num_rows($validateDescGroup) < 1 AND $getDetail["type"] != 3) : ?>
                                                             <span class="badge rounded-pill bg-success">
                                                                 <a href="#" class="text-decoration-none text-white"
                                                                     data-bs-toggle="modal"
@@ -393,7 +393,8 @@
                         <div class="row mb-3">
                             <div class="col-sm">
                                 <label for="" class="form-label labeling-form">Tipe Barang Masuk</label>
-                                <select name="type" id="type" class="form-select" required>
+                                <select name="type" id="type" class="form-select" required
+                                    onchange="toggleSNReadOnly()">
                                     <option value="">Choose</option>
                                     <?php foreach($getInvType as $getInv) :  ?>
                                     <option value="<?= $getInv['id'] ?>"><?= $getInv['name'] ?></option>
@@ -730,6 +731,20 @@
                 description); // Isi input description dengan nilai yang diambil
         });
     });
+
+
+    function toggleSNReadOnly() {
+        const typeSelect = document.getElementById('type');
+        const snInput = document.getElementById('sn');
+
+        if (typeSelect.value === '3') {
+            snInput.setAttribute('readonly', 'readonly'); // Set readonly
+            snInput.removeAttribute('required'); // Remove required
+        } else {
+            snInput.removeAttribute('readonly'); // Remove readonly
+            snInput.setAttribute('required', 'required'); // Set required
+        }
+    }
     </script>
 </body>
 
