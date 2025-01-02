@@ -227,7 +227,7 @@
                                             <?php foreach($getDaftarBarangInv as $barangInv) : ?>
                                             <tr>
                                                 <td><?= $urutDaftarI ?></td>
-                                                <td><?= $barangInv["number"] ?></td>
+                                                <td class="fw-bold"><?= $barangInv["number"] ?></td>
                                                 <td><?= $barangInv["description"] ?></td>
                                                 <td><?= $barangInv["sn"] ?></td>
                                                 <td>
