@@ -240,15 +240,16 @@
                             </nav>
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-sm btn-outline-primary mt-4"
-                                onclick="window.open('print-bast.php?bast=<?= $bast_number ?>', '_blank')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-printer" viewBox="0 0 16 16">
-                                    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
-                                    <path
-                                        d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1" />
-                                </svg>
-                            </button>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button class="btn btn-sm btn-outline-primary mt-4"><i class="fa-solid fa-tag"></i>
+                                    Print Label
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary mt-4"
+                                    onclick="window.open('print-bast.php?bast=<?= $bast_number ?>', '_blank')">
+                                    <i class="fa-solid fa-print"></i> Print BAST
+                                </button>
+                            </div>
+
                         </div>
                     </div>
 
@@ -562,11 +563,11 @@
                                     <form action="function.php" method="post" enctype="multipart/form-data">
                                         <input type="text" name="bastUrl" value="<?= $bast_number ?>" hidden>
                                         <div class="row">
-                                            <div class="col-sm-11">
+                                            <div class="col-md-11 col-sm-9">
                                                 <input type="file" name="bastSigned" id="bastSigned"
                                                     class="form-control" required />
                                             </div>
-                                            <div class="col-sm-1">
+                                            <div class="col-md-1 col-sm-3">
                                                 <button type="submit" name="uploadSigned"
                                                     class="btn btn-sm btn-primary">Upload</button>
                                             </div>
@@ -729,7 +730,7 @@
     <!-- Modal Tambah Lisensi -->
     <div class="modal fade" id="modalTambahLisensi" tabindex="-1" aria-labelledby="modalTambahLisensiLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modalTambahLisensiLabel">Pilih Lisensi Dari Daftar Lisensi</h1>
@@ -773,6 +774,12 @@
                                                         <path
                                                             d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916z" />
                                                     </svg>
+                                                    <?php elseif(strtotime($lisence['date_end']) < strtotime(date("Y-m-d H:i:s")) ) : ?>
+                                                    <?= date("d/m/Y", strtotime($lisence['date_end'])) ?>
+                                                    <span data-bs-toggle="tooltip" data-bs-placement="top"
+                                                        data-bs-title="Lisensi ini sudah kadaluarsa">
+                                                        <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                                                    </span>
                                                     <?php else : ?>
                                                     <?= date("d/m/Y", strtotime($lisence['date_end'])) ?>
                                                     <?php endif ?>
@@ -1007,6 +1014,10 @@
             }
         });
     }
+
+    // enable tooltip 
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
     </script>
 </body>
 

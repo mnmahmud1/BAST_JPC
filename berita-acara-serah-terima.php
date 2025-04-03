@@ -209,6 +209,10 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach($getBast as $bast) : ?>
+                                            <?php
+                                                $bastNumber  = $bast['number'];
+                                                $getBASTSigned = mysqli_fetch_assoc(mysqli_query($conn, "SELECT attach FROM bast_report WHERE number = '$bastNumber'"));
+                                            ?>
                                             <tr>
                                                 <td><?= $urutDaftar ?></td>
                                                 <td><?= $bast['number'] ?></td>
@@ -253,8 +257,14 @@
                                                             <li><a class="dropdown-item"
                                                                     href="ba-serah-terima-details.php?bast=<?= $bast['number'] ?>">Details</a>
                                                             </li>
+                                                            <?php if(is_null($getBASTSigned['attach'])) : ?>
                                                             <li><button class="dropdown-item disabled">See
-                                                                    Pdf</button></li>
+                                                                    PDF</button></li>
+                                                            <?php else : ?>
+                                                            <li><button class="dropdown-item"
+                                                                    onclick="window.open('dist/attach/<?= $getBASTSigned['attach'] ?>', '_blank')">See
+                                                                    PDF</button></li>
+                                                            <?php endif ?>
                                                             <li><a class="dropdown-item"
                                                                     href="print-bast.php?bast=<?= $bast['number'] ?>"
                                                                     target="_blank">Print</a></li>

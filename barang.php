@@ -184,7 +184,7 @@
                         <div class="col-sm">
                             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                 <button class="btn btn-sm btn-light" data-bs-toggle="modal"
-                                    data-bs-target="#modalImport">
+                                    data-bs-target="#modalImport" disabled>
                                     <i class="fa-solid fa-file-import"></i>
                                     Import
                                 </button>

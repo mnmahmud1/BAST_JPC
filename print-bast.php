@@ -177,8 +177,8 @@
         <!-- Header Section -->
         <table class="header-table">
             <tr>
-                <td class="no-border" style="text-align: center" rowspan="2"><img src="dist/img/bast/jpc.png"
-                        alt="Logo JPC" /></td>
+                <td class="no-border" style="text-align: center" rowspan="2"><img style="max-height: 45px"
+                        src="dist/img/bast/jpc.webp" alt="Logo JPC" /></td>
                 <td class="no-border">
                     <div style="text-align: center; font-weight: bold">BERITA ACARA SERAH TERIMA INVENTARIS</div>
                     <div style="text-align: center; font-weight: bold">PT. JAKARTA PRIMA CRANES</div>
