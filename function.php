@@ -662,7 +662,7 @@ if(isset($_POST["uploadSigned"])){
     $photo = $_FILES['bastSigned']['tmp_name'];
     $photoName = $_FILES['bastSigned']['name'];
     
-    // Fungsi untuk menghasilkan nama unik dengan 50 karakter
+    // Fungsi untuk menghasilkan nama unik dengan 40 karakter
     function generateUniqueFileName($length = 40) {
         return substr(bin2hex(random_bytes($length)), 0, $length);
     }

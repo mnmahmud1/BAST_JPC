@@ -200,6 +200,10 @@
                                                 data-bs-target="#modalTambah">Manual</a></li>
                                     </ul>
                                 </div>
+
+                                <button type="button" class="btn btn-outline-primary" id="getSelected"><i
+                                        class="fa-solid fa-tag"></i> Cetak
+                                    Labels</button>
                             </div>
                         </div>
                     </div>
@@ -734,13 +738,57 @@
 
     <script>
     $(document).ready(function() {
-        $("#tableBarang").DataTable({
+        // Inisialisasi DataTable dengan fitur select
+        let tableBarang = $("#tableBarang").DataTable({
             dom: "Bfrtip",
             buttons: ["copy", "csv", "excel", "pdf", "print"],
-            select: true,
+            select: true, // Mengaktifkan fitur seleksi
         });
+
+        // Inisialisasi DataTable tanpa select untuk tabel lain
         $("#tableTambahDariBarangMasuk").DataTable();
+
+        // Ambil tombol cetak label
+        let $getSelectedBtn = $("#getSelected");
+
+        // Nonaktifkan tombol saat pertama kali halaman dimuat
+        $getSelectedBtn.prop("disabled", true);
+
+        // Event listener untuk update tombol saat seleksi berubah
+        tableBarang.on("select deselect", function() {
+            let selectedCount = tableBarang.rows({
+                selected: true
+            }).count();
+            $getSelectedBtn.prop("disabled", selectedCount === 0);
+        });
+
+        // Fungsi untuk menyimpan data ke cookie dan membuka halaman cetak label
+        $getSelectedBtn.click(function() {
+            let selectedData = tableBarang.rows({
+                selected: true
+            }).data().toArray();
+
+            // Ambil hanya data dari kolom indeks ke-2
+            let selectedColumnData = selectedData.map(row => row[1]);
+
+            console.log(selectedColumnData); // Menampilkan data di console
+
+            // Mengubah array menjadi string untuk dikirim ke cookie
+            let dataString = JSON.stringify(selectedColumnData);
+
+            // Set waktu kedaluwarsa cookie: 5 menit (5 * 60 * 1000 ms)
+            let expirationTime = new Date();
+            expirationTime.setTime(expirationTime.getTime() + (5 * 60 * 1000)); // 5 menit
+
+            // Menyimpan data dalam cookie
+            document.cookie = "selectedLabels=" + encodeURIComponent(dataString) +
+                "; expires=" + expirationTime.toUTCString() + "; path=/";
+
+            // Membuka tab baru dan mengarahkan ke print-labels.php
+            window.open("print-labels.php", "_blank");
+        });
     });
+
 
     $(document).ready(function() {
         $(".preloader").fadeOut("slow");
