@@ -748,3 +748,25 @@ if(isset($_GET["copyRowDataBarangMasuk"])){
         header("Location: tambah-laporan-barang-masuk.php");
     }
 }
+
+if(isset($_POST["printLabelBAST"])){
+    $identityEmail = $_POST['identityEmail'];
+    $identityPass = $_POST['identityPass'];
+    // $identityPwr = $_POST['identityPwr'];
+    // $identityPo = $_POST['identityPo'];
+    $identityUser = $_POST['identityUser'];
+    $identityDate = $_POST['identityDate'];
+    $identityBast = $_POST['identityBast'];
+    
+    $merge = "identityEmail:" . $identityEmail . ";identityPass:" . $identityPass . ";identityUser:" . $identityUser . ";identityDate:" . $identityDate . ";";
+    
+    mysqli_query($conn, "UPDATE bast_report SET identity = '$merge' WHERE number = '$identityBast'");
+
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: print-label-bast.php?bast=$identityBast");
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: ba-serah-terima-details.php?bast=$identityBast");
+    }
+}

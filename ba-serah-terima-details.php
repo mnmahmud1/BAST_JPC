@@ -15,8 +15,11 @@
     $numE = 1;
 
     $bast_number = $_GET["bast"];
-    $queryGetBAST = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_user_name, dept_submitted.name AS submitted_dept_name, users_accepted.name AS accepted_user_name, dept_accepted.name AS accepted_dept_name, users_submitted.nik AS submitted_user_nik, users_accepted.nik AS accepted_user_nik, bast_report.notes FROM bast_report INNER JOIN users AS users_submitted ON users_submitted.id = bast_report.id_user_submitted INNER JOIN users AS users_accepted ON users_accepted.id = bast_report.id_user_accepted INNER JOIN dept AS dept_submitted ON dept_submitted.id = users_submitted.id_dept INNER JOIN dept AS dept_accepted ON dept_accepted.id = users_accepted.id_dept WHERE bast_report.number = '$bast_number'");
+    $queryGetBAST = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_user_name, dept_submitted.name AS submitted_dept_name, users_accepted.name AS accepted_user_name, dept_accepted.name AS accepted_dept_name, users_submitted.nik AS submitted_user_nik, users_accepted.nik AS accepted_user_nik, bast_report.notes, bast_report.identity FROM bast_report INNER JOIN users AS users_submitted ON users_submitted.id = bast_report.id_user_submitted INNER JOIN users AS users_accepted ON users_accepted.id = bast_report.id_user_accepted INNER JOIN dept AS dept_submitted ON dept_submitted.id = users_submitted.id_dept INNER JOIN dept AS dept_accepted ON dept_accepted.id = users_accepted.id_dept WHERE bast_report.number = '$bast_number'");
     $getBAST = mysqli_fetch_assoc($queryGetBAST);
+
+    // Mengirimkan data ke JavaScript
+    echo "<script>let dataString = " . json_encode($getBAST['identity']) . ";</script>";
     if($bast_number == '' OR mysqli_num_rows($queryGetBAST) == 0){
 		header("Location: berita-acara-serah-terima.php");
 	}
@@ -241,7 +244,8 @@
                         </div>
                         <div class="col-auto">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button class="btn btn-sm btn-outline-primary mt-4"><i class="fa-solid fa-tag"></i>
+                                <button class="btn btn-sm btn-outline-primary mt-4" data-bs-toggle="modal"
+                                    data-bs-target="#modalIdentity"><i class="fa-solid fa-tag"></i>
                                     Print Label
                                 </button>
                                 <button class="btn btn-sm btn-outline-primary mt-4"
@@ -837,6 +841,75 @@
         </div>
     </div>
 
+    <!-- Modal Identity -->
+    <div class="modal fade" id="modalIdentity" tabindex="-1" aria-labelledby="modalIdentityLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <form action="function.php" method="post">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalIdentityLabel">Print Label BAST</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body px-4">
+                        <div class="row">
+                            <div class="col-sm">
+                                <div class="card">
+                                    <div class="card-body table-responsive">
+                                        <h5 class="mb-4">Masukan Identitas BAST</h5>
+                                        <div class="mb-3">
+                                            <label for="identityEmail" class="form-label labeling-form">Email
+                                                Laptop</label>
+                                            <input type="email" name="identityEmail" id="identityEmail"
+                                                class="form-control" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="identityPass" class="form-label labeling-form">Password</label>
+                                            <input type="text" name="identityPass" id="identityPass"
+                                                class="form-control" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="identityDate" class="form-label labeling-form">Tanggal</label>
+                                            <input type="text" name="identityDate" id="identityDate"
+                                                class="form-control" value="<?= date("d / M / Y") ?>" required readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="identityBast" class="form-label labeling-form">BAST</label>
+                                            <input type="text" name="identityBast" id="identityBast"
+                                                class="form-control" value="<?= $getBAST['number'] ?>" required
+                                                readonly>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="identityUser" class="form-label labeling-form">User</label>
+                                            <input type="text" name="identityUser" id="identityUser"
+                                                class="form-control" value="<?= $getBAST['accepted_user_name'] ?>"
+                                                required readonly>
+                                        </div>
+                                        <!-- <div class="mb-3">
+                                            <label for="identityPwr" class="form-label labeling-form">No. PWR</label>
+                                            <input type="text" name="identityPwr" id="identityPwr" class="form-control"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="identityPo" class="form-label labeling-form">No. PO</label>
+                                            <input type="text" name="identityPo" id="identityPo" class="form-control"
+                                                required>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary align-items-end" name="printLabelBAST"><i
+                                class="fa-solid fa-print"></i>
+                            Print Label</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal for Image Preview
     <div class="modal fade" id="imageModalTambah" tabindex="-1" role="dialog" aria-labelledby="imageModalTambahLabel"
         aria-hidden="true">
@@ -1018,6 +1091,25 @@
     // enable tooltip 
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+    $(document).ready(function() {
+        // Memisahkan setiap pasangan key:value
+        let pairs = dataString.split(";");
+
+        // Loop melalui setiap pasangan key:value
+        pairs.forEach(function(pair) {
+            let parts = pair.split(":"); // Pisahkan key dan value
+            if (parts.length === 2) { // Pastikan format key:value benar
+                let key = parts[0].trim(); // Ambil nama variabel (id input)
+                let value = parts[1].trim(); // Ambil nilainya
+
+                // Cek apakah ada input dengan id yang sesuai, lalu isi nilainya
+                if ($("#" + key).length) {
+                    $("#" + key).val(value);
+                }
+            }
+        });
+    });
     </script>
 </body>
 
