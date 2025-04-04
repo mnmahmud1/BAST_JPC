@@ -26,10 +26,54 @@
     <link href="dist/temp/css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Jquery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="dist/css/public.css" />
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+    body {
+        background-color: #F4F5F7;
+    }
+
+    .summary-card-label {
+        font-family: 'Manrope', sans-serif;
+        color: #999999;
+        font-size: 13px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+
+    .summary-card-count {
+        font-family: 'Manrope', sans-serif;
+        color: #000;
+        font-size: 26px;
+        font-weight: 700;
+    }
+
+    .summary-chart-label {
+        font-family: 'Manrope', sans-serif;
+        color: #000;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .summary-chart-desc {
+        font-family: 'Manrope', sans-serif;
+        color: #999999;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .fs-6 {
+        color: #000 !important;
+    }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -156,7 +200,7 @@
         </div>
         <div id="layoutSidenav_content">
             <main>
-                <div class="container-fluid px-4">
+                <div class="container-fluid px-4 mb-3">
                     <h3 class="mt-4">Dashboard</h3>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Dashboard</li>
@@ -164,35 +208,137 @@
 
                     <div class="row">
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body">Barang 12</div>
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <p class="summary-card-label">
+                                        Jumlah Barang
+                                    </p>
+                                    <h3 class="summary-card-count">
+                                        123
+                                    </h3>
+                                </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body">Cabang 12</div>
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <p class="summary-card-label">
+                                        Jumlah Lisensi
+                                    </p>
+                                    <h3 class="summary-card-count">
+                                        123
+                                    </h3>
+                                </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body">Pengguna 12</div>
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <p class="summary-card-label">
+                                        Jumlah BAST
+                                    </p>
+                                    <h3 class="summary-card-count">
+                                        123
+                                    </h3>
+                                </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body">Berita Acara 12</div>
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <p class="summary-card-label">
+                                        Jumlah Users
+                                    </p>
+                                    <h3 class="summary-card-count">
+                                        123
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid px-4">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="card bg-white border-0 mb-3">
+                                <div class="card-body">
+                                    <p class="summary-chart-label">Performa Diagram Garis</p>
+                                    <p class="summary-chart-desc">Performa Pembuatan BAST 6 Bulan Terakhir</p>
+                                    <div>
+                                        <canvas id="performaBarang" height="50"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card bg-white border-0">
+                                <div class="card-body">
+                                    <p class="summary-chart-label">Performa Diagram Garis</p>
+                                    <p class="summary-chart-desc">Performa Pembuatan BAST 6 Bulan Terakhir</p>
+                                    <div>
+                                        <canvas id="performaBAST" height="50"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body">Rusak/Scrap 12</div>
+                            <div class="card bg-white border-0">
+                                <div class="card-body">
+                                    <p class="summary-chart-label">Inventaris Terakhir Ditambahkan</p>
+                                    <p class="summary-chart-desc">5 Barang Inventaris terakhir ditambahkan</p>
+                                    <table class="table table-responsive table-hover">
+                                        <tr>
+                                            <td>
+                                                <a href="#" class="summary-chart-label fs-6 mb-0 mb-0 text-success">
+                                                    6.2022/TL01.1/WS2LT1</a>
+                                                <p class="summary-chart-desc mb-1">JAKEMY OBENG SET JM-8173 69IN1</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="#" class="summary-chart-label fs-6 mb-0 mb-0 text-success">
+                                                    6.2022/TL01.1/WS2LT1</a>
+                                                <p class="summary-chart-desc mb-1">JAKEMY OBENG SET JM-8173 69IN1</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="#" class="summary-chart-label fs-6 mb-0 mb-0 text-success">
+                                                    6.2022/TL01.1/WS2LT1</a>
+                                                <p class="summary-chart-desc mb-1">JAKEMY OBENG SET JM-8173 69IN1</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="#" class="summary-chart-label fs-6 mb-0 mb-0 text-success">
+                                                    6.2022/TL01.1/WS2LT1</a>
+                                                <p class="summary-chart-desc mb-1">JAKEMY OBENG SET JM-8173 69IN1</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <a href="#" class="summary-chart-label fs-6 mb-0 mb-0 text-success">
+                                                    6.2022/TL01.1/WS2LT1</a>
+                                                <p class="summary-chart-desc mb-1">JAKEMY OBENG SET JM-8173 69IN1</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-8">
+
                         </div>
                     </div>
                 </div>
             </main>
 
-            <footer class="py-4 bg-light mt-auto">
+            <footer class="py-4 bg-light mt-5">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
                         <div class="text-muted">Copyright &copy; Your Website 2022</div>
@@ -205,14 +351,53 @@
     </script>
     <script src="dist/temp/js/scripts.js"></script>
     <script src="dist/js/main.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-    <script src="dist/temp/assets/demo/chart-area-demo.js"></script>
-    <script src="dist/temp/assets/demo/chart-bar-demo.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
     <script src="dist/temp/js/datatables-simple-demo.js"></script>
     <script>
     $(document).ready(function() {
         $(".preloader").fadeOut("slow");
+    });
+
+    const canvas1 = document.getElementById('performaBarang');
+    const canvas2 = document.getElementById('performaBAST');
+
+    new Chart(canvas1, {
+        type: 'line',
+        data: {
+            labels: ['', 'Des 24', 'Jan 25', 'Feb 25', 'Mar 25', 'Apr 25'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    new Chart(canvas2, {
+        type: 'line',
+        data: {
+            labels: ['', 'Des 24', 'Jan 25', 'Feb 25', 'Mar 25', 'Apr 25'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
     });
     </script>
 </body>
