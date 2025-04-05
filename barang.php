@@ -489,7 +489,8 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalTambahDariBarangMasukLabel">Pilih Barang Dari Barang Masuk
+                    <h1 class="modal-title fs-5" id="modalTambahDariBarangMasukLabel">Pilih Barang Dari Daftar Barang
+                        Masuk
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
