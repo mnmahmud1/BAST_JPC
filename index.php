@@ -10,7 +10,7 @@
 
     $nameUser = $_COOKIE["_name_log"];
 
-    $getRecentGoods = mysqli_query($conn, "SELECT number, description FROM goods ORDER BY id DESC LIMIT 5");
+    $getRecentInv = mysqli_query($conn, "SELECT number, description, created_at, 'goods' AS source FROM goods UNION ALL SELECT number, description, created_at, 'lisences' AS source FROM lisences ORDER BY created_at DESC LIMIT 5");
     $getCountGoods = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) AS total FROM goods"));
     $getCountLisences = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) AS total FROM lisences"));
     $getCountBast = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) AS total FROM bast_report"));
@@ -321,18 +321,30 @@
                             <div class="card bg-white border-0 mb-3">
                                 <div class="card-body">
                                     <p class="summary-chart-label">Inventaris Terakhir Ditambahkan</p>
-                                    <p class="summary-chart-desc">5 Barang Inventaris terakhir ditambahkan</p>
+                                    <p class="summary-chart-desc">5 Inventaris terakhir ditambahkan</p>
                                     <table class="table table-responsive table-hover">
-                                        <?php foreach($getRecentGoods as $good) : ?>
+                                        <?php foreach($getRecentInv as $inv) : ?>
+                                        <?php if($inv['source'] == 'goods') : ?>
                                         <tr>
                                             <td>
                                                 <a href="javascript:void(0)"
                                                     class="summary-chart-label fs-6 mb-0 mb-0 text-success"
-                                                    onclick="window.open('barang-details.php?inv=<?= $good['number'] ?>', '_blank')">
-                                                    <?= $good["number"] ?></a>
-                                                <p class="summary-chart-desc mb-1"><?= $good["description"] ?></p>
+                                                    onclick="window.open('barang-details.php?inv=<?= $inv['number'] ?>', '_blank')">
+                                                    <?= $inv["number"] ?></a>
+                                                <p class="summary-chart-desc mb-1"><?= $inv["description"] ?></p>
                                             </td>
                                         </tr>
+                                        <?php elseif($inv['source'] == 'lisences') : ?>
+                                        <tr>
+                                            <td>
+                                                <a href="javascript:void(0)"
+                                                    class="summary-chart-label fs-6 mb-0 mb-0 text-success"
+                                                    onclick="window.open('lisensi-details.php?inv=<?= $inv['number'] ?>', '_blank')">
+                                                    <?= $inv["number"] ?></a>
+                                                <p class="summary-chart-desc mb-1"><?= $inv["description"] ?></p>
+                                            </td>
+                                        </tr>
+                                        <?php endif ?>
                                         <?php endforeach ?>
                                     </table>
                                 </div>
