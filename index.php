@@ -17,6 +17,7 @@
     $getCountUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) AS total FROM users"));
     $getChartGoods = mysqli_query($conn, "WITH last_6_months AS ( SELECT DATE_FORMAT(DATE_SUB(NOW(), INTERVAL n MONTH), '%Y-%m') AS bulan FROM ( SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 ) AS numbers ) SELECT l.bulan, COALESCE(g.jumlah_item, 0) AS jumlah_item FROM last_6_months l LEFT JOIN ( SELECT DATE_FORMAT(created_at, '%Y-%m') AS bulan, COUNT(*) AS jumlah_item FROM goods WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH) GROUP BY bulan ) g ON l.bulan = g.bulan ORDER BY l.bulan ASC");
     $getChartBast = mysqli_query($conn, "WITH last_6_months AS ( SELECT DATE_FORMAT(DATE_SUB(NOW(), INTERVAL n MONTH), '%Y-%m') AS bulan FROM ( SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 ) AS numbers ) SELECT l.bulan, COALESCE(g.jumlah_item, 0) AS jumlah_item FROM last_6_months l LEFT JOIN ( SELECT DATE_FORMAT(created_at, '%Y-%m') AS bulan, COUNT(*) AS jumlah_item FROM bast_report WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH) GROUP BY bulan ) g ON l.bulan = g.bulan ORDER BY l.bulan ASC");
+    $getCountCondition = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM( CASE WHEN id_inv_condition = 1 AND as_dump = 0 AND (YEAR(CURDATE()) - year) <= useful_period THEN 1 ELSE 0 END ) AS jumlah_baik, SUM( CASE WHEN id_inv_condition = 2 AND as_dump = 0 AND (YEAR(CURDATE()) - year) <= useful_period THEN 1 ELSE 0 END ) AS jumlah_kurang_baik, SUM( CASE WHEN id_inv_condition = 3 AND as_dump = 0 AND (YEAR(CURDATE()) - year) <= useful_period THEN 1 ELSE 0 END ) AS jumlah_rusak, SUM( CASE WHEN id_inv_condition = 4 AND as_dump = 0 AND (YEAR(CURDATE()) - year) <= useful_period THEN 1 ELSE 0 END ) AS jumlah_scrapt, SUM( CASE WHEN (YEAR(CURDATE()) - year) > useful_period THEN 1 ELSE 0 END ) AS jumlah_kadaluarsa FROM goods"));
 
     // Untuk Chart Goods/Inventaris
     $labelsGoods = [];
@@ -46,6 +47,15 @@
     $labelsBast_json = json_encode($labelsBast);
     $valuesBast_json = json_encode($valuesBast);
 
+    // Untuk Chart Condition
+    $labelsCondition = json_encode(['Baik', 'Kurang Baik', 'Rusak', 'Scrapt', 'Diluar Masa Pakai']);
+    $valuesCondition = json_encode([
+        (int)$getCountCondition['jumlah_baik'],
+        (int)$getCountCondition['jumlah_kurang_baik'],
+        (int)$getCountCondition['jumlah_rusak'],
+        (int)$getCountCondition['jumlah_scrapt'],
+        (int)$getCountCondition['jumlah_kadaluarsa']
+    ]);
 ?>
 
 <!DOCTYPE html>
@@ -64,6 +74,9 @@
 
     <!-- Chart JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Plugin untuk datalabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
     <!-- Jquery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -321,7 +334,7 @@
                             <div class="card bg-white border-0 mb-3">
                                 <div class="card-body">
                                     <p class="summary-chart-label">Inventaris Terakhir Ditambahkan</p>
-                                    <p class="summary-chart-desc">5 Inventaris terakhir ditambahkan</p>
+                                    <p class="summary-chart-desc">5 Inventaris Terakhir Ditambahkan</p>
                                     <table class="table table-responsive table-hover">
                                         <?php foreach($getRecentInv as $inv) : ?>
                                         <?php if($inv['source'] == 'goods') : ?>
@@ -352,10 +365,10 @@
 
                             <div class="card border-0">
                                 <div class="card-body">
-                                    <p class="summary-chart-label">Kondisi Inventaris</p>
-                                    <p class="summary-chart-desc">Kondisi Inventaris Secara Keseluruhan</p>
+                                    <p class="summary-chart-label">Kondisi Barang Inventaris</p>
+                                    <p class="summary-chart-desc">Kondisi Barang Inventaris Secara Keseluruhan</p>
                                     <div>
-                                        <canvas id="barangStatus" width="50"></canvas>
+                                        <canvas id="chartCondition" width="50"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -394,7 +407,13 @@
 
     const canvas1 = document.getElementById('performaBarang');
     const canvas2 = document.getElementById('performaBAST');
-    const canvas3 = document.getElementById('barangStatus');
+    const canvas3 = document.getElementById('chartCondition');
+
+    // Gradient untuk Canvas1 (Inventaris)
+    const ctx1 = canvas1.getContext('2d');
+    const gradient1 = ctx1.createLinearGradient(0, 0, 0, canvas1.height);
+    gradient1.addColorStop(0, 'rgba(75, 192, 192, 0.4)');
+    gradient1.addColorStop(1, 'rgba(75, 192, 192, 0.4)');
 
     new Chart(canvas1, {
         type: 'line',
@@ -403,19 +422,36 @@
             datasets: [{
                 label: 'Jumlah Penambahan',
                 data: <?= $valuesGoods_json ?>,
-                borderWidth: 1,
-                tension: 0.1
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: gradient1,
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true
             }]
         },
         options: {
+            responsive: true,
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    }
+                },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    grid: {
+                        display: false
+                    }
                 }
             }
         }
     });
 
+    // Gradient untuk Canvas2 (BAST)
+    const ctx2 = canvas2.getContext('2d');
+    const gradient2 = ctx2.createLinearGradient(0, 0, 0, canvas2.height);
+    gradient2.addColorStop(0, 'rgba(255, 99, 132, 0.4)');
+    gradient2.addColorStop(1, 'rgba(255, 99, 132, 0.4)');
 
     new Chart(canvas2, {
         type: 'line',
@@ -424,14 +460,26 @@
             datasets: [{
                 label: 'Jumlah Pembuatan',
                 data: <?= $valuesBast_json ?>,
-                borderWidth: 1,
-                tension: 0.1
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: gradient2,
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true
             }]
         },
         options: {
+            responsive: true,
             scales: {
+                x: {
+                    grid: {
+                        display: false
+                    }
+                },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    grid: {
+                        display: false
+                    }
                 }
             }
         }
@@ -440,22 +488,40 @@
     new Chart(canvas3, {
         type: 'doughnut',
         data: {
-            labels: [
-                'Baik',
-                'Rusak',
-                'Diluar Masa Pakai'
-            ],
+            labels: <?= $labelsCondition ?>,
             datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100],
+                label: 'Jumlah Barang',
+                data: <?= $valuesCondition ?>,
                 backgroundColor: [
-                    'rgb(102, 255, 102)',
-                    'rgb(255, 255, 153)',
-                    'rgb(255, 102, 102)'
+                    'rgba(75, 192, 192, 0.6)', // Baik
+                    'rgba(255, 206, 86, 0.6)', // Kurang Baik
+                    'rgba(255, 99, 132, 0.6)', // Rusak
+                    'rgba(201, 203, 207, 0.6)', // Scrapt
+                    'rgba(153, 102, 255, 0.6)' // Kadaluarsa
                 ],
-                hoverOffset: 4
+                borderColor: '#fff',
+                borderWidth: 1
             }]
-        }
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                datalabels: {
+                    color: '#000',
+                    font: {
+                        weight: 'bold',
+                        size: 14
+                    },
+                    formatter: function(value) {
+                        return value;
+                    }
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
     });
     </script>
 </body>
