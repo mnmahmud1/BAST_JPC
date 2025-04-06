@@ -326,7 +326,7 @@ if(isset($_POST["updateUser"])){
 
 if(isset($_POST["addBastGiven"])){
     $bast = trim(htmlspecialchars($_POST['bast']));
-    $branch = trim(htmlspecialchars($_POST['branch']));
+    // $branch = trim(htmlspecialchars($_POST['branch']));
     $submitted = trim(htmlspecialchars($_POST['submitted']));
     $accepted = trim(htmlspecialchars($_POST['accepted']));
     $notes = trim(htmlspecialchars($_POST['notes']));
@@ -768,5 +768,34 @@ if(isset($_POST["printLabelBAST"])){
     } else {
         // Jika Tidak ada perubahan pada update
         header("Location: ba-serah-terima-details.php?bast=$identityBast");
+    }
+}
+
+if(isset($_POST["addBastReturn"])){
+    $bastReff = trim(htmlspecialchars($_POST['bastReff']));
+    $bastReturn = trim(htmlspecialchars($_POST['bastReturn']));
+    // $branch = trim(htmlspecialchars($_POST['branch']));
+    $sumittedReturnId = trim(htmlspecialchars($_POST['sumittedReturnId'])); //id
+    $acceptedReturn = trim(htmlspecialchars($_POST['acceptedReturn'])); //id
+    $notesReturn = trim(htmlspecialchars($_POST['notesReturn']));
+    
+    mysqli_query($conn, "INSERT INTO bast_report (number, id_user_submitted, id_user_accepted, status, notes, return_reff, created_at, created_by) VALUES('$bastReturn', $sumittedReturnId, $acceptedReturn, 0, '$notesReturn', '$bastReff', '$dateTime', '$userCreated')"); 
+
+    // Menduplikasi Semua isi detail inventaris yang ada di bast pemberian
+    mysqli_query($conn, "INSERT INTO bast_report_details (bast_number, id_good, id_inv_type, attach, created_at, created_by) SELECT '$bastReturn' AS bast_number, id_good, id_inv_type, attach, '$dateTime' AS created_at, '$userCreated' FROM bast_report_details WHERE bast_number = '$bastReff'");
+    
+    // -- Update untuk goods jika id_inv_type = 1; agar goods bisa di pair lagi
+    mysqli_query($conn, "UPDATE goods JOIN bast_report_details ON goods.id = bast_report_details.id_good SET goods.as_bast = 0 WHERE bast_report_details.id_inv_type = 1 AND bast_report_details.bast_number = '$bastReturn'");
+    
+    // -- Update untuk lisences jika id_inv_type = 2; agar lisences bisa di pair lagi
+    mysqli_query($conn, "UPDATE lisences JOIN bast_report_details ON lisences.id = bast_report_details.id_good SET lisences.as_bast = 0 WHERE bast_report_details.id_inv_type = 2 AND bast_report_details.bast_number = '$bastReturn'");
+
+    
+    if(mysqli_affected_rows($conn)){
+        // Jika ada perubahan pada update
+        header("Location: berita-acara-serah-terima.php");
+    } else {
+        // Jika Tidak ada perubahan pada update
+        header("Location: berita-acara-serah-terima.php");
     }
 }

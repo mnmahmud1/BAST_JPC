@@ -20,7 +20,7 @@
 	$getBranch = mysqli_query($conn, "SELECT id, initial, name FROM branch");
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
-    $getBastgoodUsed = mysqli_query($conn, "SELECT bast_report_details.bast_number FROM bast_report_details INNER JOIN goods ON bast_report_details.id_good = goods.id WHERE bast_report_details.id_inv_type = 1 AND goods.number = '$number'");
+    $getBastgoodUsed = mysqli_query($conn, "SELECT bast_report_details.bast_number, bast_report.status, bast_report.created_at FROM bast_report_details INNER JOIN goods ON bast_report_details.id_good = goods.id INNER JOIN bast_report ON bast_report_details.bast_number = bast_report.number WHERE bast_report_details.id_inv_type = 1 AND goods.number = '$number'");
     
     $urutDaftarA = 1;
 
@@ -410,17 +410,42 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <th>Status</th>
                                                 <th>NO BAST</th>
+                                                <th>Created At</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach($getBastgoodUsed as $bast) : ?>
                                             <tr>
                                                 <td><?= $urutDaftarA ?></td>
+                                                <td>
+                                                    <?php if($bast['status'] == 0) : ?>
+                                                    <span class="text-primary">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            fill="currentColor"
+                                                            class="bi bi-arrow-down-left-circle-fill"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-5.904-2.803a.5.5 0 1 1 .707.707L6.707 10h2.768a.5.5 0 0 1 0 1H5.5a.5.5 0 0 1-.5-.5V6.525a.5.5 0 0 1 1 0v2.768l4.096-4.096z" />
+                                                        </svg>
+                                                    </span>
+                                                    <?php elseif($bast['status'] == 1) : ?>
+                                                    <span class="text-secondary">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                            fill="currentColor" class="bi bi-arrow-up-right-circle-fill"
+                                                            viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707l-4.096 4.096z" />
+                                                        </svg>
+                                                    </span>
+                                                    <?php endif ?>
+                                                </td>
                                                 <td><a href="ba-serah-terima-details.php?bast=<?= $bast["bast_number"] ?>"
                                                         target="_blank"
                                                         class="text-reset"><?= $bast["bast_number"] ?></a>
                                                 </td>
+                                                <td class="fs-6"><?= $bast['created_at'] ?></td>
                                             </tr>
                                             <?php $urutDaftarA++; endforeach ?>
                                         </tbody>

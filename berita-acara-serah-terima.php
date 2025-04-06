@@ -17,7 +17,7 @@
 	$getUsersAll = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name, users.nik FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_dump = 0");
 
 	$getBast = mysqli_query($conn, "SELECT bast_report.number, bast_report.status, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, dept_accepted.name AS accepted_dept, bast_report.notes, bast_report.created_at FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.as_dump = 0 ORDER BY bast_report.created_at DESC");
-	$getBastAccepted = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, dept_accepted.name AS accepted_dept, bast_report.notes FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.status = 1 AND bast_report.return_reff IS NULL AND bast_report.as_dump = 0 ORDER BY bast_report.created_at DESC");
+	$getBastAccepted = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, users_accepted.nik AS accepted_nip, dept_accepted.name AS accepted_dept, bast_report.notes, bast_report.id_user_accepted FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.status = 1 AND bast_report.return_reff IS NULL AND bast_report.as_dump = 0 AND bast_report.number NOT IN (SELECT return_reff FROM bast_report WHERE status = 0 AND return_reff IS NOT NULL) ORDER BY bast_report.created_at DESC");
 ?>
 
 <!DOCTYPE html>
@@ -207,8 +207,8 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>No.BA</th>
                                                 <th>Status</th>
+                                                <th>No.BA</th>
                                                 <th>Diserahkan Oleh</th>
                                                 <th>Diterima Oleh</th>
                                                 <th>Keterangan</th>
@@ -224,7 +224,6 @@
                                             ?>
                                             <tr>
                                                 <td><?= $urutDaftar ?></td>
-                                                <td><?= $bast['number'] ?></td>
                                                 <td>
                                                     <?php if($bast['status'] == 0) : ?>
                                                     <span class="text-primary">
@@ -247,6 +246,7 @@
                                                     </span>
                                                     <?php endif ?>
                                                 </td>
+                                                <td><?= $bast['number'] ?></td>
                                                 <td><?= $bast['submitted_name'] ?> <span
                                                         class="badge badge-dept text-bg-light"><?= $bast['submitted_dept'] ?></span>
                                                 </td>
@@ -414,8 +414,10 @@
                                                 <th>Diserahkan Oleh</th>
                                                 <th>Diterima Oleh</th>
                                                 <th>Keterangan</th>
-                                                <th hidden>id_user_submitted</th>
                                                 <th hidden>id_user_accepted</th>
+                                                <th hidden>nip_user_accepted</th>
+                                                <th hidden>dept_user_accepted</th>
+                                                <th hidden>name_user_accepted</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -431,8 +433,10 @@
                                                         class="badge badge-dept text-bg-light"><?= $bast['accepted_dept'] ?></span>
                                                 </td>
                                                 <td><?= $bast['notes'] ?></td>
-                                                <td hidden><?= $bast["id_user_submitted"] ?></td>
                                                 <td hidden><?= $bast["id_user_accepted"] ?></td>
+                                                <td hidden><?= $bast["accepted_nip"] ?></td>
+                                                <td hidden><?= $bast["accepted_dept"] ?></td>
+                                                <td hidden><?= $bast["accepted_name"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-success rounded-pill send-modal"
                                                         data-bs-toggle="modal">Choose</button>
@@ -479,17 +483,10 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-sm">
-                                <label for="submittedReturn" class="form-label labeling-form">Diserahkan Oleh
-                                    (IT)</label>
-                                <select name="submittedReturn" id="submittedReturn" class="form-select" autofocus
-                                    required>
-                                    <option value="">Choose</option>
-                                    <?php foreach($getUsersAdmin as $admin) : ?>
-                                    <option value="<?= $admin['id'] ?>" data-dept="<?= $admin['dept_name'] ?>"
-                                        data-nip="<?= $admin['nik'] ?>">
-                                        <?= $admin['name'] ?></option>
-                                    <?php endforeach ?>
-                                </select>
+                                <label for="submittedReturn" class="form-label labeling-form">Diserahkan Oleh</label>
+                                <input type="text" name="submittedReturn" id="submittedReturn" class="form-control"
+                                    required readonly>
+                                <input type="text" id="sumittedReturnId" name="sumittedReturnId" hidden>
                             </div>
                             <div class="col-sm">
                                 <label for="dept-submittedReturn" class="form-label labeling-form">Departement
@@ -725,14 +722,75 @@
             let data3 = row.find('td:eq(2)').text(); //nama & dept diserahkan oleh
             let data4 = row.find('td:eq(3)').text(); //nama & dept diterima oleh
             let data5 = row.find('td:eq(4)').text(); //keterangan
-            let data6 = row.find('td:eq(5)').text(); //id_user_submmitted
-            let data7 = row.find('td:eq(6)').text(); //id_user_accepted
+            let data6 = row.find('td:eq(5)').text(); //id_user_accepted
+            let data7 = row.find('td:eq(6)').text(); //accepted_nip
+            let data8 = row.find('td:eq(7)').text(); //accepted_dept
+            let data9 = row.find('td:eq(8)').text(); //accepted_name
             // ...
 
             $('#bastReff').val(data2);
-            $('#notesReturn').val(data5);
+            $('#submittedReturn').val(data3);
+            // $('#notesReturn').val(data5);
+            $('#sumittedReturnId').val(data6);
+            $('#nip-submittedReturn').val(data7);
+            $('#dept-submittedReturn').val(data8);
+            $('#submittedReturn').val(data9);
             $('#modalPengembalian').modal('show');
         });
+    });
+
+    // document.addEventListener("DOMContentLoaded", function() {
+    //     // Ambil elemen select dan input
+    //     var selectSubmited = document.getElementById(
+    //         "submittedReturn");
+    //     var inputDept = document.getElementById(
+    //         "dept-submittedReturn");
+    //     var inputNip = document.getElementById(
+    //         "nip-submittedReturn");
+
+    //     // Tambahkan event listener pada perubahan nilai select
+    //     selectSubmited.addEventListener("change",
+    //         function() {
+    //             // Ambil nilai dan data-dept dari opsi terpilih
+    //             var selectedOption = selectSubmited
+    //                 .options[selectSubmited
+    //                     .selectedIndex];
+    //             var selectedDept = selectedOption
+    //                 .getAttribute("data-dept");
+    //             var selectedNip = selectedOption
+    //                 .getAttribute("data-nip");
+
+    //             // Set nilai input dengan data-dept terpilih
+    //             inputDept.value = selectedDept;
+    //             inputNip.value = selectedNip;
+    //         });
+    // });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Ambil elemen select dan input
+        var selectSubmited = document.getElementById(
+            "acceptedReturn");
+        var inputDept = document.getElementById(
+            "dept-acceptedReturn");
+        var inputNip = document.getElementById(
+            "nip-acceptedReturn");
+
+        // Tambahkan event listener pada perubahan nilai select
+        selectSubmited.addEventListener("change",
+            function() {
+                // Ambil nilai dan data-dept dari opsi terpilih
+                var selectedOption = selectSubmited
+                    .options[selectSubmited
+                        .selectedIndex];
+                var selectedDept = selectedOption
+                    .getAttribute("data-dept");
+                var selectedNip = selectedOption
+                    .getAttribute("data-nip");
+
+                // Set nilai input dengan data-dept terpilih
+                inputDept.value = selectedDept;
+                inputNip.value = selectedNip;
+            });
     });
     </script>
 </body>
