@@ -165,20 +165,21 @@ if(isset($_POST["mutasiBarangMasukKeBarang"])){
     $getImage = mysqli_fetch_assoc(mysqli_query($conn, "SELECT img FROM good_incoming_details WHERE sn = '$sn' "));
     $img = $getImage["img"];
     
-    // Cek nomor urut terakhir berdasarkan group_inv
-    $query = "SELECT number FROM goods WHERE number LIKE '6.$year/$group_inv.%/$branch' ORDER BY number DESC LIMIT 1";
+    // Cek nomor urut terakhir berdasarkan group_inv (fokus ke LT03 saja)
+    $query = "SELECT number FROM goods WHERE number LIKE '%/$group_inv.%/%' ORDER BY number DESC LIMIT 1";
     $result = mysqli_query($conn, $query);
     $row = mysqli_fetch_assoc($result);
-    
+
     if ($row) {
-        // Ambil urutan terakhir dari kolom number, contoh: "6.2024/LT03.01/WS1LT2"
+        // Ambil urutan terakhir setelah titik, misalnya: LT03.3 → ambil 3
         $lastNumber = $row['number'];
-        preg_match('/' . $group_inv . '\.(\d+)\//', $lastNumber, $matches);
-        $urut = isset($matches[1]) ? str_pad($matches[1] + 1, 2, '0', STR_PAD_LEFT) : "01";
+        preg_match('/' . preg_quote($group_inv, '/') . '\.(\d+)\//', $lastNumber, $matches);
+
+        $urut = isset($matches[1]) ? ($matches[1] + 1) : 1;
     } else {
-        $urut = "01"; // Jika tidak ada nomor sebelumnya, mulai dari 01
+        $urut = 1; // Jika belum ada, mulai dari 1
     }
-    
+
     // Buat nomor inventaris baru
     $createInv = "6." . $year . "/" . $group_inv . "." . $urut . "/" . $branch;
 

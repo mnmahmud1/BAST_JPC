@@ -187,13 +187,13 @@
                             data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="berita-acara-serah-terima.php">Serah Terima Inventaris</a>
-                                <a class="nav-link" href="barang-acara-scrapt.php">Scrapt Inventaris <span
+                                <a class="nav-link" href="#">Scrapt Inventaris <span
                                         class="badge text-bg-info">WIP</span></a>
-                                <a class="nav-link" href="barang-acara-scrapt.php">Kerusakan Inventaris <span
+                                <a class="nav-link" href="#">Kerusakan Inventaris <span
                                         class="badge text-bg-info">WIP</span></a>
-                                <a class="nav-link" href="barang-acara-scrapt.php">Penyelesaian PWR <span
+                                <a class="nav-link" href="#">Penyelesaian PWR <span
                                         class="badge text-bg-info">WIP</span></a>
-                                <a class="nav-link" href="barang-acara-scrapt.php">Instalasi Software <span
+                                <a class="nav-link" href="#">Instalasi Software <span
                                         class="badge text-bg-info">WIP</span></a>
                             </nav>
                         </div>
