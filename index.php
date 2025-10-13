@@ -189,6 +189,12 @@
                                 <a class="nav-link" href="berita-acara-serah-terima.php">Serah Terima Inventaris</a>
                                 <a class="nav-link" href="barang-acara-scrapt.php">Scrapt Inventaris <span
                                         class="badge text-bg-info">WIP</span></a>
+                                <a class="nav-link" href="barang-acara-scrapt.php">Kerusakan Inventaris <span
+                                        class="badge text-bg-info">WIP</span></a>
+                                <a class="nav-link" href="barang-acara-scrapt.php">Penyelesaian PWR <span
+                                        class="badge text-bg-info">WIP</span></a>
+                                <a class="nav-link" href="barang-acara-scrapt.php">Instalasi Software <span
+                                        class="badge text-bg-info">WIP</span></a>
                             </nav>
                         </div>
                         <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsMaster"
