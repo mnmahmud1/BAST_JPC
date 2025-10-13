@@ -18,7 +18,7 @@
     
     // ambil data incoming detail berdasar id good_incoming
     $idIncoming = $getDetailRR["id"];
-    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, type, notes, img, as_inv FROM good_incoming_details WHERE id_incoming = $idIncoming");
+    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, harga, type, notes, img, as_inv FROM good_incoming_details WHERE id_incoming = $idIncoming");
 
     // ambil data select tipe invenaris
     $getInvType = mysqli_query($conn, "SELECT id, name FROM inv_type");
@@ -233,6 +233,7 @@
                                                         <th>SN</th>
                                                         <th>No. PWR</th>
                                                         <th>No. PO</th>
+                                                        <th>Harga</th>
                                                         <th>Type</th>
                                                         <th>Notes</th>
                                                         <th>Img</th>
@@ -282,6 +283,8 @@
                                                         <td><?= $getDetail["sn"] ?></td>
                                                         <td><?= $getDetail["pwr"] ?></td>
                                                         <td><?= $getDetail["po"] ?></td>
+                                                        <td>Rp <?= number_format($getDetail["harga"], 0, ',', '.') ?>
+                                                        </td>
                                                         <td>
                                                             <?php if($getDetail["type"] == 1) : ?>
                                                             <span data-bs-toggle="tooltip" data-bs-placement="top"
@@ -442,6 +445,15 @@
                                 <label for="" class="form-label labeling-form">No. PO</label>
                                 <input type="text" class="form-control" placeholder="Your text here" name="po" id="po"
                                     maxlength="20" required />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm">
+                                <label for="" class="form-label labeling-form">Harga Satuan</label>
+                                <input type="text" class="form-control" placeholder="Your text here"
+                                    name="harga_display" id="harga_display" maxlength="20" required />
+                                <input type="text" class="form-control" placeholder="Your text here" name="harga"
+                                    id="harga" maxlength="20" required hidden />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -830,6 +842,36 @@
     // enable tooltip 
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+    // buat format currency untuk harga
+    $(document).ready(function() {
+        $('#harga_display').on('input', function() {
+            let raw = $(this).val().replace(/[^\d]/g, ''); // hanya angka
+            if (raw) {
+                let formatted = parseInt(raw, 10).toLocaleString('id-ID');
+                $(this).val('Rp ' + formatted);
+            } else {
+                $(this).val('');
+            }
+            $('#harga').val(raw); // simpan nilai murni ke hidden input
+        });
+
+        $('#harga_display').on('focus', function() {
+            // hapus format saat user fokus
+            let raw = $(this).val().replace(/[^\d]/g, '');
+            $(this).val(raw);
+        });
+
+        $('#harga_display').on('blur', function() {
+            // tampilkan kembali format Rupiah
+            let raw = $(this).val().replace(/[^\d]/g, '');
+            if (raw) {
+                let formatted = parseInt(raw, 10).toLocaleString('id-ID');
+                $(this).val('Rp ' + formatted);
+            }
+            $('#harga').val(raw); // pastikan nilai murni tersimpan
+        });
+    });
     </script>
 </body>
 

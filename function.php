@@ -59,6 +59,7 @@ if(isset($_POST['tambahBarangMasuk'])){
     $sn = trim(htmlspecialchars($_POST['sn']));
     $pwr = trim(htmlspecialchars($_POST['pwr']));
     $po = trim(htmlspecialchars($_POST['po']));
+    $harga = trim(htmlspecialchars($_POST['harga']));
     $type = trim(htmlspecialchars($_POST['type']));
     $notes = trim(htmlspecialchars($_POST['notes']));
 
@@ -87,7 +88,7 @@ if(isset($_POST['tambahBarangMasuk'])){
         move_uploaded_file($imageTmpName, $uploadDir . $imageNameHashed);
 
         // Menyimpan nama file gambar ke database
-        mysqli_query($conn, "INSERT INTO good_incoming_details (id_incoming, description, sn, pwr, po, type, notes, img, created_at, created_by) VALUES($idRR, '$desc', '$sn', '$pwr', '$po', $type, '$notes', '$imageNameHashed', '$dateTime', $userCreated)");
+        mysqli_query($conn, "INSERT INTO good_incoming_details (id_incoming, description, sn, pwr, po, harga, type, notes, img, created_at, created_by) VALUES($idRR, '$desc', '$sn', '$pwr', '$po', '$harga', $type, '$notes', '$imageNameHashed', '$dateTime', $userCreated)");
 
         if(mysqli_affected_rows($conn)){
             header("Location: tambah-laporan-barang-masuk.php");
