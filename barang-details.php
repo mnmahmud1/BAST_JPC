@@ -21,7 +21,7 @@
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
     $getBastgoodUsed = mysqli_query($conn, "SELECT bast_report_details.bast_number, bast_report.status, bast_report.created_at FROM bast_report_details INNER JOIN goods ON bast_report_details.id_good = goods.id INNER JOIN bast_report ON bast_report_details.bast_number = bast_report.number WHERE bast_report_details.id_inv_type = 1 AND goods.number = '$number'");
-    
+    $getHistoryUsage = mysqli_query($conn, "SELECT title, description, attach, created_at FROM goods_usage_history WHERE inv_number = '$number' ORDER BY id DESC");
     $urutDaftarA = 1;
 
 ?>
@@ -52,6 +52,46 @@
         referrerpolicy="origin"></script>
 
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <style>
+    ul.timeline {
+        list-style-type: none;
+        position: relative;
+    }
+
+    ul.timeline:before {
+        content: ' ';
+        background: #d4d9df;
+        display: inline-block;
+        position: absolute;
+        left: 29px;
+        width: 2px;
+        height: 100%;
+        z-index: 400;
+    }
+
+    ul.timeline>li {
+        margin: 20px 0;
+        padding-left: 20px;
+    }
+
+    ul.timeline>li:before {
+        content: ' ';
+        background: white;
+        display: inline-block;
+        position: absolute;
+        border-radius: 50%;
+        border: 3px solid #d4d9df;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        z-index: 400;
+    }
+
+    .scrollable {
+        overflow-y: auto;
+        max-height: 400px;
+    }
+    </style>
 </head>
 
 <body class="sb-nav-fixed">
@@ -188,7 +228,7 @@
                     </nav>
 
                     <div class="row mb-3">
-                        <div class="col-sm">
+                        <div class="col-md-9">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="mb-4">Deskripsi Barang</h5>
@@ -379,110 +419,189 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row mt-3 mb-3">
-                        <div class="col">
-                            <label for="bastSigned" class="form-label labeling-form">UPLOAD IMAGE</label>
-                            <?php if(is_null($getGoodImg['img'])) : ?>
-                            <?php else : ?>
-                            <button class="btn btn-sm" onclick="showImageModal('<?= $getDaftarBarangInv['img'] ?>')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                    <path
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                </svg>
-                            </button>
-                            <?php endif ?>
-                            <form action="function.php" method="post" enctype="multipart/form-data">
-                                <input type="text" name="inv_number" value="<?= $number ?>" hidden>
-                                <div class="row">
-                                    <div class="col-sm-11">
-                                        <input type="file" name="imgGood" id="imgGood" class="form-control" required />
+                        <div class="row mt-3 mb-3">
+                            <div class="col">
+                                <label for="bastSigned" class="form-label labeling-form">UPLOAD IMAGE</label>
+                                <?php if(is_null($getGoodImg['img'])) : ?>
+                                <?php else : ?>
+                                <button class="btn btn-sm"
+                                    onclick="showImageModal('<?= $getDaftarBarangInv['img'] ?>')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                        <path
+                                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                                    </svg>
+                                </button>
+                                <?php endif ?>
+                                <form action="function.php" method="post" enctype="multipart/form-data">
+                                    <input type="text" name="inv_number" value="<?= $number ?>" hidden>
+                                    <div class="row">
+                                        <div class="col-sm-11">
+                                            <input type="file" name="imgGood" id="imgGood" class="form-control"
+                                                required />
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <button type="submit" name="uploadImgGood"
+                                                class="btn btn-sm btn-primary">Upload</button>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-1">
-                                        <button type="submit" name="uploadImgGood"
-                                            class="btn btn-sm btn-primary">Upload</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="mb-4">History BAST - Nama Barang</h5>
+                                        <table class="display" name="tableBarang" id="tableBarang">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Status</th>
+                                                    <th>NO BAST</th>
+                                                    <th>Created At</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach($getBastgoodUsed as $bast) : ?>
+                                                <tr>
+                                                    <td><?= $urutDaftarA ?></td>
+                                                    <td>
+                                                        <?php if($bast['status'] == 0) : ?>
+                                                        <span class="text-primary">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" fill="currentColor"
+                                                                class="bi bi-arrow-down-left-circle-fill"
+                                                                viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-5.904-2.803a.5.5 0 1 1 .707.707L6.707 10h2.768a.5.5 0 0 1 0 1H5.5a.5.5 0 0 1-.5-.5V6.525a.5.5 0 0 1 1 0v2.768l4.096-4.096z" />
+                                                            </svg>
+                                                        </span>
+                                                        <?php elseif($bast['status'] == 1) : ?>
+                                                        <span class="text-secondary">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                height="16" fill="currentColor"
+                                                                class="bi bi-arrow-up-right-circle-fill"
+                                                                viewBox="0 0 16 16">
+                                                                <path
+                                                                    d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707l-4.096 4.096z" />
+                                                            </svg>
+                                                        </span>
+                                                        <?php endif ?>
+                                                    </td>
+                                                    <td><a href="ba-serah-terima-details.php?bast=<?= $bast["bast_number"] ?>"
+                                                            target="_blank"
+                                                            class="text-reset"><?= $bast["bast_number"] ?></a>
+                                                    </td>
+                                                    <td class="fs-6"><?= $bast['created_at'] ?></td>
+                                                </tr>
+                                                <?php $urutDaftarA++; endforeach ?>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4 justify-content-end">
+                            <div class="col-sm-3 text-end">
+                                <button name="deleteButton" id="deleteButton" class="btn btn-outline-danger fw-bold"
+                                    data-bs-toggle="modal" data-bs-target="#modalDelete"
+                                    data-sn="<?= $getDaftarBarangInv['sn'] ?>"
+                                    data-inv="<?= $getDaftarBarangInv['number'] ?>">Delete Barang Inventaris</button>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="row mb-3">
-                        <div class="col">
+                    <div class="col-md">
+                        <div class="row mb-3">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="mb-4">History BAST - Nama Barang</h5>
-                                    <table class="display" name="tableBarang" id="tableBarang">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Status</th>
-                                                <th>NO BAST</th>
-                                                <th>Created At</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach($getBastgoodUsed as $bast) : ?>
-                                            <tr>
-                                                <td><?= $urutDaftarA ?></td>
-                                                <td>
-                                                    <?php if($bast['status'] == 0) : ?>
-                                                    <span class="text-primary">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor"
-                                                            class="bi bi-arrow-down-left-circle-fill"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-5.904-2.803a.5.5 0 1 1 .707.707L6.707 10h2.768a.5.5 0 0 1 0 1H5.5a.5.5 0 0 1-.5-.5V6.525a.5.5 0 0 1 1 0v2.768l4.096-4.096z" />
-                                                        </svg>
-                                                    </span>
-                                                    <?php elseif($bast['status'] == 1) : ?>
-                                                    <span class="text-secondary">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                            fill="currentColor" class="bi bi-arrow-up-right-circle-fill"
-                                                            viewBox="0 0 16 16">
-                                                            <path
-                                                                d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707l-4.096 4.096z" />
-                                                        </svg>
-                                                    </span>
-                                                    <?php endif ?>
-                                                </td>
-                                                <td><a href="ba-serah-terima-details.php?bast=<?= $bast["bast_number"] ?>"
-                                                        target="_blank"
-                                                        class="text-reset"><?= $bast["bast_number"] ?></a>
-                                                </td>
-                                                <td class="fs-6"><?= $bast['created_at'] ?></td>
-                                            </tr>
-                                            <?php $urutDaftarA++; endforeach ?>
-                                        </tbody>
-                                    </table>
+                                    <h5 class="mb-4">Inventory Usage History</h5>
+                                    <div class="scrollable">
+                                        <ul class="timeline mb-5">
+                                            <?php if(mysqli_num_rows($getHistoryUsage) > 0) : ?>
+                                            <?php foreach($getHistoryUsage as $history) :  ?>
+                                            <?php if(is_null($history['attach']) OR $history['attach'] == '') : ?>
+                                            <li>
+                                                <span class="fw-bold"><?= $history["title"] ?></span>
+                                                <p class="fs-6"><?= $history["created_at"] ?></p>
+                                                <p><?= $history["description"] ?>
+                                                </p>
+                                            </li>
+                                            <?php else : ?>
+                                            <li>
+                                                <span class="fw-bold"><?= $history["title"] ?></span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0z" />
+                                                </svg>
+                                                <p class="fs-6"><?= $history["created_at"] ?></p>
+                                                <p><?= $history["description"] ?>
+                                                </p>
+                                            </li>
+                                            <?php endif ?>
+                                            <?php endforeach ?>
+                                            <?php else : ?>
+                                            <li>
+                                                <span class="fw-bold">No Data Available</span>
+                                                <p class="fs-6">Now</p>
+                                                <p>No History Available</p>
+                                            </li>
+                                            <?php endif ?>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card p-3">
+                                <div class="card-body">
+                                    <h5 class="mb-4">Commit History</h5>
+                                    <div class="col">
+                                        <form action="function.php" method="POST" enctype="multipart/form-data">
+                                            <div class="mb-3">
+                                                <label for="tittle" class="form-label labeling-form">Tittle</label>
+                                                <input type="text" name="tittle" id="tittle" class="form-control"
+                                                    placeholder="The keyboard is broken" maxlength="50" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="description"
+                                                    class="form-label labeling-form">Description</label>
+                                                <textarea type="text" class="form-control"
+                                                    placeholder="Add an optional extended description"
+                                                    name="description" id="description"></textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="attach" class="form-label">Attachment</label>
+                                                <input type="file" name="attach" id="attach" class="form-control">
+                                                <input type="text" name="inv" value="<?= $number ?>" hidden>
+                                            </div>
+
+                                            <button name="commitHistoryInv" id="commit" class="btn btn-sm btn-success"
+                                                type="submit">Commit Changes</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="row mb-4 justify-content-end">
-                        <div class="col-sm-3 text-end">
-                            <button name="deleteButton" id="deleteButton" class="btn btn-outline-danger fw-bold"
-                                data-bs-toggle="modal" data-bs-target="#modalDelete"
-                                data-sn="<?= $getDaftarBarangInv['sn'] ?>"
-                                data-inv="<?= $getDaftarBarangInv['number'] ?>">Delete Barang Inventaris</button>
-                        </div>
-                    </div>
                 </div>
-            </main>
-
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-center small">
-                        <div class="text-muted">Copyright &copy; Your Website 2022</div>
-                    </div>
-                </div>
-            </footer>
         </div>
+        </main>
+
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-center small">
+                    <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                </div>
+            </div>
+        </footer>
+    </div>
     </div>
 
     <!-- Modal Delete -->

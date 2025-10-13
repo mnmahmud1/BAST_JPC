@@ -273,12 +273,13 @@ if(isset($_POST["updateDetailBarang"])){
     }
 
     // Lakukan update pada tabel goods, termasuk kolom number yang diperbarui
-    $updateQuery = "UPDATE goods SET description = '$description', specification = '$spek', id_inv_type = $type_inv, id_inv_group = '$group_inv', id_inv_allotment = $allotment_inv, id_inv_branch = '$branch', id_inv_source = $source, id_inv_dept = $dept, year = $year, useful_period = $useful_inv, id_inv_condition = $condition_inv, notes = '$notes', harga = $harga, number = '$newNumber' WHERE number = '$inv'";
-
-    mysqli_query($conn, $updateQuery);
+    mysqli_query($conn, "UPDATE goods SET description = '$description', specification = '$spek', id_inv_type = $type_inv, id_inv_group = '$group_inv', id_inv_allotment = $allotment_inv, id_inv_branch = '$branch', id_inv_source = $source, id_inv_dept = $dept, year = $year, useful_period = $useful_inv, id_inv_condition = $condition_inv, notes = '$notes', harga = $harga, number = '$newNumber' WHERE number = '$inv'");
 
     // Pengalihan halaman setelah update
     if (mysqli_affected_rows($conn)) {
+        // Update History
+        mysqli_query($conn, "INSERT INTO goods_usage_history (inv_number, title, description, attach, created_at, created_by) VALUES ('$inv', 'PERBAHARUAN DATA', 'Perbaharuan Data Dilakukan', NULL, '$dateTime', $userCreated)");
+        
         header("Location: barang-details.php?inv=" . $newNumber);
     } else {
         header("Location: barang-details.php?inv=" . $newNumber);
@@ -799,5 +800,46 @@ if(isset($_POST["addBastReturn"])){
     } else {
         // Jika Tidak ada perubahan pada update
         header("Location: berita-acara-serah-terima.php");
+    }
+}
+
+if (isset($_POST["commitHistoryInv"])) {
+    $tittle = trim(htmlspecialchars($_POST['tittle']));
+    $description = trim(htmlspecialchars($_POST['description']));
+    $inv = trim(htmlspecialchars($_POST['inv']));
+    $photo = $_FILES['attach']['tmp_name'];
+    $photoName = $_FILES['attach']['name'];
+    
+    // Fungsi untuk menghasilkan nama unik dengan 40 karakter
+    function generateUniqueFileName($length = 40) {
+        return substr(bin2hex(random_bytes($length)), 0, $length);
+    }
+
+    if (!empty($photoName) && is_uploaded_file($photo)) {
+        // Dapatkan ekstensi file
+        $fileExtension = pathinfo($photoName, PATHINFO_EXTENSION);
+        
+        // Buat nama file baru yang unik
+        $uniquePhotoName = generateUniqueFileName() . '.' . $fileExtension;
+        $photoTarget = 'dist/img/history-img/' . $uniquePhotoName;
+        
+        // Pindahkan file yang diunggah ke target yang baru
+        if (move_uploaded_file($photo, $photoTarget)) {
+            mysqli_query($conn, "INSERT INTO goods_usage_history (inv_number, title, description, attach, created_at, created_by) VALUES ('$inv', '$tittle', '$description <button class=\"btn btn-sm btn-success\" onclick=\"window.open(\'dist/img/history-img/$uniquePhotoName\', \'_blank\').focus()\">View</button>', '$uniquePhotoName', '$dateTime', $userCreated)");
+        } else {
+            // Handle error saat memindahkan file
+            mysqli_query($conn, "INSERT INTO goods_usage_history (inv_number, title, description, attach, created_at, created_by) VALUES ('$inv', '$tittle', '$description', NULL, '$dateTime', $userCreated)");
+        }
+    } else {
+        mysqli_query($conn, "INSERT INTO goods_usage_history (inv_number, title, description, attach, created_at, created_by) VALUES ('$inv', '$tittle', '$description', NULL, '$dateTime', $userCreated)");
+    }
+
+    // Periksa apakah ada baris yang terpengaruh oleh query
+    if (mysqli_affected_rows($conn)) {
+        // Jika ada perubahan pada update
+        header("Location: barang-details.php?inv=$inv");
+    } else {
+        // Jika tidak ada perubahan pada update
+        header("Location: barang-details.php?inv=$inv");
     }
 }
