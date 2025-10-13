@@ -10,7 +10,7 @@
     $idUser = $_COOKIE["_beta_log"];
 
 	$number = $_GET["inv"];
-	$queryGetDaftarBarang = mysqli_query($conn, "SELECT goods.number, goods.description, goods.specification, goods.sn, inv_condition.name AS kondisi, goods.year, goods.useful_period, goods.notes, branch.name AS branch, goods.img, goods.id_inv_type, goods.id_inv_group, inv_group.name AS name_group, goods.id_inv_allotment, goods.id_inv_branch, goods.id_inv_source, goods.id_inv_dept, dept.name AS name_dept, goods.id_inv_condition FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.initial INNER JOIN inv_group ON goods.id_inv_group = inv_group.code INNER JOIN dept ON goods.id_inv_dept = dept.id WHERE goods.number = '$number'");
+	$queryGetDaftarBarang = mysqli_query($conn, "SELECT goods.number, goods.description, goods.specification, goods.sn, inv_condition.name AS kondisi, goods.year, goods.useful_period, goods.notes, branch.name AS branch, goods.img, goods.id_inv_type, goods.id_inv_group, inv_group.name AS name_group, goods.id_inv_allotment, goods.id_inv_branch, goods.id_inv_source, goods.id_inv_dept, dept.name AS name_dept, goods.id_inv_condition, goods.harga FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.initial INNER JOIN inv_group ON goods.id_inv_group = inv_group.code INNER JOIN dept ON goods.id_inv_dept = dept.id WHERE goods.number = '$number'");
     $getDaftarBarangInv = mysqli_fetch_assoc($queryGetDaftarBarang);
 	if($number == '' OR mysqli_num_rows($queryGetDaftarBarang) == 0){
 		header("Location: barang.php");
@@ -217,6 +217,15 @@
                                                     <input type="text" class="form-control" placeholder="Your text here"
                                                         name="description" id="description" required readonly
                                                         value="<?= $getDaftarBarangInv['description'] ?>" />
+                                                </div>
+                                                <div class="col-sm">
+                                                    <label for="description"
+                                                        class="form-label labeling-form">Harga</label>
+                                                    <input type="text" class="form-control" placeholder="Your text here"
+                                                        name="harga_display" id="harga_display" required
+                                                        value="<?= $getDaftarBarangInv['harga'] ?>" />
+                                                    <input type="text" class="form-control" name="harga" id="harga"
+                                                        required value="<?= $getDaftarBarangInv['harga'] ?>" hidden />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -668,6 +677,45 @@
             el.value = el.value.slice(0, el.maxLength);
         }
     }
+
+    $(document).ready(function() {
+        function formatRupiah(value) {
+            if (!value) return '';
+            let formatted = parseInt(value, 10).toLocaleString('id-ID');
+            return 'Rp ' + formatted;
+        }
+
+        // === Event: Saat mengetik ===
+        $('#harga_display').on('input', function() {
+            let raw = $(this).val().replace(/[^\d]/g, '');
+            $(this).val(raw ? formatRupiah(raw) : '');
+            $('#harga').val(raw);
+        });
+
+        // === Event: Saat fokus ===
+        $('#harga_display').on('focus', function() {
+            let raw = $(this).val().replace(/[^\d]/g, '');
+            $(this).val(raw);
+        });
+
+        // === Event: Saat blur ===
+        $('#harga_display').on('blur', function() {
+            let raw = $(this).val().replace(/[^\d]/g, '');
+            $(this).val(raw ? formatRupiah(raw) : '');
+            $('#harga').val(raw);
+        });
+
+        // === TAMPILKAN FORMAT "Rp" SAAT PAGE LOAD ===
+        let initialRaw = $('#harga').val() || $('#harga_display').val().replace(/[^\d]/g, '');
+        if (initialRaw) {
+            $('#harga_display').val(formatRupiah(initialRaw));
+            $('#harga').val(initialRaw);
+        } else {
+            // kalau mau default 0 juga bisa
+            $('#harga_display').val('Rp 0');
+            $('#harga').val('0');
+        }
+    });
     </script>
 </body>
 

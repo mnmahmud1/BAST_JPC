@@ -258,6 +258,7 @@ if(isset($_POST["updateDetailBarang"])){
     $useful_inv = trim(htmlspecialchars($_POST['useful_inv']));
     $condition_inv = trim(htmlspecialchars($_POST['condition_inv']));
     $notes = trim(htmlspecialchars($_POST['notes']));
+    $harga = trim(htmlspecialchars($_POST['harga']));
 
     // Ekstrak nilai branch lama dari number (mengambil bagian terakhir setelah '/')
     preg_match('/\/([^\/]+)$/', $inv, $matches);
@@ -272,7 +273,7 @@ if(isset($_POST["updateDetailBarang"])){
     }
 
     // Lakukan update pada tabel goods, termasuk kolom number yang diperbarui
-    $updateQuery = "UPDATE goods SET description = '$description', specification = '$spek', id_inv_type = $type_inv, id_inv_group = '$group_inv', id_inv_allotment = $allotment_inv, id_inv_branch = '$branch', id_inv_source = $source, id_inv_dept = $dept, year = $year, useful_period = $useful_inv, id_inv_condition = $condition_inv, notes = '$notes', number = '$newNumber' WHERE number = '$inv'";
+    $updateQuery = "UPDATE goods SET description = '$description', specification = '$spek', id_inv_type = $type_inv, id_inv_group = '$group_inv', id_inv_allotment = $allotment_inv, id_inv_branch = '$branch', id_inv_source = $source, id_inv_dept = $dept, year = $year, useful_period = $useful_inv, id_inv_condition = $condition_inv, notes = '$notes', harga = $harga, number = '$newNumber' WHERE number = '$inv'";
 
     mysqli_query($conn, $updateQuery);
 
