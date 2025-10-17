@@ -224,6 +224,9 @@
                                                                     onclick="window.location.href='function.php?viewBarangMasuk=<?= $barangMasuk['number'] ?>'">View
                                                                     Details</button>
                                                             </li>
+                                                            <li><button class="dropdown-item disabled" href="#">Mark as
+                                                                    Closed</button>
+                                                            </li>
                                                             <li><button class="dropdown-item disabled"
                                                                     href="#">Print</button>
                                                             </li>
