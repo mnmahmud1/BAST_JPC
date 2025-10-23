@@ -715,7 +715,8 @@
 
     // tombol untuk kirim baris ke modal html
     $(document).ready(function() {
-        $('.send-modal').click(function() {
+        // gunakan event delegation agar event tetap aktif walau DataTables render ulang
+        $('#tablePengembalian').on('click', '.send-modal', function() {
             let row = $(this).closest('tr');
             let data1 = row.find('td:eq(0)').text(); //no
             let data2 = row.find('td:eq(1)').text(); //no BA
