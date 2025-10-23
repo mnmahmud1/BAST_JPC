@@ -392,7 +392,7 @@
     <!-- Modal Pilih Pengembalian -->
     <div class="modal fade" id="modalPilihPengembalian" tabindex="-1" aria-labelledby="modalPilihPengembalianLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="modalPilihPengembalianLabel">Pilih - Berita Acara Serah Terima
@@ -731,7 +731,7 @@
 
             $('#bastReff').val(data2);
             $('#submittedReturn').val(data3);
-            // $('#notesReturn').val(data5);
+            // $('#notesReturn').val(data5);~
             $('#sumittedReturnId').val(data6);
             $('#nip-submittedReturn').val(data7);
             $('#dept-submittedReturn').val(data8);
