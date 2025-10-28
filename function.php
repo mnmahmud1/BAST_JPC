@@ -157,6 +157,7 @@ if(isset($_POST["mutasiBarangMasukKeBarang"])){
     $source = trim(htmlspecialchars($_POST['source']));
     $dept = trim(htmlspecialchars($_POST['dept']));
     $year = trim(htmlspecialchars($_POST['year']));
+    $harga = trim(htmlspecialchars($_POST['harga']));
     $useful_inv = trim(htmlspecialchars($_POST['useful_inv']));
     $condition_inv = trim(htmlspecialchars($_POST['condition_inv']));
     $notes = trim(htmlspecialchars($_POST['notes']));
@@ -184,7 +185,7 @@ if(isset($_POST["mutasiBarangMasukKeBarang"])){
     $createInv = "6." . $year . "/" . $group_inv . "." . $urut . "/" . $branch;
 
     // Masukkan data ke tabel goods
-    mysqli_query($conn, "INSERT INTO goods (number, sn, description, specification, id_inv_type, id_inv_group, id_inv_allotment, id_inv_branch, id_inv_source, id_inv_dept, year, useful_period, id_inv_condition, notes, img, created_at, created_by) VALUES('$createInv', '$sn', '$description', '$spek', $type_inv, '$group_inv', $allotment_inv, '$branch', $source, $dept, '$year', $useful_inv, $condition_inv, '$notes', '$img', '$dateTime', $userCreated)");
+    mysqli_query($conn, "INSERT INTO goods (number, sn, description, specification, id_inv_type, id_inv_group, id_inv_allotment, id_inv_branch, id_inv_source, id_inv_dept, year, harga, useful_period, id_inv_condition, notes, img, created_at, created_by) VALUES('$createInv', '$sn', '$description', '$spek', $type_inv, '$group_inv', $allotment_inv, '$branch', $source, $dept, '$year', $harga, $useful_inv, $condition_inv, '$notes', '$img', '$dateTime', $userCreated)");
 
     if(mysqli_affected_rows($conn)){
         // update good_incoming_details as_inv = 1

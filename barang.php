@@ -11,7 +11,7 @@
 
     $urutDaftar = 1;
     $urutDaftarI = 1;
-	$getDaftarBarangMasuk = mysqli_query($conn, "SELECT good_incoming.number, good_incoming_details.description, good_incoming_details.sn, good_incoming_details.pwr, good_incoming_details.po, good_incoming_details.notes, inv_group.name AS name_inv_group, inv_group.code AS code_inv_group FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id INNER JOIN inv_group ON good_incoming_details.description = inv_group.description WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.type = 1 AND good_incoming_details.as_inv = 0");
+	$getDaftarBarangMasuk = mysqli_query($conn, "SELECT good_incoming.number, good_incoming_details.description, good_incoming_details.sn, good_incoming_details.harga, good_incoming_details.pwr, good_incoming_details.po, good_incoming_details.notes, inv_group.name AS name_inv_group, inv_group.code AS code_inv_group FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id INNER JOIN inv_group ON good_incoming_details.description = inv_group.description WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.type = 1 AND good_incoming_details.as_inv = 0");
 
 	$getInvGroup = mysqli_query($conn, "SELECT code, name FROM inv_group");
 	$getBranch = mysqli_query($conn, "SELECT initial, name FROM branch");
@@ -514,6 +514,7 @@
                                                 <th>Notes</th>
                                                 <th hidden>code_inv_group</th>
                                                 <th hidden>name_inv_group</th>
+                                                <th hidden>harga</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -529,6 +530,7 @@
                                                 <td><?= $barangMasuk["notes"] ?></td>
                                                 <td hidden><?= $barangMasuk["code_inv_group"] ?></td>
                                                 <td hidden><?= $barangMasuk["name_inv_group"] ?></td>
+                                                <td hidden><?= $barangMasuk["harga"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-success send-modal"
                                                         data-bs-toggle="modal">
@@ -581,6 +583,14 @@
                                 <label for="sn" class="form-label labeling-form">Serial Number</label>
                                 <input type="text" class="form-control" placeholder="Your text here" name="sn" id="sn"
                                     value="" required readonly />
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm">
+                                <label for="harga_display" class="form-label labeling-form">Harga</label>
+                                <input type="text" class="form-control" placeholder="Your text here"
+                                    name="harga_display" id="harga_display" value="" required readonly />
+                                <input type="text" name="harga" id="harga" value="" required hidden readonly>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -827,10 +837,13 @@
             let data7 = row.find('td:eq(6)').text(); //notes
             let data8 = row.find('td:eq(7)').text(); //code_inv_group
             let data9 = row.find('td:eq(8)').text(); //name_inv_group
+            let data10 = row.find('td:eq(9)').text(); //harga
             // ...
 
             $('#description').val(data2);
             $('#sn').val(data3);
+            $('#harga_display').val(data10);
+            $('#harga').val(data10);
             $('#notes').val(`REFF PWR ${data4}; REFF PO ${data5}; RR IT ${data6}; ${data7}`);
             // Kosongkan/clear append select sebelumnya
             $('#group_inv').empty();
@@ -1012,6 +1025,36 @@
             el.value = el.value.slice(0, el.maxLength);
         }
     }
+
+    // buat format currency untuk harga
+    $(document).ready(function() {
+        $('#harga_display').on('input', function() {
+            let raw = $(this).val().replace(/[^\d]/g, ''); // hanya angka
+            if (raw) {
+                let formatted = parseInt(raw, 10).toLocaleString('id-ID');
+                $(this).val('Rp ' + formatted);
+            } else {
+                $(this).val('');
+            }
+            $('#harga').val(raw); // simpan nilai murni ke hidden input
+        });
+
+        $('#harga_display').on('focus', function() {
+            // hapus format saat user fokus
+            let raw = $(this).val().replace(/[^\d]/g, '');
+            $(this).val(raw);
+        });
+
+        $('#harga_display').on('blur', function() {
+            // tampilkan kembali format Rupiah
+            let raw = $(this).val().replace(/[^\d]/g, '');
+            if (raw) {
+                let formatted = parseInt(raw, 10).toLocaleString('id-ID');
+                $(this).val('Rp ' + formatted);
+            }
+            $('#harga').val(raw); // pastikan nilai murni tersimpan
+        });
+    });
     </script>
 
 </body>
