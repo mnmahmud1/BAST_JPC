@@ -10,7 +10,7 @@
     $idUser = $_COOKIE["_beta_log"];
 
     $urutDaftar = 1;
-    $getBarangMasuk = mysqli_query($conn, "SELECT gi.id, gi.number, (SELECT COUNT(*) FROM good_incoming_details gid WHERE gid.id_incoming = gi.id) AS jml, gi.notes, gi.created_at FROM `good_incoming` gi WHERE gi.created_by = $idUser AND gi.as_dump = 0");
+    $getBarangMasuk = mysqli_query($conn, "SELECT gi.id, gi.number, (SELECT COUNT(*) FROM good_incoming_details gid WHERE gid.id_incoming = gi.id) AS jml, gi.notes, gi.created_at FROM `good_incoming` gi WHERE gi.created_by = $idUser AND gi.as_dump = 0 ORDER BY gi.id DESC");
 
 ?>
 

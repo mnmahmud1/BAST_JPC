@@ -11,14 +11,14 @@
 
     $urutDaftar = 1;
     $urutDaftarI = 1;
-	$getDaftarBarangMasuk = mysqli_query($conn, "SELECT good_incoming.number, good_incoming_details.description, good_incoming_details.sn, good_incoming_details.harga, good_incoming_details.pwr, good_incoming_details.po, good_incoming_details.notes, inv_group.name AS name_inv_group, inv_group.code AS code_inv_group FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id INNER JOIN inv_group ON good_incoming_details.description = inv_group.description WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.type = 1 AND good_incoming_details.as_inv = 0");
+	$getDaftarBarangMasuk = mysqli_query($conn, "SELECT good_incoming.number, good_incoming_details.description, good_incoming_details.sn, good_incoming_details.harga, good_incoming_details.pwr, good_incoming_details.po, good_incoming_details.notes, inv_group.name AS name_inv_group, inv_group.code AS code_inv_group FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id INNER JOIN inv_group ON good_incoming_details.description = inv_group.description WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.type = 1 AND good_incoming_details.as_inv = 0 ORDER BY good_incoming_details.id DESC");
 
 	$getInvGroup = mysqli_query($conn, "SELECT code, name FROM inv_group");
 	$getBranch = mysqli_query($conn, "SELECT initial, name FROM branch");
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
 
-    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.initial AS branch, goods.img FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.initial WHERE goods.as_dump = 0");
+    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.initial AS branch, goods.img FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.initial WHERE goods.as_dump = 0 ORDER BY goods.id DESC");
 
 ?>
 

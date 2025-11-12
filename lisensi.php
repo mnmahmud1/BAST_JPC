@@ -15,8 +15,8 @@
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
 
-	$getDaftarLisensi = mysqli_query($conn, "SELECT number, sn, description, seats, date_start, date_end, created_at FROM lisences WHERE as_dump = 0");
-	$getLisensiBarangMasuk = mysqli_query($conn, "SELECT good_incoming_details.description, good_incoming_details.sn, good_incoming_details.pwr, good_incoming_details.po, good_incoming.number, good_incoming_details.notes FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.as_inv = 0 and good_incoming_details.type = 2");
+	$getDaftarLisensi = mysqli_query($conn, "SELECT number, sn, description, seats, date_start, date_end, created_at FROM lisences WHERE as_dump = 0 ORDER BY id DESC");
+	$getLisensiBarangMasuk = mysqli_query($conn, "SELECT good_incoming_details.description, good_incoming_details.sn, good_incoming_details.pwr, good_incoming_details.po, good_incoming.number, good_incoming_details.notes FROM good_incoming_details INNER JOIN good_incoming ON good_incoming_details.id_incoming = good_incoming.id WHERE good_incoming_details.as_dump = 0 AND good_incoming_details.as_inv = 0 and good_incoming_details.type = 2 ORDER BY good_incoming_details.id DESC");
 
 ?>
 
