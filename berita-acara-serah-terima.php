@@ -600,7 +600,7 @@
         var month = (currentDate.getMonth() + 1)
             .toString().padStart(2, '0');
 
-        // Bangun nomor invoice tanpa urutan terlebih dahulu
+        // Bangun nomor bast tanpa urutan terlebih dahulu
         var bastWithoutOrder = 'IT/BAST/' + year + '/' +
             month + '/';
 

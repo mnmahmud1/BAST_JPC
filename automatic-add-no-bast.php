@@ -10,7 +10,9 @@ if ($conn->connect_error) {
 $bastWithoutOrder = $_POST['bastWithoutOrder'];
 
 // Query untuk mendapatkan urutan terakhir berdasarkan bastWithoutOrder
-$sql = "SELECT MAX(SUBSTRING_INDEX(number, '/', -1)) AS lastOrder FROM bast_report WHERE number LIKE '$bastWithoutOrder%'";
+// $sql = "SELECT MAX(SUBSTRING_INDEX(number, '/', -1)) AS lastOrder FROM bast_report WHERE number LIKE '$bastWithoutOrder%'";
+$sql = "SELECT MAX(CAST(SUBSTRING_INDEX(number, '/', -1) AS UNSIGNED)) AS lastOrder FROM bast_report WHERE number LIKE '$bastWithoutOrder%';";
+
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
