@@ -18,7 +18,7 @@
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
 
-    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.initial AS branch, goods.img FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.initial WHERE goods.as_dump = 0 ORDER BY goods.id DESC");
+    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.initial AS branch, goods.img, goods.notes FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.initial WHERE goods.as_dump = 0 ORDER BY goods.id DESC");
 
 ?>
 
@@ -222,8 +222,8 @@
                                                 <th>SN</th>
                                                 <th>Kondisi</th>
                                                 <th>Tahun</th>
-                                                <th>Alokasi</th>
                                                 <th>Img</th>
+                                                <th>Notes</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -252,7 +252,6 @@
                                                     </h6>
                                                 </td>
                                                 <td><?= $barangInv["year"] ?></td>
-                                                <td><?= $barangInv["branch"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm"
                                                         onclick="showImageModal('<?= $barangInv['img'] ?>')">
@@ -265,6 +264,7 @@
                                                         </svg>
                                                     </button>
                                                 </td>
+                                                <td><?= $barangInv["notes"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm btn-white"
                                                         onclick="window.location.href = 'barang-details.php?inv=<?= $barangInv['number'] ?>'">

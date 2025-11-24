@@ -195,6 +195,7 @@
                                 <button class="btn btn-outline-primary" data-bs-toggle="modal"
                                     data-bs-target="#modalPilihPengembalian">Pengembalian</button>
                             </div>
+                            <button class="btn btn-outline-success">Actived BAST</button>
                         </div>
                     </div>
 

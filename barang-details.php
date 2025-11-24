@@ -455,7 +455,7 @@
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="mb-4">History BAST - Nama Barang</h5>
+                                        <h5 class="mb-4">History BAST</h5>
                                         <table class="display" name="tableBarang" id="tableBarang">
                                             <thead>
                                                 <tr>

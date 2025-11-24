@@ -18,7 +18,7 @@
     
     // ambil data incoming detail berdasar id good_incoming
     $idIncoming = $getDetailRR["id"];
-    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, harga, type, notes, img, as_inv FROM good_incoming_details WHERE id_incoming = $idIncoming");
+    $getDetailGoodIncoming = mysqli_query($conn, "SELECT id, description, sn, pwr, po, harga, type, notes, img, as_inv FROM good_incoming_details WHERE id_incoming = $idIncoming ORDER BY id DESC");
 
     // ambil data select tipe invenaris
     $getInvType = mysqli_query($conn, "SELECT id, name FROM inv_type");
@@ -414,6 +414,18 @@
                     <div class="modal-body px-4">
                         <div class="row mb-3">
                             <div class="col-sm">
+                                <label for="" class="form-label labeling-form">Tipe Barang Masuk</label>
+                                <select name="type" id="type" class="form-select" required
+                                    onchange="toggleSNReadOnly()">
+                                    <option value="">Choose</option>
+                                    <?php foreach($getInvType as $getInv) :  ?>
+                                    <option value="<?= $getInv['id'] ?>"><?= $getInv['name'] ?></option>
+                                    <?php endforeach  ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm">
                                 <label for="" class="form-label labeling-form">Deskripsi</label>
                                 <div class="typeahead__container">
                                     <div class="typeahead__field">
@@ -454,18 +466,6 @@
                                     name="harga_display" id="harga_display" maxlength="20" required />
                                 <input type="text" class="form-control" placeholder="Your text here" name="harga"
                                     id="harga" maxlength="20" required hidden />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm">
-                                <label for="" class="form-label labeling-form">Tipe Barang Masuk</label>
-                                <select name="type" id="type" class="form-select" required
-                                    onchange="toggleSNReadOnly()">
-                                    <option value="">Choose</option>
-                                    <?php foreach($getInvType as $getInv) :  ?>
-                                    <option value="<?= $getInv['id'] ?>"><?= $getInv['name'] ?></option>
-                                    <?php endforeach  ?>
-                                </select>
                             </div>
                         </div>
                         <div class="row mb-3">
