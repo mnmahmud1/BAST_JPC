@@ -10,6 +10,9 @@
 
     $nameUser = $_COOKIE["_name_log"];
 
+    $no1 = 1;
+    $getInvGroup = mysqli_query($conn, "SELECT code, name, description FROM inv_group");
+
 ?>
 
 <!DOCTYPE html>
@@ -356,7 +359,7 @@
                         </div>
                     </div>
                     <div class="callout">
-                        Master data for <b>Daftar Barang / Lisensi</b>
+                        Master data for <b>Grup Inventaris</b>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
@@ -372,24 +375,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php foreach($getInvGroup as $data) : ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>LT01</td>
-                                                <td>LAPTOP</td>
-                                                <td>LAPTOP LENOVO YOGA SLIM 7 PRO - 82MS002YID</td>
+                                                <td><?= $no1 ?></td>
+                                                <td><?= $data["code"] ?></td>
+                                                <td><?= $data["name"] ?></td>
+                                                <td><?= $data["description"] ?></td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>LT02</td>
-                                                <td>LAPTOP</td>
-                                                <td>LAPTOP ASUS ROG STRIX G713QC</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>MO01</td>
-                                                <td>MOUSE</td>
-                                                <td>MOUSE LOGITECH M190</td>
-                                            </tr>
+                                            <?php $no1++; endforeach ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -461,14 +454,24 @@
     });
 
     $(document).ready(function() {
-        $("#tableTipeBarang").DataTable();
-        $("#tableTipeInv").DataTable();
-        $("#tableGroupInv").DataTable();
-        $("#tablePeruntukanInv").DataTable();
-        $("#tableDept").DataTable();
-        $("#tableCondition").DataTable();
-        $("#tableTipeLic").DataTable();
-        $("#tableAsalUsul").DataTable();
+
+        // Inisialisasi DataTable dengan fitur select
+        let table = $(
+            "#tableTipeBarang, #tableTipeInv, #tableGroupInv,#tablePeruntukanInv, #tableDept, #tableCondition, #tableTipeLic, #tableAsalUsul"
+        ).DataTable({
+            dom: "Bfrtip",
+            buttons: ["copy", "csv", "excel", "pdf", "print"],
+            select: true, // Mengaktifkan fitur seleksi
+        });
+
+        // $("#tableTipeBarang").DataTable();
+        // $("#tableTipeInv").DataTable();
+        // $("#tableGroupInv").DataTable();
+        // $("#tablePeruntukanInv").DataTable();
+        // $("#tableDept").DataTable();
+        // $("#tableCondition").DataTable();
+        // $("#tableTipeLic").DataTable();
+        // $("#tableAsalUsul").DataTable();
     });
     </script>
 </body>

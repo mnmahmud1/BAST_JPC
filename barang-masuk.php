@@ -204,8 +204,7 @@
                                                 <td><?= $urutDaftar ?></td>
                                                 <td><?= $barangMasuk["number"] ?></td>
                                                 <td><?= $barangMasuk["jml"] ?></td>
-                                                <td><?= (isset($barangMasuk["notes"]) && strlen($barangMasuk["notes"]) > 20) ? substr($barangMasuk["notes"], 0, 20) . '...' : $barangMasuk["notes"] ?>
-                                                </td>
+                                                <td><?= $barangMasuk["notes"] ?> </td>
                                                 <td class="fs-6"><?= $barangMasuk["created_at"] ?></td>
                                                 <td>
                                                     <div class="dropdown">

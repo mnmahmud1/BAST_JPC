@@ -21,6 +21,10 @@ FROM
 WHERE 
     gi.created_by = 1;
 =================================
+#4 Menyingkat deskripsi
+
+<td><?= (isset($barangMasuk["notes"]) && strlen($barangMasuk["notes"]) > 20) ? substr($barangMasuk["notes"], 0, 20) . '...' : $barangMasuk["notes"] ?>
+=================================
 PR
 
 (TIDAK PENTING)1. menghilangkan kode RR Cookie saat keluar dari halaman barang masuk

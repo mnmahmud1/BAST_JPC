@@ -18,7 +18,7 @@
 	$getSource = mysqli_query($conn, "SELECT id, name FROM source");
 	$getDept = mysqli_query($conn, "SELECT id, name FROM dept");
 
-    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, inv_condition.name AS kondisi, goods.year, branch.initial AS branch, goods.img, goods.notes FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.initial WHERE goods.as_dump = 0 GROUP BY goods.sn ORDER BY goods.id DESC");
+    $getDaftarBarangInv = mysqli_query($conn, "SELECT goods.number, goods.description, goods.sn, goods.specification, good_incoming_details.harga, inv_condition.name AS kondisi, goods.year, branch.initial AS branch, goods.img, goods.notes, good_incoming_details.updated_at AS DeliveryDate FROM goods INNER JOIN inv_condition ON goods.id_inv_condition = inv_condition.id INNER JOIN branch ON goods.id_inv_branch = branch.initial INNER JOIN good_incoming_details ON goods.sn = good_incoming_details.sn WHERE goods.as_dump = 0 GROUP BY goods.sn ORDER BY goods.id ASC");
 
 ?>
 
@@ -175,41 +175,11 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h3 class="mt-4">Barang</h3>
+                    <h3 class="mt-4">Semua Barang</h3>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Barang</li>
+                        <li class="breadcrumb-item">Barang</li>
+                        <li class="breadcrumb-item active">Semua Barang</li>
                     </ol>
-
-                    <div class="row mb-3">
-                        <div class="col-sm">
-                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                <button class="btn btn-sm btn-light" data-bs-toggle="modal"
-                                    data-bs-target="#modalImport" disabled>
-                                    <i class="fa-solid fa-file-import"></i>
-                                    Import
-                                </button>
-
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-plus"></i>
-                                        Tambah Barang</button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" data-bs-toggle="modal"
-                                                data-bs-target="#modalTambahDariBarangMasuk">Dari Barang Masuk</a></li>
-                                        <li><a class="dropdown-item disabled" data-bs-toggle="modal"
-                                                data-bs-target="#modalTambah">Manual</a></li>
-                                    </ul>
-                                </div>
-
-                                <button type="button" class="btn btn-outline-primary" id="getSelected"><i
-                                        class="fa-solid fa-tag"></i> Cetak
-                                    Labels</button>
-                            </div>
-
-                            <button type="button" class="btn btn-outline-primary"
-                                onclick="window.location.href= 'barang-all.php'">Preview Data</button>
-                        </div>
-                    </div>
 
                     <div class="row">
                         <div class="col-sm">
@@ -222,9 +192,12 @@
                                                 <th>#</th>
                                                 <th>No. Inv</th>
                                                 <th>Deskripsi</th>
-                                                <th>SN</th>
-                                                <th>Kondisi</th>
                                                 <th>Tahun</th>
+                                                <th>SN</th>
+                                                <th>Specification</th>
+                                                <th>Unit Price</th>
+                                                <th>Kondisi</th>
+                                                <th>Delivery Date</th>
                                                 <th>Img</th>
                                                 <th>Notes</th>
                                                 <th></th>
@@ -236,7 +209,10 @@
                                                 <td><?= $urutDaftarI ?></td>
                                                 <td class="fw-bold"><?= $barangInv["number"] ?></td>
                                                 <td><?= $barangInv["description"] ?></td>
+                                                <td><?= $barangInv["year"] ?></td>
                                                 <td><?= $barangInv["sn"] ?></td>
+                                                <td><?= $barangInv["specification"] ?></td>
+                                                <td><?= $barangInv["harga"] ?></td>
                                                 <td>
                                                     <h6>
                                                         <?php if($barangInv["kondisi"] === "BAIK") : ?>
@@ -254,7 +230,7 @@
                                                         <?php endif ?>
                                                     </h6>
                                                 </td>
-                                                <td><?= $barangInv["year"] ?></td>
+                                                <td><?= $barangInv["DeliveryDate"] ?></td>
                                                 <td>
                                                     <button class="btn btn-sm"
                                                         onclick="showImageModal('<?= $barangInv['img'] ?>')">

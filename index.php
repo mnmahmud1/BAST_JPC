@@ -11,7 +11,7 @@
     $nameUser = $_COOKIE["_name_log"];
 
     $getRecentInv = mysqli_query($conn, "SELECT number, description, created_at, 'goods' AS source FROM goods UNION ALL SELECT number, description, created_at, 'lisences' AS source FROM lisences ORDER BY created_at DESC LIMIT 5");
-    $getCountGoods = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) AS total FROM goods"));
+    $getCountGoods = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) AS total FROM goods WHERE goods.as_dump = 0"));
     $getCountLisences = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) AS total FROM lisences"));
     $getCountBast = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) AS total FROM bast_report"));
     $getCountUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(id) AS total FROM users"));
