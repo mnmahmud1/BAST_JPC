@@ -16,7 +16,13 @@
 	$getUsersAdmin = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name, users.nik FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_admin = 1 AND as_dump = 0 ORDER BY users.name ASC");
 	$getUsersAll = mysqli_query($conn, "SELECT users.id, users.name, dept.name AS dept_name, users.nik FROM users INNER JOIN dept ON users.id_dept = dept.id WHERE as_dump = 0 ORDER BY users.name ASC");
 
-	$getBast = mysqli_query($conn, "SELECT bast_report.number, bast_report.status, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, dept_accepted.name AS accepted_dept, bast_report.notes, bast_report.created_at FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.as_dump = 0 ORDER BY bast_report.created_at DESC");
+    if(isset($_GET['active'])){
+        // Seleksi BAST Aktif yang belum dikembalikan
+        $getBast = mysqli_query($conn, "SELECT bast_report.number, bast_report.status, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, dept_accepted.name AS accepted_dept, bast_report.notes, bast_report.created_at FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.as_dump = 0 AND bast_report.return_reff IS NULL AND bast_report.status = 1 AND bast_report.number NOT IN (SELECT return_reff FROM bast_report WHERE return_reff IS NOT NULL AND return_reff <> '') ORDER BY bast_report.created_at DESC");
+    } else {
+        $getBast = mysqli_query($conn, "SELECT bast_report.number, bast_report.status, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, dept_accepted.name AS accepted_dept, bast_report.notes, bast_report.created_at FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.as_dump = 0 ORDER BY bast_report.created_at DESC");
+    }
+
 	$getBastAccepted = mysqli_query($conn, "SELECT bast_report.number, users_submitted.name AS submitted_name, dept_submitted.name AS submitted_dept, users_accepted.name AS accepted_name, users_accepted.nik AS accepted_nip, dept_accepted.name AS accepted_dept, bast_report.notes, bast_report.id_user_accepted FROM bast_report INNER JOIN users AS users_submitted ON bast_report.id_user_submitted = users_submitted.id INNER JOIN dept AS dept_submitted ON users_submitted.id_dept = dept_submitted.id LEFT JOIN users AS users_accepted ON bast_report.id_user_accepted = users_accepted.id LEFT JOIN dept AS dept_accepted ON users_accepted.id_dept = dept_accepted.id WHERE bast_report.status = 1 AND bast_report.return_reff IS NULL AND bast_report.as_dump = 0 AND bast_report.number NOT IN (SELECT return_reff FROM bast_report WHERE status = 0 AND return_reff IS NOT NULL) ORDER BY bast_report.created_at DESC");
 ?>
 
@@ -195,7 +201,9 @@
                                 <button class="btn btn-outline-primary" data-bs-toggle="modal"
                                     data-bs-target="#modalPilihPengembalian">Pengembalian</button>
                             </div>
-                            <button class="btn btn-outline-success">Actived BAST</button>
+                            <button class="btn btn-outline-success"
+                                onclick="window.location.href= 'berita-acara-serah-terima.php?active=1'">Actived
+                                BAST</button>
                         </div>
                     </div>
 
