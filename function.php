@@ -336,8 +336,11 @@ if(isset($_POST["addBastGiven"])){
     $accepted = trim(htmlspecialchars($_POST['accepted']));
     $notes = trim(htmlspecialchars($_POST['notes']));
     
+    // Normal Condition
+    // mysqli_query($conn, "INSERT INTO bast_report (number, id_user_submitted, id_user_accepted, notes, created_at, created_by) VALUES('$bast', $submitted, $accepted, '$notes', '$dateTime', '$userCreated')"); 
     
-    mysqli_query($conn, "INSERT INTO bast_report (number, id_user_submitted, id_user_accepted, notes, created_at, created_by) VALUES('$bast', $submitted, $accepted, '$notes', '$dateTime', '$userCreated')"); 
+    // Backdate Condition
+    mysqli_query($conn, "INSERT INTO bast_report (number, id_user_submitted, id_user_accepted, notes, created_at, created_by) VALUES('$bast', $submitted, $accepted, '$notes', '2025-10-10 10:10:10', '$userCreated')"); 
 
     if(mysqli_affected_rows($conn)){
         // Jika ada perubahan pada update
@@ -784,8 +787,12 @@ if(isset($_POST["addBastReturn"])){
     $acceptedReturn = trim(htmlspecialchars($_POST['acceptedReturn'])); //id
     $notesReturn = trim(htmlspecialchars($_POST['notesReturn']));
     
-    mysqli_query($conn, "INSERT INTO bast_report (number, id_user_submitted, id_user_accepted, status, notes, return_reff, created_at, created_by) VALUES('$bastReturn', $sumittedReturnId, $acceptedReturn, 0, '$notesReturn', '$bastReff', '$dateTime', '$userCreated')"); 
-
+    //Normal Condition 
+    // mysqli_query($conn, "INSERT INTO bast_report (number, id_user_submitted, id_user_accepted, status, notes, return_reff, created_at, created_by) VALUES('$bastReturn', $sumittedReturnId, $acceptedReturn, 0, '$notesReturn', '$bastReff', '$dateTime', '$userCreated')"); 
+    
+    // Backdate Condition
+    mysqli_query($conn, "INSERT INTO bast_report (number, id_user_submitted, id_user_accepted, status, notes, return_reff, created_at, created_by) VALUES('$bastReturn', $sumittedReturnId, $acceptedReturn, 0, '$notesReturn', '$bastReff', '2025-10-10 10:10:10', '$userCreated')"); 
+    
     // Menduplikasi Semua isi detail inventaris yang ada di bast pemberian
     mysqli_query($conn, "INSERT INTO bast_report_details (bast_number, id_good, id_inv_type, attach, created_at, created_by) SELECT '$bastReturn' AS bast_number, id_good, id_inv_type, attach, '$dateTime' AS created_at, '$userCreated' FROM bast_report_details WHERE bast_number = '$bastReff'");
     
