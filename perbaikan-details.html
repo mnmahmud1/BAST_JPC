@@ -59,6 +59,73 @@
 				overflow-y: auto;
 				max-height: 400px;
 			}
+
+			.stepper-wrapper {
+				display: flex;
+				justify-content: space-between;
+				position: relative;
+				margin: 40px 0;
+			}
+
+			.stepper-wrapper::before {
+				content: "";
+				position: absolute;
+				top: 14px;
+				left: 0;
+				right: 0;
+				height: 3px;
+				background: #e0e0e0;
+				z-index: 0;
+			}
+
+			.stepper-item {
+				position: relative;
+				text-align: center;
+				z-index: 1;
+				width: 100%;
+			}
+
+			.step-counter {
+				width: 28px;
+				height: 28px;
+				border-radius: 50%;
+				background: #adb5bd;
+				margin: 0 auto 8px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: #fff;
+				font-size: 14px;
+			}
+
+			.stepper-item.completed .step-counter {
+				background: #198754;
+			}
+
+			.stepper-item.active .step-counter {
+				background: #198754;
+				box-shadow: 0 0 0 4px rgba(25, 135, 84, 0.2);
+			}
+
+			.step-name {
+				font-size: 14px;
+				font-weight: 600;
+			}
+
+			.step-desc {
+				font-size: 12px;
+				color: #6c757d;
+			}
+
+			.quick-comments {
+				transition: transform 0.25s ease, box-shadow 0.25s ease;
+				cursor: pointer;
+			}
+
+			.quick-comments:hover {
+				transform: translateY(-4px);
+				box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+			}
 		</style>
 	</head>
 
@@ -172,10 +239,73 @@
 							<li class="breadcrumb-item active">Detail Perbaikan</li>
 						</ol>
 
+						<div class="row">
+							<div class="col-sm">
+								<h4>
+									<span class="badge bg-secondary rounded-pill">Submitted</span>
+									Laptop tidak menyala dan sering force shutdown!
+								</h4>
+								<div class="dropdown">
+									<button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Update Status</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+										<li>
+											<a class="dropdown-item active" href="#"><span class="badge bg-secondary rounded-pill">Submitted</span></a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="#"><span class="badge bg-secondary rounded-pill">On Progress</span></a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="#"><span class="badge bg-warning rounded-pill">Waiting Parts</span></a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="#"><span class="badge bg-danger rounded-pill">Damaged</span></a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="#"><span class="badge bg-success rounded-pill">Repaired</span></a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-sm-2 fw-bold"></div>
+							<div class="col-sm-2 text-end">
+								<p class="fs-6 mb-3">10.40 PM 11-11-2022</p>
+							</div>
+						</div>
+
+						<div class="row mt-2 mb-3">
+							<div class="col-sm">
+								<!-- STEPPER -->
+								<div class="stepper-wrapper">
+									<!-- class "completed" untuk mark selesai step -->
+									<div class="stepper-item active">
+										<div class="step-counter">1</div>
+										<div class="step-name">Step 1: Discovery</div>
+										<div class="step-desc">Initial Review</div>
+									</div>
+
+									<div class="stepper-item">
+										<div class="step-counter">2</div>
+										<div class="step-name">Step 2: We Would Appreciate Additional Information</div>
+										<div class="step-desc">Additional Info</div>
+									</div>
+
+									<div class="stepper-item">
+										<div class="step-counter">3</div>
+										<div class="step-name">Step 3: Repairing Process</div>
+										<div class="step-desc">Spare part replacement and repair</div>
+									</div>
+
+									<div class="stepper-item">
+										<div class="step-counter">4</div>
+										<div class="step-name">Step 4: Review Submission</div>
+										<div class="step-desc">Confirmation</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
 						<div class="row mb-3">
 							<div class="col-sm">
-								<h4 class=""><span class="badge bg-warning align-middle text-black rounded-pill">Waiting Parts</span> [#MUD-113-RAA]: Laptop tidak menyala dan sering force shutdown!</h4>
-								<p class="fs-6 mb-3">10.40 PM 11-11-2022</p>
 								<div class="card">
 									<div class="card-body">
 										<h5 class="mb-4">Deskripsi Barang</h5>
@@ -217,7 +347,7 @@
 							<div class="col-sm">
 								<div class="card">
 									<div class="card-body">
-										<h5 class="mb-4">Inventory Usage History</h5>
+										<h5 class="mb-4">Repair Status</h5>
 										<div class="scrollable">
 											<ul class="timeline mb-5">
 												<li>
@@ -236,30 +366,70 @@
 											</ul>
 										</div>
 									</div>
-									<div class="container-fluid">
+									<div class="container-fluid mb-2">
 										<div class="row mb-3">
 											<div class="col-sm">
 												<div class="card p-3">
 													<div class="card-body">
-														<h5 class="mb-4">Commit History</h5>
-														<div class="col">
-															<form action="function.php" method="POST" enctype="multipart/form-data">
-																<div class="mb-3">
-																	<label for="tittle" class="form-label labeling-form">Tittle</label>
-																	<input type="text" name="tittle" id="tittle" class="form-control" placeholder="The keyboard is broken" maxlength="50" required />
+														<h5 class="mb-4">Comments</h5>
+														<div class="row">
+															<div class="col-sm-8">
+																<form action="function.php" method="POST" enctype="multipart/form-data">
+																	<div class="mb-3">
+																		<label for="tittle" class="form-label labeling-form">Tittle</label>
+																		<input type="text" name="tittle" id="tittle" class="form-control" placeholder="The keyboard is broken" maxlength="50" required />
+																	</div>
+																	<div class="mb-3">
+																		<label for="description" class="form-label labeling-form">Description</label>
+																		<textarea type="text" class="form-control" placeholder="Add an optional extended description" name="description" id="description"></textarea>
+																	</div>
+																	<div class="mb-3">
+																		<label for="attach" class="form-label">Attachment</label>
+																		<input type="file" name="attach" id="attach" class="form-control" />
+																		<input type="text" name="inv" value="" hidden />
+																	</div>
+																	<button name="commitHistoryInv" id="commit" class="btn btn-sm btn-success" type="submit">Commit Changes</button>
+																</form>
+															</div>
+															<div class="col-sm">
+																<div class="card">
+																	<div class="card-body">
+																		<h5 class="mb-4">Quick Comments</h5>
+																		<div class="row">
+																			<div class="col-sm my-2">
+																				<a href="#" class="text-reset text-decoration-none">
+																					<div class="card quick-comments">
+																						<div class="card-body">data1</div>
+																					</div>
+																				</a>
+																			</div>
+																			<div class="col-sm my-2">
+																				<a href="#" class="text-reset text-decoration-none">
+																					<div class="card quick-comments">
+																						<div class="card-body">data1</div>
+																					</div>
+																				</a>
+																			</div>
+																		</div>
+																		<div class="row">
+																			<div class="col-sm my-2">
+																				<a href="#" class="text-reset text-decoration-none">
+																					<div class="card quick-comments">
+																						<div class="card-body">data1</div>
+																					</div>
+																				</a>
+																			</div>
+																			<div class="col-sm my-2">
+																				<a href="#" class="text-reset text-decoration-none">
+																					<div class="card quick-comments">
+																						<div class="card-body">data1</div>
+																					</div>
+																				</a>
+																			</div>
+																		</div>
+																	</div>
 																</div>
-																<div class="mb-3">
-																	<label for="description" class="form-label labeling-form">Description</label>
-																	<textarea type="text" class="form-control" placeholder="Add an optional extended description" name="description" id="description"></textarea>
-																</div>
-																<div class="mb-3">
-																	<label for="attach" class="form-label">Attachment</label>
-																	<input type="file" name="attach" id="attach" class="form-control" />
-																	<input type="text" name="inv" value="<?= $number ?>" hidden />
-																</div>
-
-																<button name="commitHistoryInv" id="commit" class="btn btn-sm btn-success" type="submit">Commit Changes</button>
-															</form>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -267,6 +437,12 @@
 										</div>
 									</div>
 								</div>
+							</div>
+						</div>
+
+						<div class="row mb-4 justify-content-end">
+							<div class="col-sm-3 text-end">
+								<button name="deleteButton" id="deleteButton" class="btn btn-outline-danger fw-bold" data-bs-toggle="modal" data-bs-target="#modalDelete" data-sn="#" data-inv="#">Delete Barang Inventaris</button>
 							</div>
 						</div>
 					</div>
@@ -279,6 +455,31 @@
 						</div>
 					</div>
 				</footer>
+			</div>
+		</div>
+
+		<!-- Modal Delete -->
+		<div class="modal fade" id="modalDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalDeleteLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<form action="function.php" method="post">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalDeleteLabel">Are you absolutely sure?</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<p>
+								Please type <span class="fw-bold" id="nameGood"><span id="goodInvDelete"></span>Laptop tidak menyala dan sering force shutdown!</span> to confirm.
+							</p>
+							<input type="text" name="typeGood" id="typeGood" class="form-control border-danger" placeholder="Please type bold text above" autofocus autocomplete="off" required />
+							<input type="text" name="snDelete" id="snDelete" hidden />
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-white" data-bs-dismiss="modal" tabindex="1">Close</button>
+							<button type="submit" name="deleteGood" id="deleteGood" class="btn btn-danger">Confirm to Delete</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 

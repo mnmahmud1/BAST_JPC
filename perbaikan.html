@@ -192,20 +192,53 @@
 							<li class="breadcrumb-item active">Perbaikan</li>
 						</ol>
 
+						<div class="row mb-3">
+							<div class="col">
+								<div class="card border-0 bg-transparent">
+									<div class="card-body">
+										<p class="summary-card-label">Repair Submitted</p>
+										<h3 class="summary-card-count">12</h3>
+									</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="card border-0 bg-transparent">
+									<div class="card-body">
+										<p class="summary-card-label">Repair Succeed</p>
+										<h3 class="summary-card-count">7</h3>
+									</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="card border-0 bg-transparent">
+									<div class="card-body">
+										<p class="summary-card-label">On Progress</p>
+										<h3 class="summary-card-count">2</h3>
+									</div>
+								</div>
+							</div>
+							<div class="col">
+								<div class="card border-0 bg-transparent">
+									<div class="card-body">
+										<p class="summary-card-label">Damaged Goods</p>
+										<h3 class="summary-card-count">3</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+
 						<div class="row">
 							<div class="col-sm">
 								<div class="card">
 									<div class="card-body">
-										<h5 class="mb-4">Daftar Barang Inventaris - <span class="badge rounded-pill bg-danger">Dalam Perbaikan</span></h5>
+										<h5 class="mb-4">Daftar Barang Dalam Perbaikan</h5>
 										<table class="display" name="tableBarang" id="tableBarang">
 											<thead>
 												<tr>
 													<th>#</th>
 													<th>Status</th>
+													<th>Case</th>
 													<th>No. Inv</th>
-													<th>Deskripsi</th>
-													<th>SN</th>
-													<th>Tahun</th>
 													<th>Jenis Kerusakan</th>
 													<th>Date</th>
 													<th></th>
@@ -219,30 +252,22 @@
 															<span class="badge bg-secondary align-middle rounded-pill">Created</span>
 														</h6>
 													</td>
+													<td class="fw-bold">Laptop tidak menyala dan sering force shutdown!</td>
 													<td>
 														<a href="#" class="text-reset">6.2023/LT42.1/WS1LT1</a>
 													</td>
-													<td>ASUS Vivobook M310A</td>
-													<td>123NDIAPP10042</td>
-													<td>2022</td>
 													<td>
 														<span class="badge bg-secondary">Keyboard</span>
 														<span class="badge bg-secondary">Battery</span>
 													</td>
 													<td class="fs-6">10.40 PM 11-11-2022</td>
 													<td>
-														<div class="dropdown">
-															<button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-																<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-																	<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-																</svg>
-															</button>
-															<ul class="dropdown-menu">
-																<li><a class="dropdown-item" href="perbaikan-details.html">Details Perbaikan</a></li>
-																<li><a class="dropdown-item disabled" href="#">Mulai Perbaikan</a></li>
-																<li><a class="dropdown-item" href="#">Selesai Perbaikan</a></li>
-															</ul>
-														</div>
+														<button class="btn btn-sm btn-white" onclick="window.location.href='perbaikan-details.html'">
+															<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+																<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+																<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+															</svg>
+														</button>
 													</td>
 												</tr>
 												<tr>
@@ -252,13 +277,10 @@
 															<span class="badge bg-warning align-middle text-black rounded-pill">Waiting Parts</span>
 														</h6>
 													</td>
+													<td class="fw-bold">PC Ketumpahan air kopi!</td>
 													<td>
 														<a href="#" class="text-reset">6.2023/LT42.1/WS1LT1</a>
 													</td>
-													<td>ASUS Vivobook M310A</td>
-													<td>123NDIAPP10042</td>
-													</td>
-													<td>2022</td>
 													<td>
 														<span class="badge bg-secondary">Keyboard</span>
 														<span class="badge bg-secondary">Mainboard</span>
@@ -267,18 +289,12 @@
 													</td>
 													<td class="fs-6">10.40 PM 11-11-2022</td>
 													<td>
-														<div class="dropdown">
-															<button class="btn btn-sm btn-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-																<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-																	<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-																</svg>
-															</button>
-															<ul class="dropdown-menu">
-																<li><a class="dropdown-item" href="perbaikan-details.html">Details Perbaikan</a></li>
-																<li><a class="dropdown-item" href="#">Mulai Perbaikan</a></li>
-																<li><a class="dropdown-item" href="#">Selesai Perbaikan</a></li>
-															</ul>
-														</div>
+														<button class="btn btn-sm btn-white" onclick="window.location.href='perbaikan-details.html'">
+															<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+																<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+																<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+															</svg>
+														</button>
 													</td>
 												</tr>
 											</tbody>
@@ -290,53 +306,83 @@
 
 						<div class="row mt-3">
 							<div class="col-sm">
-								<div class="card">
-									<div class="card-body">
-										<h5 class="mb-4">Daftar Barang Inventaris - <span class="badge rounded-pill bg-success">Selesai Diperbaiki</span></h5>
-										<table class="display" name="tableBarangDua" id="tableBarangDua">
-											<thead>
-												<tr>
-													<th>#</th>
-													<th>Deskripsi</th>
-													<th>SN</th>
-													<th>Kondisi</th>
-													<th>Tahun</th>
-													<th>Alokasi</th>
-													<th>Date Start Repair</th>
-													<th>Date End Repair</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>1</td>
-													<td>ASUS Vivobook M310A</td>
-													<td>123NDIAPP10042</td>
-													<td>
-														<h6>
-															<span class="badge bg-success align-middle rounded-pill">REPAIRED</span>
-														</h6>
-													</td>
-													<td>2022</td>
-													<td>Gunung Putri</td>
-													<td class="fs-6">10.40 PM 11-11-2022</td>
-													<td class="fs-6">10.40 PM 11-11-2022</td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td>ASUS Vivobook M310A</td>
-													<td>123NDIAPP10042</td>
-													<td>
-														<h6>
-															<span class="badge bg-success align-middle rounded-pill">REPAIRED</span>
-														</h6>
-													</td>
-													<td>2022</td>
-													<td>Gunung Putri</td>
-													<td class="fs-6">10.40 PM 11-11-2022</td>
-													<td class="fs-6">10.40 PM 11-11-2022</td>
-												</tr>
-											</tbody>
-										</table>
+								<!-- <h5 class="mb-4">Daftar Barang Selesai Diperbaiki</h5> -->
+								<div class="accordion" id="accordionFlushExample">
+									<div class="accordion-item">
+										<h2 class="accordion-header">
+											<button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">Daftar Barang Selesai Diperbaiki</button>
+										</h2>
+										<div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+											<div class="accordion-body">
+												<table class="display" name="tableBarangDua" id="tableBarangDua">
+													<thead>
+														<tr>
+															<th>#</th>
+															<th>Status</th>
+															<th>Case</th>
+															<th>No. Inv</th>
+															<th>Jenis Kerusakan</th>
+															<th>Date</th>
+															<th></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td>1</td>
+															<td>
+																<h6>
+																	<span class="badge bg-success align-middle rounded-pill">Repaired</span>
+																</h6>
+															</td>
+															<td class="fw-bold">Laptop tidak menyala dan sering force shutdown!</td>
+															<td>
+																<a href="#" class="text-reset">6.2023/LT42.1/WS1LT1</a>
+															</td>
+															<td>
+																<span class="badge bg-secondary">Keyboard</span>
+																<span class="badge bg-secondary">Battery</span>
+															</td>
+															<td class="fs-6">10.40 PM 11-11-2022</td>
+															<td>
+																<button class="btn btn-sm btn-white" onclick="window.location.href='perbaikan-details.html'">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+																		<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+																		<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+																	</svg>
+																</button>
+															</td>
+														</tr>
+														<tr>
+															<td>2</td>
+															<td>
+																<h6>
+																	<span class="badge bg-success align-middle rounded-pill">Repaired</span>
+																</h6>
+															</td>
+															<td class="fw-bold">PC Ketumpahan air kopi!</td>
+															<td>
+																<a href="#" class="text-reset">6.2023/LT42.1/WS1LT1</a>
+															</td>
+															<td>
+																<span class="badge bg-secondary">Keyboard</span>
+																<span class="badge bg-secondary">Mainboard</span>
+																<span class="badge bg-secondary">Windows</span>
+																<span class="badge bg-secondary">Touchpad</span>
+															</td>
+															<td class="fs-6">10.40 PM 11-11-2022</td>
+															<td>
+																<button class="btn btn-sm btn-white" onclick="window.location.href='perbaikan-details.html'">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+																		<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+																		<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+																	</svg>
+																</button>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
