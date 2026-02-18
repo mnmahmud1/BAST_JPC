@@ -210,7 +210,7 @@
                     <div class="row mb-3">
                         <div class="col-sm">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body table-responsive">
                                     <h5 class="mb-4">Daftar Berita Acara Serah Terima Inventaris</h5>
                                     <table class="display" name="tableBarang" id="tableBarang">
                                         <thead>

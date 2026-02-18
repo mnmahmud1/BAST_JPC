@@ -191,7 +191,7 @@
                     <div class="row">
                         <div class="col-sm">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body table-responsive">
                                     <h5 class="mb-4">Daftar Pengguna</h5>
                                     <table class="display" name="tableBarang" id="tableBarang">
                                         <thead>
