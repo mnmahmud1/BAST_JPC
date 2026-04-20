@@ -579,7 +579,7 @@
                                             <div class="col-sm">
                                                 <label for="code" class="form-label labeling-form">Code</label>
                                                 <input type="text" name="code" id="code" class="form-control"
-                                                    placeholder="E.g LT01, PC01, ..." maxlength="4" required>
+                                                    placeholder="E.g LT01, PC01, ..." maxlength="5" required>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
