@@ -224,7 +224,7 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <div class="col-sm">
+                                        <div class="col-sm table-responsive">
                                             <table class="display" name="tableBarang" id="tableBarang">
                                                 <thead>
                                                     <tr>
